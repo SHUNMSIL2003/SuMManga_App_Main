@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/MainLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    android:fitsSystemWindows="false"
+    android:orientation="vertical"
+    android:theme="@style/Theme.TransparentActivity"
+    android:windowSoftInputMode="adjustResize"
+    tools:context=".MainActivity">
+    <!-- The "fitsSystemWindows" attribute needs to be set to "true" if you want the "windowSoftInputMode" attribute to take effect! -->
+    <View
+        android:id="@+id/SuMBackCWA"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.64"
+        android:background="#ffffff"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <View
+        android:id="@+id/SuMStatusBarExtendor"
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
+        android:background="#000000"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/SuMStatusBar" />
+
+    <RelativeLayout
+        app:layout_constraintBottom_toTopOf="@id/SuMNavBar"
+        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/SuMStatusBar"
+        android:background="@android:color/transparent"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+        <ViewFlipper
+            android:id="@+id/simpleViewFlipper"
+            android:layout_width="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:background="@android:color/transparent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_height="match_parent">
+            <include layout="@layout/index_explore_home" />
+            <include layout="@layout/index_hits" />
+            <include layout="@layout/index_library" />
+            <include layout="@layout/index_settings" />
+            <include layout="@layout/index_search" />
+            <include layout="@layout/index_explore_info" />
+        </ViewFlipper>
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/SuMNavBarExtendor"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="#000000"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@id/SuMNavBar"
+        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+    <TextView
+        android:id="@+id/SuMUseNameTXT"
+        android:layout_width="match_parent"
+        android:layout_height="26dp"
+        android:alpha="0.74"
+        android:fontFamily="@font/varela_round"
+        android:gravity="center"
+        android:text=""
+        android:visibility="visible"
+        android:background="@android:color/transparent"
+        android:textColor="@android:color/white"
+        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/SuMStatusBar" />
+    <View
+        android:id="@+id/SuMStatusBar"
+        android:layout_width="match_parent"
+        android:layout_height="24dp"
+        android:background="#000000"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <RelativeLayout
+        android:id="@+id/SuMBottomWebNavBarABS"
+        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/SuMNavBar"
+        android:paddingRight="12dp"
+        android:paddingLeft="12dp"
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:id="@+id/SuMWebNavColorShaper"
+            app:layout_constraintEnd_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:background="@drawable/bg_white_c22dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="110dp" />
+    <RelativeLayout
+        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="110dp">
+        <LinearLayout
+            android:id="@+id/SuMBarTopPart"
+            android:layout_width="match_parent"
+            android:padding="0dp"
+            app:layout_constraintEnd_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:onClick="GoBack"
+                android:layout_width="wrap_content"
+                android:padding="0dp"
+                android:layout_marginTop="-4dp"
+                app:layout_constraintStart_toStartOf="parent"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/SuMMangaTXT"
+                    android:textColor="@color/black"
+                    android:text="@string/app_name"
+                    android:fontFamily="@font/varela_round"
+                    android:textSize="16.5sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/NavBackTXT"
+                    android:textColor="@color/black"
+                    android:text="@string/app_navigate_back"
+                    android:fontFamily="@font/varela_round"
+                    android:textSize="9sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-6dp"
+                    android:textStyle="bold"
+                    android:layout_marginStart="0dp"
+                    tools:ignore="SmallSp" />
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:padding="0dp"
+            app:layout_constraintEnd_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:orientation="horizontal"
+            android:gravity="right"
+            android:layout_height="wrap_content"
+            tools:ignore="RtlHardcoded">
+            <View
+                android:onClick="LoadSearch"
+                app:layout_constraintBottom_toBottomOf="@id/SuMMenuLayout"
+                android:background="@drawable/ic_search_black_36dp"
+                android:layout_marginTop="-2dp"
+                android:layout_width="28dp"
+                android:layout_height="28dp" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:padding="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="24dp"
+            android:layout_height="72dp">
+            <View
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:padding="0dp"
+                android:layout_marginTop="-4dp"
+                app:layout_constraintStart_toStartOf="parent"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_height="wrap_content">
+                <ImageButton
+                    android:id="@+id/ExploreBTN"
+                    android:onClick="LoadExplore"
+                    android:background="@android:color/transparent"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    tools:ignore="ContentDescription" />
+                <TextView
+                    android:id="@+id/ExploreBTNTXT"
+                    android:textColor="#888888"
+                    android:text="@string/shortcut_explore"
+                    android:fontFamily="@font/varela_round"
+                    android:textSize="10sp"
+                    android:layout_marginTop="-2dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    tools:ignore="SmallSp" />
+            </LinearLayout>
+            <View
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="2" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:padding="0dp"
+                android:layout_marginTop="-4dp"
+                app:layout_constraintStart_toStartOf="parent"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_height="wrap_content">
+                <ImageButton
+                    android:id="@+id/HitsBTN"
+                    android:onClick="LoadHit"
+                    android:background="@android:color/transparent"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    tools:ignore="ContentDescription" />
+                <TextView
+                    android:id="@+id/HitsBTNTXT"
+                    android:textColor="#888888"
+                    android:text="@string/shortcut_hits"
+                    android:fontFamily="@font/varela_round"
+                    android:textSize="10sp"
+                    android:layout_marginTop="0dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    tools:ignore="SmallSp" />
+            </LinearLayout>
+            <View
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="2" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:padding="0dp"
+                android:layout_marginTop="-4dp"
+                app:layout_constraintStart_toStartOf="parent"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_height="wrap_content">
+                <ImageButton
+                    android:id="@+id/LibraryBTN"
+                    android:onClick="LoadLibrary"
+                    android:background="@android:color/transparent"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    tools:ignore="ContentDescription" />
+                <TextView
+                    android:id="@+id/LibraryBTNTXT"
+                    android:textColor="#888888"
+                    android:text="@string/shortcut_library"
+                    android:fontFamily="@font/varela_round"
+                    android:textSize="10sp"
+                    android:layout_marginTop="2dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    tools:ignore="SmallSp" />
+            </LinearLayout>
+            <View
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="2" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:padding="0dp"
+                android:layout_marginTop="-4dp"
+                app:layout_constraintStart_toStartOf="parent"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_height="wrap_content">
+                <ImageButton
+                    android:id="@+id/SettingsBTN"
+                    android:onClick="LoadSettings"
+                    android:background="@android:color/transparent"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    tools:ignore="ContentDescription" />
+                <TextView
+                    android:id="@+id/SettingsBTNTXT"
+                    android:textColor="#888888"
+                    android:text="@string/shortcut_settings"
+                    android:fontFamily="@font/varela_round"
+                    android:textSize="10sp"
+                    android:layout_marginTop="-2dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    tools:ignore="SmallSp" />
+            </LinearLayout>
+            <View
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1" />
+        </LinearLayout>
+    </RelativeLayout>
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/SuMNavBar"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="#000000"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="360dp"
+        android:layout_height="400dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="0dp"
+        android:alpha="0.96"
+        android:background="@drawable/rounded_c"
+        android:padding="18dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_dark_mode_black_36dp"
+        tools:ignore="ContentDescription" /> -->
+
+    <RelativeLayout
+        android:id="@+id/SuMMangaExploreInfo_MangaDiscABS"
+        android:onClick="HideMangaDisc"
+        android:visibility="gone"
+        android:padding="24dp"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:id="@+id/SuMEXPLOREiNFO_MangaDiscBG"
+            android:gravity="center"
+            android:background="@drawable/bg_xcolor_c22dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_centerInParent="true"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:padding="32dp"
+                android:id="@+id/SuMMangaExploreInfo_MangaDisc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:alpha="0.86"
+                android:fontFamily="@font/varela_round"
+                android:text="description..."
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                tools:ignore="HardcodedText" />
+        </RelativeLayout>
+    </RelativeLayout>
+    <include layout="@layout/hold_menu_fullscreen" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

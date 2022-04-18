@@ -1,0 +1,747 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <RelativeLayout
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="match_parent"
+        android:gravity="top"
+        android:padding="12dp"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:ignore="UselessParent">
+
+            <ScrollView
+                android:scrollIndicators="none"
+                android:fadeScrollbars="false"
+                android:scrollbarAlwaysDrawVerticalTrack="false"
+                android:scrollbarAlwaysDrawHorizontalTrack="false"
+                android:scrollbarSize="0dp"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                tools:ignore="UselessParent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    tools:ignore="ScrollViewSize">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:gravity="center">
+
+                        <View
+                            android:id="@+id/SuMWebViewIndex3AccountSettingsCardBG"
+                            android:layout_width="match_parent"
+                            android:layout_height="178dp"
+                            android:alpha="0.86"
+                            android:background="@drawable/bg_white_c22dp" />
+
+                        <WebView
+                            android:id="@+id/SuMWebViewIndex3AccountSettingsCard"
+                            style="@android:style/Widget.Material.WebView"
+                            android:layout_width="match_parent"
+                            android:layout_height="178dp"
+                            android:background="@android:color/transparent"
+                            android:fontFamily="@font/varela_round"
+                            android:minHeight="178dp"
+                            android:visibility="visible"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:ignore="WebViewLayout" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:gravity="center">
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="240dp"
+                            android:alpha="0.86"
+                            android:background="@drawable/bg_white_c22dp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="240dp"
+                            android:gravity="top"
+                            android:orientation="vertical"
+                            android:padding="32dp">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="49dp">
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="49dp"
+                                    android:layout_marginEnd="12dp"
+                                    android:orientation="vertical"
+                                    android:paddingLeft="4dp">
+
+                                    <TextView
+                                        android:id="@+id/SuMCoinsCardTXT_SuMCoins"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="0dp"
+                                        android:alpha="0.86"
+                                        android:fontFamily="@font/varela_round"
+                                        android:text="SuM-Coins"
+                                        android:textColor="@android:color/black"
+                                        android:textSize="26sp"
+                                        android:textStyle="normal"
+                                        tools:ignore="HardcodedText,SmallSp" />
+
+                                    <TextView
+                                        android:id="@+id/SuMCoinsCardTXT_ToUnlockANewWorld"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="-8dp"
+                                        android:alpha="0.64"
+                                        android:fontFamily="@font/varela_round"
+                                        android:paddingStart="2dp"
+                                        android:text="To unlock a new world!"
+                                        android:textColor="@android:color/black"
+                                        android:textSize="16sp"
+                                        android:textStyle="normal"
+                                        tools:ignore="HardcodedText,SmallSp" />
+
+                                </LinearLayout>
+
+                                <RelativeLayout
+                                    android:id="@+id/CoinsCard_CoinsPlace"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="49dp"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_marginTop="3dp"
+                                    android:layout_marginEnd="12dp"
+                                    android:gravity="center"
+                                    android:background="@android:color/transparent" >
+
+                                    <LinearLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="26dp"
+                                        android:orientation="horizontal">
+
+                                        <View
+                                            android:layout_width="24dp"
+                                            android:layout_height="24dp"
+                                            android:background="@drawable/ic_sumtokencoin" />
+
+                                        <TextView
+                                            android:id="@+id/SuMCoinCard_CountTXT"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginStart="4dp"
+                                            android:layout_marginTop="-4dp"
+                                            android:alpha="0.64"
+                                            android:fontFamily="@font/varela_round"
+                                            android:text="0"
+                                            android:textColor="@android:color/black"
+                                            android:textSize="24sp"
+                                            android:textStyle="normal"
+                                            tools:ignore="HardcodedText" />
+                                    </LinearLayout>
+
+                                </RelativeLayout>
+
+
+                            </RelativeLayout>
+
+                            <View
+                                android:id="@+id/SuMSettingsHr2"
+                                android:layout_width="200dp"
+                                android:layout_height="2dp"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="40dp"
+                                android:layout_marginBottom="30dp"
+                                android:alpha="0.06"
+                                android:background="@drawable/hr_black" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <RelativeLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:paddingStart="6dp"
+                                    android:paddingEnd="12dp"
+                                    app:layout_constraintEnd_toStartOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent">
+
+                                    <LinearLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="vertical">
+
+                                        <RelativeLayout
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="40dp"
+                                            android:gravity="center">
+
+                                            <LinearLayout
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:orientation="horizontal">
+
+                                                <TextView
+                                                    android:id="@+id/SuMCoinCardTXT_OneCoin"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_marginStart="4dp"
+                                                    android:layout_marginTop="0dp"
+                                                    android:alpha="0.86"
+                                                    android:fontFamily="@font/varela_round"
+                                                    android:text="1 Coins"
+                                                    android:textColor="@android:color/black"
+                                                    android:textSize="23sp"
+                                                    android:textStyle="normal"
+                                                    tools:ignore="HardcodedText" />
+
+                                                <TextView
+                                                    android:id="@+id/SuMCoinCardTXT_OneCoinByADExtraInfo"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_marginStart="4dp"
+                                                    android:layout_marginTop="0dp"
+                                                    android:alpha="0.45"
+                                                    android:fontFamily="@font/varela_round"
+                                                    android:text="6-12 sec AD"
+                                                    android:textColor="@android:color/black"
+                                                    android:textSize="14sp"
+                                                    android:textStyle="normal"
+                                                    tools:ignore="HardcodedText,SmallSp" />
+
+                                            </LinearLayout>
+
+                                            <RelativeLayout
+                                                android:layout_width="68dp"
+                                                android:layout_height="28dp"
+                                                android:layout_alignParentEnd="true"
+                                                android:layout_marginTop="4dp"
+                                                android:gravity="center"
+                                                android:onClick="ClaimOneTokenByADS">
+
+                                                <View
+                                                    android:id="@+id/SuMCoinsCardBTN_ClaimOneByADBG"
+                                                    android:layout_width="68dp"
+                                                    android:layout_height="28dp"
+                                                    android:layout_gravity="center"
+                                                    android:background="@drawable/bg_btn_c14dp" />
+
+                                                <TextView
+                                                    android:layout_width="68dp"
+                                                    android:layout_height="28dp"
+                                                    android:layout_gravity="center"
+                                                    android:layout_marginStart="12dp"
+                                                    android:layout_marginTop="3dp"
+                                                    android:alpha="0.96"
+                                                    android:fontFamily="@font/varela_round"
+                                                    android:text="Claim"
+                                                    android:textColor="@android:color/white"
+                                                    android:textSize="16sp"
+                                                    android:textStyle="normal"
+                                                    tools:ignore="HardcodedText" />
+                                            </RelativeLayout>
+                                        </RelativeLayout>
+
+                                    </LinearLayout>
+
+                                </RelativeLayout>
+
+                            </LinearLayout>
+
+
+                        </LinearLayout>
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:gravity="center">
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="380dp"
+                            android:alpha="0.86"
+                            android:background="@drawable/bg_white_c22dp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="380dp"
+                            android:gravity="top"
+                            android:orientation="vertical"
+                            android:padding="32dp">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="12dp"
+                                    android:orientation="vertical"
+                                    android:paddingLeft="4dp">
+
+                                    <TextView
+                                        android:id="@+id/SuMSettingsCardTXT_SuMSteiings"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="0dp"
+                                        android:alpha="0.86"
+                                        android:fontFamily="@font/varela_round"
+                                        android:text="SuM-Settings"
+                                        android:textColor="@android:color/black"
+                                        android:textSize="26sp"
+                                        android:textStyle="normal"
+                                        tools:ignore="HardcodedText,SmallSp" />
+
+                                    <TextView
+                                        android:id="@+id/SuMSettingsCardTXT_DoAsYouSeeFit"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="-8dp"
+                                        android:alpha="0.64"
+                                        android:fontFamily="@font/varela_round"
+                                        android:paddingStart="2dp"
+                                        android:text="Do as you see fit."
+                                        android:textColor="@android:color/black"
+                                        android:textSize="16sp"
+                                        android:textStyle="normal"
+                                        tools:ignore="HardcodedText,SmallSp" />
+
+                                </LinearLayout>
+
+                                <View
+                                    android:id="@+id/SuMSettingsCard_Icon"
+                                    android:layout_width="46dp"
+                                    android:layout_height="46dp"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_marginTop="3dp"
+                                    android:layout_marginEnd="12dp"
+                                    android:background="@drawable/ic_settings_black_48dp" />
+
+
+                            </RelativeLayout>
+
+                            <View
+                                android:id="@+id/SuMSettingsHr0"
+                                android:layout_width="200dp"
+                                android:layout_height="2dp"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="42dp"
+                                android:layout_marginBottom="16dp"
+                                android:alpha="0.06"
+                                android:background="@drawable/hr_black" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <RelativeLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:paddingStart="6dp"
+                                    android:paddingEnd="12dp"
+                                    app:layout_constraintEnd_toStartOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent">
+
+                                    <LinearLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="vertical">
+
+                                        <RelativeLayout
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="40dp"
+                                            android:gravity="center">
+
+                                            <LinearLayout
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:orientation="horizontal">
+
+                                                <View
+                                                    android:id="@+id/SuMLockIMG"
+                                                    android:layout_width="29dp"
+                                                    android:layout_height="29dp"
+                                                    android:background="@drawable/ic_lock_black_36dp" />
+
+                                                <TextView
+                                                    android:id="@+id/SuMLockTXT"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_marginStart="4dp"
+                                                    android:layout_marginTop="0dp"
+                                                    android:alpha="0.86"
+                                                    android:fontFamily="@font/varela_round"
+                                                    android:text="SuM Lock"
+                                                    android:textColor="@android:color/black"
+                                                    android:textSize="23sp"
+                                                    android:textStyle="normal"
+                                                    tools:ignore="HardcodedText,SmallSp" />
+
+                                            </LinearLayout>
+
+                                            <Switch
+                                                android:id="@+id/SuMLockInOnOrOff"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_alignParentEnd="true"
+                                                android:onClick="SuMLockToggle"
+                                                tools:ignore="UseSwitchCompatOrMaterialXml" />
+                                        </RelativeLayout>
+
+                                        <TextView
+                                            android:id="@+id/SuMLockDisc"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="-2dp"
+                                            android:alpha="0.5"
+                                            android:fontFamily="@font/varela_round"
+                                            android:paddingStart="34dp"
+                                            android:text="more privacy accomplished by requiring a biometric scan when opening the app."
+                                            android:textColor="@android:color/black"
+                                            android:textSize="12sp"
+                                            android:textStyle="bold"
+                                            tools:ignore="HardcodedText,RtlSymmetry" />
+
+                                    </LinearLayout>
+
+                                </RelativeLayout>
+
+                            </LinearLayout>
+
+                            <View
+                                android:id="@+id/SuMSettingsHr1"
+                                android:layout_width="200dp"
+                                android:layout_height="2dp"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="26dp"
+                                android:layout_marginBottom="16dp"
+                                android:alpha="0.06"
+                                android:background="@drawable/hr_black" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <RelativeLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:paddingStart="6dp"
+                                    android:paddingEnd="12dp"
+                                    app:layout_constraintEnd_toStartOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent">
+
+                                    <LinearLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="vertical">
+
+                                        <RelativeLayout
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="40dp"
+                                            android:gravity="center">
+
+                                            <LinearLayout
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:orientation="horizontal">
+
+                                                <View
+                                                    android:id="@+id/SuMDrackModeIMG"
+                                                    android:layout_width="31dp"
+                                                    android:layout_height="31dp"
+                                                    android:background="@drawable/ic_dark_mode_black_36dp" />
+
+                                                <TextView
+                                                    android:id="@+id/SuMDarkModeTXT"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_marginStart="4dp"
+                                                    android:layout_marginTop="0dp"
+                                                    android:alpha="0.86"
+                                                    android:fontFamily="@font/varela_round"
+                                                    android:text="Dark Mode"
+                                                    android:textColor="@android:color/black"
+                                                    android:textSize="23sp"
+                                                    android:textStyle="normal"
+                                                    tools:ignore="HardcodedText,SmallSp" />
+
+                                            </LinearLayout>
+
+                                            <Switch
+                                                android:id="@+id/SuMDarkModeInOnOrOff"
+                                                android:layout_width="wrap_content"
+                                                android:layout_height="wrap_content"
+                                                android:layout_alignParentEnd="true"
+                                                android:onClick="SuMDarkModeToggle"
+                                                tools:ignore="UseSwitchCompatOrMaterialXml" />
+                                        </RelativeLayout>
+
+                                        <TextView
+                                            android:id="@+id/SuMDarkModeDisc"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="-2dp"
+                                            android:alpha="0.5"
+                                            android:fontFamily="@font/varela_round"
+                                            android:paddingStart="34dp"
+                                            android:text="Change to darker shades of color, note that this mode may not apply to all SuM's parts!"
+                                            android:textColor="@android:color/black"
+                                            android:textSize="12sp"
+                                            android:textStyle="bold"
+                                            tools:ignore="HardcodedText,RtlSymmetry" />
+
+                                    </LinearLayout>
+
+                                </RelativeLayout>
+
+                            </LinearLayout>
+
+
+                        </LinearLayout>
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:paddingStart="12dp"
+                        android:paddingEnd="12dp"
+                        android:paddingTop="24dp"
+                        android:layout_marginBottom="174dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/SuMSettingsTXT_SuM."
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="4dp"
+                                    android:layout_marginTop="0dp"
+                                    android:alpha="0.64"
+                                    android:fontFamily="@font/varela_round"
+                                    android:text="SuM ·"
+                                    android:textColor="@android:color/black"
+                                    android:textSize="22sp"
+                                    android:textStyle="normal"
+                                    tools:ignore="HardcodedText" />
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical">
+
+                                    <LinearLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="center"
+                                        android:orientation="horizontal">
+
+                                        <TextView
+                                            android:id="@+id/SuMSettingsTXT_WebVersionTXT"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginStart="4dp"
+                                            android:layout_marginTop="0dp"
+                                            android:alpha="0.64"
+                                            android:fontFamily="@font/varela_round"
+                                            android:text="Web Version"
+                                            android:textColor="@android:color/black"
+                                            android:textSize="11sp"
+                                            android:textStyle="bold"
+                                            tools:ignore="HardcodedText" />
+
+                                        <TextView
+                                            android:id="@+id/SuMSettingsTXT_WebVersionValueTXT"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginStart="4dp"
+                                            android:layout_marginTop="0dp"
+                                            android:alpha="0.64"
+                                            android:fontFamily="@font/varela_round"
+                                            android:text="X.Y.Z Beta"
+                                            android:textColor="@android:color/black"
+                                            android:textSize="13sp"
+                                            android:textStyle="bold"
+                                            tools:ignore="HardcodedText" />
+
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="-6dp"
+                                        android:gravity="center"
+                                        android:orientation="horizontal">
+
+                                        <TextView
+                                            android:id="@+id/SuMSettingsTXT_ApplicationVersionTXT"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginStart="4dp"
+                                            android:layout_marginTop="0dp"
+                                            android:alpha="0.64"
+                                            android:fontFamily="@font/varela_round"
+                                            android:text="Application Version"
+                                            android:textColor="@android:color/black"
+                                            android:textSize="11sp"
+                                            android:textStyle="bold"
+                                            tools:ignore="HardcodedText" />
+
+                                        <TextView
+                                            android:id="@+id/SuMSettingsTXT_ApplicationVersionValue_AutoFilled"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginStart="4dp"
+                                            android:layout_marginTop="0dp"
+                                            android:alpha="0.64"
+                                            android:fontFamily="@font/varela_round"
+                                            android:text="@string/app_version_Raw"
+                                            android:textColor="@android:color/black"
+                                            android:textSize="13sp"
+                                            android:textStyle="bold"
+                                            tools:ignore="HardcodedText" />
+
+                                    </LinearLayout>
+                                </LinearLayout>
+                            </LinearLayout>
+
+                            <RelativeLayout
+                                android:paddingTop="5dp"
+                                android:paddingBottom="8dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/SuMSettingsTXT_CacheSizeTXT"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="4dp"
+                                        android:layout_marginTop="0dp"
+                                        android:alpha="0.64"
+                                        android:fontFamily="@font/varela_round"
+                                        android:text="Cache size:"
+                                        android:textColor="@android:color/black"
+                                        android:textSize="14sp"
+                                        android:textStyle="normal"
+                                        tools:ignore="HardcodedText" />
+
+                                    <TextView
+                                        android:id="@+id/SuMSettingsTXT_CacheSizeValueTXT"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="4dp"
+                                        android:layout_marginTop="0dp"
+                                        android:alpha="0.64"
+                                        android:fontFamily="@font/varela_round"
+                                        android:text="0.00KB"
+                                        android:textColor="@android:color/black"
+                                        android:textSize="14sp"
+                                        android:textStyle="bold"
+                                        tools:ignore="HardcodedText" />
+
+
+                                    <RelativeLayout
+                                        android:layout_marginStart="6dp"
+                                        android:layout_width="46dp"
+                                        android:layout_height="20dp"
+                                        android:gravity="center"
+                                        android:onClick="ClearCacheX">
+
+                                        <View
+                                            android:id="@+id/SuMClearCacheBTNBG"
+                                            android:layout_width="46dp"
+                                            android:layout_height="28dp"
+                                            android:layout_gravity="center"
+                                            android:background="@drawable/bg_btn_c14dp" />
+
+                                        <TextView
+                                            android:layout_width="46dp"
+                                            android:layout_height="28dp"
+                                            android:layout_gravity="center"
+                                            android:layout_marginTop="-1dp"
+                                            android:alpha="0.96"
+                                            android:fontFamily="@font/varela_round"
+                                            android:gravity="center"
+                                            android:text="clear"
+                                            android:textColor="@android:color/white"
+                                            android:textSize="11sp"
+                                            android:textStyle="normal"
+                                            tools:ignore="HardcodedText" />
+                                    </RelativeLayout>
+
+                                </LinearLayout>
+                            </RelativeLayout>
+
+                            <TextView
+                                android:id="@+id/SuMSettingsTXT_SuMMoreInfo_ThisAppWebIsTemp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="4dp"
+                                android:layout_marginTop="0dp"
+                                android:alpha="0.64"
+                                android:fontFamily="@font/varela_round"
+                                android:text="This website/application is a school project and will be deleted soon!"
+                                android:textColor="@android:color/black"
+                                android:textSize="11sp"
+                                android:textStyle="bold"
+                                tools:ignore="HardcodedText" />
+
+                        </LinearLayout>
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+            </ScrollView>
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

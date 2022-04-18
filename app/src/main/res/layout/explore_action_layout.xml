@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <RelativeLayout
+        android:paddingTop="12dp"
+        android:paddingBottom="0dp"
+        android:paddingEnd="12dp"
+        android:paddingStart="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="336dp"
+        tools:ignore="MissingConstraints">
+        <View
+            android:background="@drawable/bg_white_c22dp"
+            android:alpha="0.86"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingStart="24dp"
+                android:paddingTop="12dp"
+                android:paddingEnd="28dp"
+                android:paddingBottom="12dp">
+
+                <LinearLayout
+                    android:layout_marginTop="0dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/SuMExploreCard_GernCard_Action_TXT"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="0dp"
+                        android:alpha="0.96"
+                        android:fontFamily="@font/varela_round"
+                        android:text="Action"
+                        android:textColor="@android:color/black"
+                        android:textSize="30sp"
+                        android:textStyle="normal"
+                        tools:ignore="HardcodedText" />
+
+
+                    <TextView
+                        android:id="@+id/SuMExploreCard_GernCard_Action_NewestTXT"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginTop="-9dp"
+                        android:alpha="0.32"
+                        android:fontFamily="@font/varela_round"
+                        android:text="latest 12"
+                        android:textColor="@android:color/black"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        tools:ignore="HardcodedText" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="46dp"
+                    android:layout_alignParentEnd="true"
+                    android:paddingTop="2dp"
+                    android:gravity="center"
+                    android:onClick="More_Action"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/SuMExploreCard_GernCard_Action_MoreTXT"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:alpha="0.74"
+                        android:fontFamily="@font/varela_round"
+                        android:text="More"
+                        android:textColor="@android:color/black"
+                        android:textSize="18sp"
+                        android:textStyle="normal"
+                        tools:ignore="HardcodedText" />
+
+                    <View
+                        android:id="@+id/SuMExploreCard_GernCard_Action_MoreIMG"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_marginTop="1dp"
+                        android:alpha="0.74"
+                        android:background="@drawable/ic_forword_black" />
+
+                </LinearLayout>
+
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:paddingStart="7dp"
+                android:paddingEnd="7dp"
+                android:layout_marginTop="7dp"
+                android:layout_marginBottom="12dp"
+                android:layout_width="match_parent"
+                android:layout_height="226dp">
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    tools:ignore="UselessParent">
+
+                <ScrollView
+                    android:scrollIndicators="none"
+                    android:fadeScrollbars="false"
+                    android:scrollbarAlwaysDrawVerticalTrack="false"
+                    android:scrollbarAlwaysDrawHorizontalTrack="false"
+                    android:scrollbarSize="0dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    tools:ignore="UselessParent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    tools:ignore="ScrollViewSize">
+
+                    <WebView
+                        android:id="@+id/SuMWebView_ActionCard"
+                        style="@android:style/Widget.Material.WebView"
+                        android:layout_width="match_parent"
+                        android:layout_height="224dp"
+                        android:background="@android:color/transparent"
+                        android:fontFamily="@font/varela_round"
+                        android:visibility="visible"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                        </LinearLayout>
+                    </ScrollView>
+                </LinearLayout>
+            </RelativeLayout>
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

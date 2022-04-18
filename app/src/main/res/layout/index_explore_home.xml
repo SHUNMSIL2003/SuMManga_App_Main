@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:ignore="UselessParent">
+
+        <com.summanga.android.CustomScrollView
+            android:id="@+id/SuMExplore_Home_ScrollView_Main"
+            android:fillViewport="true"
+            android:nestedScrollingEnabled="true"
+            android:scrollIndicators="none"
+            android:fadeScrollbars="false"
+            android:scrollbarAlwaysDrawVerticalTrack="false"
+            android:scrollbarAlwaysDrawHorizontalTrack="false"
+            android:scrollbarSize="0dp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            tools:ignore="UselessParent">
+
+            <LinearLayout
+                android:paddingBottom="174dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                tools:ignore="ScrollViewSize">
+
+                <include layout="@layout/explore_laytest_card_layout" />
+
+                <include layout="@layout/explore_recents_layout" />
+
+                <include layout="@layout/explore_action_layout" />
+
+                <include layout="@layout/explore_drama_layout" />
+
+                <include layout="@layout/explore_fantasy_layout" />
+
+                <include layout="@layout/explore_comedy_layout" />
+
+                <include layout="@layout/explore_sliceoflife_layout" />
+
+                <include layout="@layout/explore_scifi_layout" />
+
+                <include layout="@layout/explore_supernatural_layout" />
+
+                <include layout="@layout/explore_mystery_layout" />
+
+
+            </LinearLayout>
+
+        </com.summanga.android.CustomScrollView>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

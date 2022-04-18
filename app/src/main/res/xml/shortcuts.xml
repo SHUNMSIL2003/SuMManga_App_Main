@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:shortcutId="SuMSettings"
+        android:enabled="true"
+        android:icon="@drawable/ic_settings"
+        android:shortcutShortLabel="@string/shortcut_settings"
+        android:shortcutLongLabel="@string/shortcut_settings"
+        android:shortcutDisabledMessage="@string/shortcut_settings">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.summanga.android"
+            android:targetClass="com.summanga.android.SuMSettings" />
+        <!-- If your shortcut is associated with multiple intents, include them
+             here. The last intent in the list determines what the user sees when
+             they launch this shortcut. -->
+        <categories android:name="android.shortcut.conversation" />
+        <capability-binding android:key="actions.intent.CREATE_MESSAGE" />
+    </shortcut>
+    <shortcut
+        android:shortcutId="SuMLibrary"
+        android:enabled="true"
+        android:icon="@drawable/ic_library"
+        android:shortcutShortLabel="@string/shortcut_library"
+        android:shortcutLongLabel="@string/shortcut_library"
+        android:shortcutDisabledMessage="@string/shortcut_library">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.summanga.android"
+            android:targetClass="com.summanga.android.SuMLibrary" />
+        <!-- If your shortcut is associated with multiple intents, include them
+             here. The last intent in the list determines what the user sees when
+             they launch this shortcut. -->
+        <categories android:name="android.shortcut.conversation" />
+        <capability-binding android:key="actions.intent.CREATE_MESSAGE" />
+    </shortcut>
+    <shortcut
+        android:shortcutId="SuMHits"
+        android:enabled="true"
+        android:icon="@drawable/ic_hits"
+        android:shortcutShortLabel="@string/shortcut_hits"
+        android:shortcutLongLabel="@string/shortcut_hits"
+        android:shortcutDisabledMessage="@string/shortcut_hits">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.summanga.android"
+            android:targetClass="com.summanga.android.SuMHits" />
+        <!-- If your shortcut is associated with multiple intents, include them
+             here. The last intent in the list determines what the user sees when
+             they launch this shortcut. -->
+        <categories android:name="android.shortcut.conversation" />
+        <capability-binding android:key="actions.intent.CREATE_MESSAGE" />
+    </shortcut>
+    <shortcut
+        android:shortcutId="SuMSearch"
+        android:enabled="true"
+        android:icon="@drawable/ic_search"
+        android:shortcutShortLabel="@string/shortcut_search"
+        android:shortcutLongLabel="@string/shortcut_search"
+        android:shortcutDisabledMessage="@string/shortcut_search">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.summanga.android"
+            android:targetClass="com.summanga.android.SuMSearch" />
+        <!-- If your shortcut is associated with multiple intents, include them
+             here. The last intent in the list determines what the user sees when
+             they launch this shortcut. -->
+        <categories android:name="android.shortcut.conversation" />
+        <capability-binding android:key="actions.intent.CREATE_MESSAGE" />
+    </shortcut>
+</shortcuts>

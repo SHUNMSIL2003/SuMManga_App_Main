@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <RelativeLayout
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@android:color/transparent"
+        android:layout_width="match_parent"
+        android:gravity="top"
+        android:layout_height="match_parent">
+
+
+        <RelativeLayout
+            android:id="@+id/SuMLibTopPart"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="26dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/SuMLibLowerPartC"
+            app:layout_constraintEnd_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:visibility="visible"
+            android:gravity="center"
+            android:background="@android:color/transparent" >
+
+            <LinearLayout
+                android:id="@+id/SuMLibraryTopBarBG"
+                android:layout_width="264dp"
+                android:layout_height="50dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:visibility="visible"
+                android:alpha="1"
+                android:orientation="horizontal"
+                android:padding="8dp"
+                android:gravity="center"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:background="@drawable/bg_white_c25dp" >
+
+
+                <LinearLayout
+                    android:id="@+id/LoadLibraryCurrBTN"
+                    android:onClick="LoadLibraryCurr"
+                    android:background="@drawable/gb_dark_c22dp"
+                    android:layout_width="80dp"
+                    android:padding="0dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:layout_height="34dp">
+
+                    <TextView
+                        android:id="@+id/LoadLibraryCurrTXT"
+                        android:textColor="#ffffff"
+                        android:text="Currently"
+                        android:alpha="0.96"
+                        android:fontFamily="@font/varela_round"
+                        android:textSize="14sp"
+                        android:layout_marginTop="0dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        tools:ignore="HardcodedText,SmallSp" />
+
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="3" />
+
+                <LinearLayout
+                    android:id="@+id/LoadLibraryFavBTN"
+                    android:onClick="LoadLibraryFav"
+                    android:background="@android:color/transparent"
+                    android:layout_width="80dp"
+                    android:padding="0dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:layout_height="34dp">
+
+                    <TextView
+                        android:id="@+id/LoadLibraryFavTXT"
+                        android:textColor="#2b2b2b"
+                        android:text="Favorites"
+                        android:alpha="0.96"
+                        android:fontFamily="@font/varela_round"
+                        android:textSize="14sp"
+                        android:layout_marginTop="0dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        tools:ignore="HardcodedText,SmallSp" />
+
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="3" />
+
+                <LinearLayout
+                    android:id="@+id/LoadLibraryWannaBTN"
+                    android:onClick="LoadLibraryWanna"
+                    android:background="@android:color/transparent"
+                    android:layout_width="80dp"
+                    android:padding="0dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:layout_height="34dp">
+
+                    <TextView
+                        android:id="@+id/LoadLibraryWannaTXT"
+                        android:textColor="#2b2b2b"
+                        android:text="Want To"
+                        android:alpha="0.96"
+                        android:fontFamily="@font/varela_round"
+                        android:textSize="14sp"
+                        android:layout_marginTop="0dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        tools:ignore="HardcodedText,SmallSp" />
+
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="264dp"
+                android:layout_height="46dp"
+                android:layout_marginTop="0dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:visibility="visible"
+                android:orientation="horizontal"
+                android:background="@android:color/transparent" >
+
+
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/SuMLibDisABS"
+            android:visibility="visible"
+            app:layout_constraintEnd_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:background="@android:color/transparent"
+            android:layout_width="match_parent"
+            android:gravity="top"
+            android:paddingTop="16dp"
+            android:layout_marginTop="76dp"
+            android:layout_height="140dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxHeight="180dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:visibility="visible"
+                android:gravity="center"
+                android:paddingLeft="22dp"
+                android:paddingRight="22dp"
+                android:alpha="0.48"
+                android:background="@android:color/transparent"
+                android:orientation="horizontal">
+
+                <View
+                    android:id="@+id/SuMLibraryInfoViewIMG"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:background="@drawable/ic_info_dark_36dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_width="86dp"
+                    android:layout_height="86dp" />
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:paddingTop="6dp"
+                    android:paddingStart="2dp"
+                    android:paddingEnd="16dp"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/SuMLibraryInfoTXT"
+                        android:textColor="@color/black"
+                        android:text="This library is to ease access to the mangas you are currently reading and track your process, you can add mangas by clicking the 'Start Reading' button in the desired manga page."
+                        android:fontFamily="@font/varela_round"
+                        android:textSize="13sp"
+                        android:textStyle="bold"
+                        android:gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:alpha="0.90"
+                        android:layout_height="wrap_content"
+                        tools:ignore="HardcodedText" />
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/SuMLibLowerPartC"
+            android:layout_marginTop="200dp"
+            android:padding="12dp"
+            android:paddingBottom="86dp"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            app:layout_constraintTop_toBottomOf="@id/SuMLibTopPart"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:visibility="visible"
+            android:gravity="top"
+            android:background="@android:color/transparent" >
+
+
+            <View
+                android:id="@+id/SuMWebViewIndex2BG"
+                android:background="@drawable/bg_white_c22dp"
+                android:layout_width="match_parent"
+                android:alpha="0.86"
+                android:layout_height="460dp" />
+
+            <WebView
+                android:id="@+id/SuMWebViewIndex2"
+                style="@android:style/Widget.Material.WebView"
+                android:layout_width="match_parent"
+                android:layout_height="460dp"
+                android:background="@android:color/transparent"
+                android:fontFamily="@font/varela_round"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
