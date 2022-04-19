@@ -59,16 +59,23 @@
         android:hardwareAccelerated="true"
         android:usesCleartextTraffic="true"
         android:resizeableActivity="false"
+        android:screenOrientation="portrait"
+        android:largeHeap="true"
         android:theme="@android:style/Theme.Translucent">
         <activity
             android:extractNativeLibs="true"
             android:theme="@style/Theme.AppCompat.Translucent"
             android:name=".MainActivity"
             android:hardwareAccelerated="true"
+            android:largeHeap="true"
             android:alwaysRetainTaskState="true"
             android:resizeableActivity="false"
             android:exported="true"
             tools:ignore="NonResizeableActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT" />
@@ -83,8 +90,7 @@
             android:theme="@style/Splash.Theme"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.VIEW"/>
             </intent-filter>
         </activity>
         <activity
@@ -93,7 +99,8 @@
             android:hardwareAccelerated="true"
             android:alwaysRetainTaskState="true"
             android:resizeableActivity="false"
-            android:exported="true">
+            android:exported="true"
+            tools:ignore="NonResizeableActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.shortcut.conversation" />

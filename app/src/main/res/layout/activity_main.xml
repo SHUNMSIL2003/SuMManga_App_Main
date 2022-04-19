@@ -56,19 +56,9 @@
             <include layout="@layout/index_library" />
             <include layout="@layout/index_settings" />
             <include layout="@layout/index_search" />
-            <include layout="@layout/index_explore_info" />
         </ViewFlipper>
     </RelativeLayout>
 
-    <View
-        android:id="@+id/SuMNavBarExtendor"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="#000000"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@id/SuMNavBar"
-        app:layout_constraintEnd_toStartOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
     <TextView
         android:id="@+id/SuMUseNameTXT"
         android:layout_width="match_parent"
@@ -93,6 +83,30 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
     <RelativeLayout
+        android:onClick="VoidX"
+        android:visibility="gone"
+        android:id="@+id/SuMExploreInfo_ABS"
+        android:paddingBottom="0dp"
+        android:layout_width="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/SuMNavBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_height="0dp">
+        <include layout="@layout/index_explore_info" />
+    </RelativeLayout>
+    <View
+        android:onClick="VoidX"
+        android:id="@+id/SuMNavBarExtendor"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="#000000"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@id/SuMNavBar"
+        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+    <RelativeLayout
+        android:onClick="VoidX"
         android:id="@+id/SuMBottomWebNavBarABS"
         app:layout_constraintEnd_toStartOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -373,6 +387,41 @@
                 tools:ignore="HardcodedText" />
         </RelativeLayout>
     </RelativeLayout>
+    <RelativeLayout
+        android:onClick="VoidX"
+        android:id="@+id/SuMMangaReader"
+        android:visibility="gone"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/black"
+            android:alpha="0.32"/>
+        <WebView
+            android:id="@+id/SuMWebViewIndex6_MangaReader"
+            style="@android:style/Widget.Material.WebView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/varela_round"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </RelativeLayout>
     <include layout="@layout/hold_menu_fullscreen" />
-
+    <WebView
+        android:id="@+id/webViewX_SECURE_JS"
+        style="@android:style/Widget.Material.WebView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/black"
+        android:fontFamily="@font/varela_round"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

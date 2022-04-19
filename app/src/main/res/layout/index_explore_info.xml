@@ -7,78 +7,97 @@
     tools:context=".MainActivity">
 
     <RelativeLayout
-        android:paddingStart="12dp"
-        android:paddingEnd="12dp"
-        android:paddingTop="26dp"
-        android:paddingBottom="122dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-       <RelativeLayout
-           android:layout_width="match_parent"
-           android:layout_height="match_parent">
 
-           <View
-               android:layout_width="match_parent"
-               android:layout_height="match_parent"
-               android:alpha="0.74"
-               android:background="@drawable/bg_white_c22dp" />
-           <RelativeLayout
-               android:layout_width="match_parent"
-               android:layout_height="match_parent"
-               android:padding="3dp">
                <RelativeLayout
                    android:id="@+id/SuMExploreInfo_MangaBGColor"
-                   android:clipToOutline="true"
-                   android:background="@drawable/bg_xcolor_c22dp"
                    android:layout_width="match_parent"
                    android:layout_height="match_parent">
-                   <LinearLayout
+
+                   <RelativeLayout
                        android:id="@+id/SuMExploreInfo_MangaBGABSBlured"
-                       android:orientation="vertical"
                        android:layout_width="match_parent"
                        android:layout_height="match_parent">
-                       <RelativeLayout
-                           android:gravity="center"
-                           android:id="@+id/SuMExploreInfo_MangaBluredBG"
-                           android:layout_width="match_parent"
-                           android:layout_height="264dp">
-                           <View
-                               android:background="@android:color/black"
-                               android:alpha="0.32"
-                               android:layout_width="match_parent"
-                               android:layout_height="match_parent"/>
 
+                       <View
+                           android:background="@android:color/black"
+                           android:alpha="0.26"
+                           android:layout_width="match_parent"
+                           android:layout_height="match_parent"/>
+                       <LinearLayout
+                           android:layout_width="match_parent"
+                           android:layout_height="match_parent"
+                           android:orientation="vertical">
                            <LinearLayout
-                               android:layout_width="match_parent"
-                               android:layout_height="match_parent"
                                android:orientation="vertical"
-                               android:paddingStart="18dp"
-                               android:paddingEnd="0dp">
+                               android:layout_width="wrap_content"
+                               android:layout_height="wrap_content">
+                               <RelativeLayout
+                                   android:layout_width="match_parent"
+                                   android:layout_height="wrap_content">
 
-                               <include layout="@layout/explore_info_toppart" />
+                                   <View
+                                       android:layout_width="match_parent"
+                                       android:layout_height="68dp"
+                                       android:alpha="0.32"
+                                       android:background="@android:color/black" />
 
+                                   <View
+                                       android:layout_width="36dp"
+                                       android:layout_height="36dp"
+                                       android:layout_marginStart="12dp"
+                                       android:layout_marginTop="32dp"
+                                       android:background="@drawable/ic_arrow_back_white_36dp"
+                                       android:onClick="CloseSuMExploreInfo" />
+                               </RelativeLayout>
+                               <RelativeLayout
+                                   android:id="@+id/SuMExploreInfo_MangaBluredBG"
+                                   android:layout_width="match_parent"
+                                   android:layout_height="224dp"
+                                   android:gravity="top">
+
+                                   <View
+                                       android:layout_width="match_parent"
+                                       android:layout_height="match_parent"
+                                       android:alpha="0.32"
+                                       android:background="@android:color/black" />
+
+                                   <RelativeLayout
+                                       android:layout_width="match_parent"
+                                       android:layout_height="match_parent"
+                                       android:gravity="top"
+                                       android:orientation="vertical"
+                                       android:paddingStart="18dp"
+                                       android:paddingTop="18dp"
+                                       android:paddingEnd="0dp">
+
+                                       <include layout="@layout/explore_info_toppart" />
+
+                                   </RelativeLayout>
+                               </RelativeLayout>
                            </LinearLayout>
-                       </RelativeLayout>
-                       <RelativeLayout
-                           android:layout_width="match_parent"
-                           android:layout_height="fill_parent">
 
-                           <WebView
-                               android:id="@+id/SuMWebViewIndex5"
-                               style="@android:style/Widget.Material.WebView"
+                           <RelativeLayout
                                android:layout_width="match_parent"
-                               android:layout_height="match_parent"
-                               android:background="@android:color/transparent"
-                               android:fontFamily="@font/varela_round"
-                               android:visibility="visible"
-                               app:layout_constraintBottom_toBottomOf="parent"
-                               app:layout_constraintEnd_toStartOf="parent"
-                               app:layout_constraintStart_toStartOf="parent"
-                               app:layout_constraintTop_toTopOf="parent" />
-                       </RelativeLayout>
-                   </LinearLayout>
+                               android:layout_height="fill_parent">
+
+                               <WebView
+                                   android:id="@+id/SuMWebViewIndex5"
+                                   style="@android:style/Widget.Material.WebView"
+                                   android:layout_width="match_parent"
+                                   android:layout_height="match_parent"
+                                   android:background="@android:color/transparent"
+                                   android:fontFamily="@font/varela_round"
+                                   android:visibility="visible"
+                                   app:layout_constraintBottom_toBottomOf="parent"
+                                   app:layout_constraintEnd_toStartOf="parent"
+                                   app:layout_constraintStart_toStartOf="parent"
+                                   app:layout_constraintTop_toTopOf="parent" />
+                           </RelativeLayout>
+                       </LinearLayout>
+
+                   </RelativeLayout>
                </RelativeLayout>
-           </RelativeLayout>
        </RelativeLayout>
-    </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
