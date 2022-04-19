@@ -1050,7 +1050,8 @@ public class MainActivity extends AppCompatActivity {
         LastBSearchView = simpleViewFlipper.getDisplayedChild();
         ViewFlipper ViewFilpperCHelper = (ViewFlipper)findViewById(R.id.simpleViewFlipper);
         if(ViewFilpperCHelper.getDisplayedChild() == 1) { return; }
-        LoadXView(new String[]{"https://sum-manga.azurewebsites.net/Hits.aspx"});
+        //LoadXView(new String[]{"https://sum-manga.azurewebsites.net/Hits.aspx"});
+        LoadXView(new String[]{"about:blank"});
     }
     @SuppressLint({"UseCompatLoadingForDrawables", "SetTextI18n"})
     public void LoadLibrary(View view) {
@@ -1459,7 +1460,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             SuMBTActNormalVoid();
         }
-        if(xurl[0].contains("/Hits")) {
+        if(xurl[0].contains("/Hits")||xurl[0].contains("about:blank")) {
             IndexX = 1;
             webViewX = new WebView[]{ webView1 };
         }
@@ -3512,6 +3513,63 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+
+
+
+
+
+    @JavascriptInterface
+    public void ResizewebView1HitsCard(final int HDFSJSFromCardIsHeight){
+
+        runOnUiThread(new Runnable() {
+            @SuppressLint("CutPasteId")
+            @Override
+            public void run() {
+                double b = HDFSJSFromCardIsHeight;
+                if(b<855){
+                    b=855;
+                }
+                @SuppressLint("CutPasteId") ValueAnimator slideAnimator = ValueAnimator
+                        .ofInt(findViewById(R.id.SuMWebViewIndex1_HeightSet).getMeasuredHeight(), (int) (b * (getResources().getDisplayMetrics().density)))
+                        .setDuration(180);
+                slideAnimator.addUpdateListener(animation1 -> {
+                    Integer value = (Integer) animation1.getAnimatedValue();
+                    findViewById(R.id.SuMWebViewIndex1_HeightSet).getLayoutParams().height = value;
+                    findViewById(R.id.SuMWebViewIndex1_HeightSet).requestLayout();
+                });
+                AnimatorSet animationSet = new AnimatorSet();
+                animationSet.setInterpolator(new AccelerateDecelerateInterpolator());
+                animationSet.play(slideAnimator);
+                animationSet.start();
+                final double c = b;
+                new android.os.Handler(Looper.getMainLooper()).postDelayed(
+                        new Runnable() {
+                            public void run() {
+                                View layout = findViewById(R.id.SuMWebViewIndex1_HeightSet);
+                                ViewGroup.LayoutParams params = layout.getLayoutParams();
+                                params.height = (int) (c * (getResources().getDisplayMetrics().density));
+                                layout.setLayoutParams(params);
+                                layout = findViewById(R.id.SuMWebViewIndex1);
+                                params = layout.getLayoutParams();
+                                params.height = (int) (c * (getResources().getDisplayMetrics().density));
+                                layout.setLayoutParams(params);
+                            }
+                        },
+                        180);
+
+            }
+        });
+
+    }
+
+
+
+
+
+
+
+
 }
 
 
