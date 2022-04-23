@@ -16,6 +16,7 @@
         tools:ignore="MissingConstraints">
 
         <View
+            android:id="@+id/SuMExplore_LaterstCard_BG"
             android:background="@drawable/bg_white_c22dp"
             android:alpha="0.64"
             android:layout_width="match_parent"

@@ -1,51 +1,53 @@
 package com.summanga.android;
 
-import android.app.Activity;
+import android.Manifest;
 import android.content.Intent;
-import android.os.AsyncTask;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 
-public class SplashScreen extends Activity {
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+
+public class SplashScreen extends AppCompatActivity {
+    // Splash screen timer
+    private static int SPLASH_TIME_OUT = 6000;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (ActivityCompat.checkSelfPermission(SplashScreen.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(SplashScreen.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 225);
+            SplashScreen.this.finish();
+            return;
+        }
         setContentView(R.layout.splashscreen);
-        startHeavyProcessing();
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 
-    }
+        Intent i = new Intent(SplashScreen.this, MainActivity.class);
+        startActivity(i);
+        overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Animation fadeOut = new AlphaAnimation(1, 0);
+                fadeOut.setStartOffset(0);
+                fadeOut.setDuration(380);
+                findViewById(R.id.SplashScreenLayout).startAnimation(fadeOut);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
 
-    private void startHeavyProcessing(){
-        new LongOperation().execute("");
-    }
+                        findViewById(R.id.SplashScreenLayout).setVisibility(View.GONE);
+                        SplashScreen.this.finish();
 
-    private class LongOperation extends AsyncTask<String, Void, String> {
-
-        @Override
-        protected String doInBackground(String... params) {
-            //some heavy processing resulting in a Data String
-            for (int i = 0; i < 5; i++) {
-                try {
-                    Thread.sleep(0);
-                } catch (InterruptedException e) {
-                    Thread.interrupted();
-                }
+                    }
+                }, 380);
             }
-            return "whatever result you have";
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            Intent i = new Intent(SplashScreen.this, MainActivity.class);
-            i.putExtra("data", result);
-            startActivity(i);
-            finish();
-        }
-
-        @Override
-        protected void onPreExecute() {}
-
-        @Override
-        protected void onProgressUpdate(Void... values) {}
+        }, SPLASH_TIME_OUT);
     }
 }

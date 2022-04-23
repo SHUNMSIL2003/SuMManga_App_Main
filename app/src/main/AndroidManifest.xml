@@ -5,6 +5,8 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.REORDER_TASKS" />
+    <uses-permission android:name="android.permission.REORDER_TASKS" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -71,11 +73,8 @@
             android:alwaysRetainTaskState="true"
             android:resizeableActivity="false"
             android:exported="true"
+            android:excludeFromRecents="false"
             tools:ignore="NonResizeableActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT" />
@@ -88,9 +87,11 @@
         <activity
             android:name=".SplashScreen"
             android:theme="@style/Splash.Theme"
+            android:excludeFromRecents="true"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
@@ -98,6 +99,7 @@
             android:name=".SuMSettings"
             android:hardwareAccelerated="true"
             android:alwaysRetainTaskState="true"
+            android:excludeFromRecents="true"
             android:resizeableActivity="false"
             android:exported="true"
             tools:ignore="NonResizeableActivity">
@@ -111,8 +113,10 @@
             android:name=".SuMSearch"
             android:hardwareAccelerated="true"
             android:alwaysRetainTaskState="true"
+            android:excludeFromRecents="true"
             android:resizeableActivity="false"
-            android:exported="true">
+            android:exported="true"
+            tools:ignore="NonResizeableActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.shortcut.conversation" />
@@ -123,8 +127,10 @@
             android:theme="@style/Theme.AppCompat.Translucent"
             android:hardwareAccelerated="true"
             android:alwaysRetainTaskState="true"
+            android:excludeFromRecents="true"
             android:resizeableActivity="false"
-            android:exported="true">
+            android:exported="true"
+            tools:ignore="NonResizeableActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.shortcut.conversation" />
@@ -135,8 +141,10 @@
             android:name=".SuMLibrary"
             android:hardwareAccelerated="true"
             android:alwaysRetainTaskState="true"
+            android:excludeFromRecents="true"
             android:resizeableActivity="false"
-            android:exported="true">
+            android:exported="true"
+            tools:ignore="NonResizeableActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.shortcut.conversation" />

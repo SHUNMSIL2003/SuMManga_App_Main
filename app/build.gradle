@@ -41,6 +41,8 @@ dependencies {
     //implementation 'com.google.firebase:firebase-crashlytics-buildtools:2.8.1'
     implementation 'com.google.android.gms:play-services-ads:19.3.0'
     implementation "com.android.billingclient:billing:4.0.0"
+    implementation("androidx.palette:palette:1.0.0")
+    implementation("androidx.palette:palette-ktx:1.0.0")
     //implementation "org.mozilla.geckoview:geckoview-${geckoviewChannel}:${geckoviewVersion}"
     //testImplementation 'junit:junit:4.13.2'
     //androidTestImplementation 'androidx.test.ext:junit:1.1.3'

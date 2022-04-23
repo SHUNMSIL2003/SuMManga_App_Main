@@ -17,6 +17,23 @@
         <item name="android:orientation">vertical</item>
     </style>
 
+    <style name="Theme.NotTransparentActivity" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@android:color/black</item>
+        <item name="colorPrimaryVariant">@android:color/black</item>
+        <item name="colorOnPrimary">@android:color/black</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@android:color/black</item>
+        <item name="colorSecondaryVariant">@android:color/black</item>
+        <item name="colorOnSecondary">@android:color/black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">@android:color/black</item>
+        <!-- Customize your theme here. -->
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
     <!--add below code in themes.xml file-->
     <!--below is the style for transparent activity and here we are using no action bar.-->
     <style name="Theme.AppCompat.Translucent" parent="Theme.AppCompat.NoActionBar">

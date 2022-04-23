@@ -79,6 +79,7 @@
                         android:gravity="center">
 
                         <View
+                            android:id="@+id/SuMCoinnsABDCard_BG"
                             android:layout_width="match_parent"
                             android:layout_height="240dp"
                             android:alpha="0.86"
@@ -288,6 +289,7 @@
                         android:gravity="center">
 
                         <View
+                            android:id="@+id/SuMSettingsCard_BG"
                             android:layout_width="match_parent"
                             android:layout_height="380dp"
                             android:alpha="0.86"
@@ -417,7 +419,6 @@
                                                 android:layout_width="wrap_content"
                                                 android:layout_height="wrap_content"
                                                 android:layout_alignParentEnd="true"
-                                                android:onClick="SuMLockToggle"
                                                 tools:ignore="UseSwitchCompatOrMaterialXml" />
                                         </RelativeLayout>
 
@@ -554,7 +555,7 @@
                                 android:orientation="horizontal">
 
                                 <TextView
-                                    android:id="@+id/SuMSettingsTXT_SuM."
+                                    android:id="@+id/SuMSettingsTXT_SuM__"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="4dp"

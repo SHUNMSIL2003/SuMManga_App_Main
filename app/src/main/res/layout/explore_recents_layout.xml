@@ -17,6 +17,7 @@
         tools:ignore="MissingConstraints">
 
         <View
+            android:id="@+id/SuMExplore_recentsCard_BG"
             android:layout_centerVertical="false"
             android:layout_centerInParent="true"
             android:layout_centerHorizontal="true"

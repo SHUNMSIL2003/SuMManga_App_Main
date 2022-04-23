@@ -1,6 +1,5 @@
 package com.summanga.android;
 
-import android.Manifest;
 import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
@@ -13,6 +12,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
@@ -39,11 +39,8 @@ import android.renderscript.Element;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
 import android.text.format.DateUtils;
-import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.view.GestureDetector;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
@@ -53,7 +50,6 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.animation.Transformation;
 import android.webkit.CookieManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.ValueCallback;
@@ -61,14 +57,15 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
-import android.widget.ScrollView;
 import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
@@ -86,13 +83,13 @@ import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.rewarded.RewardedAdCallback;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.palette.graphics.Palette;
 
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
@@ -101,13 +98,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-/*import org.mozilla.geckoview.GeckoRuntime;
-import org.mozilla.geckoview.GeckoSession;
-import org.mozilla.geckoview.GeckoView;*/
-
 
 public class MainActivity extends AppCompatActivity {
 
+    private static int SPLASH_TIME_OUT = 6000;
 
     public int SuMMangaCoinsConsumeValue = 0;
 
@@ -121,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
     int GlobalCurrCoinsCount = 0;
 
     private static final float BITMAP_SCALE = 0.4f;
-    private static final float BLUR_RADIUS = 20.0f;
+    private static final float BLUR_RADIUS = 12.0f;
 
     public Color DoCo;
 
@@ -280,28 +274,139 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    public static int getDominantColor(Bitmap bitmap) {
+        Bitmap newBitmap = Bitmap.createScaledBitmap(bitmap, 1, 1, true);
+        final int color = newBitmap.getPixel(0, 0);
+        newBitmap.recycle();
+        return color;
+    }
+
+    // Generate palette synchronously and return it
+    public Palette createPaletteSync(Bitmap bitmap) {
+        Palette p = Palette.from(bitmap).generate();
+        return p;
+    }
+
+    // Generate palette asynchronously and use it on a different
+// thread using onGenerated()
+    public void createPaletteAsync(Bitmap bitmap) {
+        Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
+            public void onGenerated(Palette p) {
+                // Use generated instance
+            }
+        });
+    }
 
     @SuppressLint({"SetJavaScriptEnabled", "UseCompatLoadingForDrawables"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 225);
-        }
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int Device_Height = displayMetrics.heightPixels;
         int Device_Width = displayMetrics.widthPixels;
         setContentView(R.layout.activity_main);
+        findViewById(R.id.MainLayout).setVisibility(View.GONE);
+
+        SharedPreferences mPrefs = getSharedPreferences("summanga", 0);
+        String mSuMlOCKBit = mPrefs.getString("sumlockbit", "0");
+        if(mSuMlOCKBit.equals("1")) {
+
+            authenticationCallback = new BiometricPrompt.AuthenticationCallback() {
+                // here we need to implement two methods
+                // onAuthenticationError and
+                // onAuthenticationSucceeded If the
+                // fingerprint is not recognized by the
+                // app it will call onAuthenticationError
+                // and show a toast
+                @Override
+                public void onAuthenticationError(
+                        int errorCode, CharSequence errString) {
+                    super.onAuthenticationError(errorCode, errString);
+                    notifyUser("Authentication Error : " + errString);
+                    MainActivity.this.finish();
+                }
+
+                // If the fingerprint is recognized by the
+                // app then it will call
+                // onAuthenticationSucceeded and show a
+                // toast that Authentication has Succeed
+                // Here you can also start a new activity
+                // after that
+                @Override
+                public void onAuthenticationSucceeded(BiometricPrompt.AuthenticationResult result) {
+                    super.onAuthenticationSucceeded(result);
+                    notifyUser("Authentication Succeeded");
+                    return;
+                }
+            };
+
+            checkBiometricSupport();
+
+            BiometricPrompt biometricPrompt = new BiometricPrompt
+                    .Builder(getApplicationContext())
+                    .setTitle("SUM Verification!")
+                    .setSubtitle("verify your identity")
+                    .setDescription("after all we care about your SUM world")
+                    .setNegativeButton("Cancel", getMainExecutor(), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void
+                        onClick(DialogInterface dialogInterface, int i) {
+                            notifyUser("Authentication Cancelled");
+                            MainActivity.this.finish();
+                        }
+                    }).build();
+            biometricPrompt.authenticate(
+                    getCancellationSignal(),
+                    getMainExecutor(),
+                    authenticationCallback);
+
+        }
+
+        final WallpaperManager wallpaperManager = WallpaperManager.getInstance(MainActivity.this);
+        @SuppressLint("MissingPermission") final Drawable wallpaperDrawable = wallpaperManager.getDrawable();
+        Bitmap bitmap = Bitmap.createScaledBitmap(((BitmapDrawable) wallpaperDrawable).getBitmap(), 1080, ((1080) * (Device_Height / Device_Width)), false);
+
+        Palette.generateAsync(bitmap, new Palette.PaletteAsyncListener() {
+            public void onGenerated(Palette palette) {
+                // Do something with colors...
+                int PreRGBRaw = palette.getDarkMutedColor(1);
+                int red = Color.red(PreRGBRaw);
+                int green = Color.green(PreRGBRaw);
+                int blue = Color.blue(PreRGBRaw);
+                String THEMECOLORChossenRGB = (red)+","+(green)+","+(blue);
+                String cookieString = "SuMUserThemeColor=RGBRoot=" + THEMECOLORChossenRGB + "; path=/";
+                CookieManager.getInstance().setCookie("https://sum-manga.azurewebsites.net/", cookieString);
+            }
+        });
+
+        bitmap = blur(MainActivity.this, bitmap);
+        findViewById(R.id.MainLayout).setBackground(new BitmapDrawable(getApplicationContext().getResources(), bitmap));
+        findViewById(R.id.SuMMangaReader).setBackground(new BitmapDrawable(getApplicationContext().getResources(), bitmap));
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // This method will be executed once the timer is over
+                // Start your app main activity
+                Animation fadeIn = new AlphaAnimation(0, 1);
+                fadeIn.setStartOffset(0);
+                fadeIn.setDuration(960);
+                findViewById(R.id.MainLayout).setVisibility(View.VISIBLE);
+                findViewById(R.id.MainLayout).startAnimation(fadeIn);
+            }
+        }, SPLASH_TIME_OUT);
+
         updateLayout();
         simpleViewFlipper = (ViewFlipper) findViewById(R.id.simpleViewFlipper);
-        Animation in = AnimationUtils.loadAnimation(this,android.R.anim.fade_in); // load an animation
-        in.setStartOffset(360);
-        in.setDuration(360);
+        Animation in = AnimationUtils.loadAnimation(this, android.R.anim.fade_in); // load an animation
+        in.setStartOffset(540);
+        in.setDuration(380);
         simpleViewFlipper.setInAnimation(in);
-        Animation out = AnimationUtils.loadAnimation(this,android.R.anim.fade_out); // load an animation
-        out.setDuration(280);
+        Animation out = AnimationUtils.loadAnimation(this, android.R.anim.fade_out); // load an animation
+        out.setStartOffset(0);
+        out.setDuration(320);
         simpleViewFlipper.setOutAnimation(out);
 
         DarkSBIcons();
@@ -309,7 +414,7 @@ public class MainActivity extends AppCompatActivity {
         url = new String[]{"https://sum-manga.azurewebsites.net/ExploreMainCard.aspx",
                 "https://sum-manga.azurewebsites.net/ExploreRecentlyCard.aspx",
                 "https://sum-manga.azurewebsites.net/ExploreGetByGarn.aspx?GR=Action"
-                ,"https://sum-manga.azurewebsites.net/ExploreGetByGarn.aspx?GR=Drama",
+                , "https://sum-manga.azurewebsites.net/ExploreGetByGarn.aspx?GR=Drama",
                 "https://sum-manga.azurewebsites.net/ExploreGetByGarn.aspx?GR=Fantasy",
                 "https://sum-manga.azurewebsites.net/ExploreGetByGarn.aspx?GR=Comedy",
                 "https://sum-manga.azurewebsites.net/ExploreGetByGarn.aspx?GR=SliceofLife",
@@ -319,58 +424,56 @@ public class MainActivity extends AppCompatActivity {
 
         webView0LatestCard = (WebView) findViewById(R.id.SuMWebView_NewestCardSlideView);
         webView0LatestCard.setVisibility(View.VISIBLE);
-        GetThisWenViewReady(webView0LatestCard,false,false,false);
+        GetThisWenViewReady(webView0LatestCard, false, false, false);
         WebView0RecentsCard = (WebView) findViewById(R.id.SuMWebView_ResentsCard);
         WebView0RecentsCard.setVisibility(View.VISIBLE);
-        GetThisWenViewReady(WebView0RecentsCard,false,false,false);
+        GetThisWenViewReady(WebView0RecentsCard, false, false, false);
         webView0ActionCard = (WebView) findViewById(R.id.SuMWebView_ActionCard);
         webView0ActionCard.setVisibility(View.VISIBLE);
-        GetThisWenViewReady(webView0ActionCard,false,false,false);
+        GetThisWenViewReady(webView0ActionCard, false, false, false);
         WebView0DramaCard = (WebView) findViewById(R.id.SuMWebView_DramaCard);
         WebView0DramaCard.setVisibility(View.VISIBLE);
-        GetThisWenViewReady(WebView0DramaCard,false,false,false);
+        GetThisWenViewReady(WebView0DramaCard, false, false, false);
         webView0FantasyCard = (WebView) findViewById(R.id.SuMWebView_FantasyCard);
         webView0FantasyCard.setVisibility(View.VISIBLE);
-        GetThisWenViewReady(webView0FantasyCard,false,false,false);
+        GetThisWenViewReady(webView0FantasyCard, false, false, false);
         webView0ComedyCard = (WebView) findViewById(R.id.SuMWebView_ComedyCard);
         webView0ComedyCard.setVisibility(View.VISIBLE);
-        GetThisWenViewReady(webView0ComedyCard,false,false,false);
+        GetThisWenViewReady(webView0ComedyCard, false, false, false);
         webView0SliceofLifeCard = (WebView) findViewById(R.id.SuMWebView_SliceofLifeCard);
         webView0SliceofLifeCard.setVisibility(View.VISIBLE);
-        GetThisWenViewReady(webView0SliceofLifeCard,false,false,false);
+        GetThisWenViewReady(webView0SliceofLifeCard, false, false, false);
         webView0SciFiCard = (WebView) findViewById(R.id.SuMWebView_SciFiCard);
         webView0SciFiCard.setVisibility(View.VISIBLE);
-        GetThisWenViewReady(webView0SciFiCard,false,false,false);
+        GetThisWenViewReady(webView0SciFiCard, false, false, false);
         webView0SupernaturalCard = (WebView) findViewById(R.id.SuMWebView_SupernaturalCard);
         webView0SupernaturalCard.setVisibility(View.VISIBLE);
-        GetThisWenViewReady(webView0SupernaturalCard,false,false,false);
+        GetThisWenViewReady(webView0SupernaturalCard, false, false, false);
         webView0MysteryCard = (WebView) findViewById(R.id.SuMWebView_MysteryCard);
         webView0MysteryCard.setVisibility(View.VISIBLE);
-        GetThisWenViewReady(webView0MysteryCard,false,false,false);
+        GetThisWenViewReady(webView0MysteryCard, false, false, false);
         webView4 = (WebView) findViewById(R.id.SuMWebViewIndex4);
         webView4.setVisibility(View.VISIBLE);
-        GetThisWenViewReady(webView4,false,false,false);
+        GetThisWenViewReady(webView4, false, false, false);
         webView2 = (WebView) findViewById(R.id.SuMWebViewIndex2);
         webView2.setVisibility(View.VISIBLE);
-        GetThisWenViewReady(webView2,false,false,false);
+        GetThisWenViewReady(webView2, false, false, false);
         webView3AccountSettingsCard = (WebView) findViewById(R.id.SuMWebViewIndex3AccountSettingsCard);
         webView3AccountSettingsCard.setVisibility(View.VISIBLE);
-        GetThisWenViewReady(webView3AccountSettingsCard,false,true,true);
+        GetThisWenViewReady(webView3AccountSettingsCard, false, true, true);
         webView1 = (WebView) findViewById(R.id.SuMWebViewIndex1);
         webView1.setVisibility(View.VISIBLE);
-        GetThisWenViewReady(webView1,false,false,false);
+        GetThisWenViewReady(webView1, false, false, false);
         webView5 = (WebView) findViewById(R.id.SuMWebViewIndex5);
         webView5.setVisibility(View.VISIBLE);
-        GetThisWenViewReady(webView5,false,false,false);
+        GetThisWenViewReady(webView5, false, false, false);
         webView6_SECURE = (WebView) findViewById(R.id.SuMWebViewIndex6_MangaReader);
         webView6_SECURE.setVisibility(View.VISIBLE);
-        GetThisWenViewReady(webView6_SECURE,false,false,false);
+        GetThisWenViewReady(webView6_SECURE, false, false, false);
         webViewX_SECURE = (WebView) findViewById(R.id.webViewX_SECURE_JS);
         webViewX_SECURE.setVisibility(View.GONE);
-        GetThisWenViewReady(webViewX_SECURE,false,false,false);
+        GetThisWenViewReady(webViewX_SECURE, false, false, false);
         webViewX_SECURE.loadUrl("https://sum-manga.azurewebsites.net/storeitems/MangaExplorerCardHolder.aspx");
-
-
         //Set a chosen URL to load
         Intent intent = getIntent();
         String action = intent.getAction();
@@ -380,7 +483,7 @@ public class MainActivity extends AppCompatActivity {
         LoadXView(new String[]{"https://sum-manga.azurewebsites.net/ExploreMainCard.aspx",
                 "https://sum-manga.azurewebsites.net/ExploreRecentlyCard.aspx",
                 "https://sum-manga.azurewebsites.net/ExploreGetByGarn.aspx?GR=Action"
-                ,"https://sum-manga.azurewebsites.net/ExploreGetByGarn.aspx?GR=Drama",
+                , "https://sum-manga.azurewebsites.net/ExploreGetByGarn.aspx?GR=Drama",
                 "https://sum-manga.azurewebsites.net/ExploreGetByGarn.aspx?GR=Fantasy",
                 "https://sum-manga.azurewebsites.net/ExploreGetByGarn.aspx?GR=Comedy",
                 "https://sum-manga.azurewebsites.net/ExploreGetByGarn.aspx?GR=SliceofLife",
@@ -389,70 +492,32 @@ public class MainActivity extends AppCompatActivity {
                 "https://sum-manga.azurewebsites.net/ExploreGetByGarn.aspx?GR=Mystery"});
 
 
-
         Boolean FoundAnIndex = false;
-        if(SuMStaticVs.RedirectFromSuMNotiURL == null){
+        if (SuMStaticVs.RedirectFromSuMNotiURL == null) {
             LoadExplore(null);
         } else {
-            if(SuMStaticVs.RedirectFromSuMNotiURL.toString() == "Hits"){
+            if (SuMStaticVs.RedirectFromSuMNotiURL.toString() == "Hits") {
                 LoadHit(null);
                 FoundAnIndex = true;
             }
-            if(SuMStaticVs.RedirectFromSuMNotiURL == "Library"){
+            if (SuMStaticVs.RedirectFromSuMNotiURL == "Library") {
                 LoadLibrary(null);
                 FoundAnIndex = true;
             }
-            if(SuMStaticVs.RedirectFromSuMNotiURL == "Search"){
+            if (SuMStaticVs.RedirectFromSuMNotiURL == "Search") {
                 LoadSearch(null);
                 FoundAnIndex = true;
             }
-            if(SuMStaticVs.RedirectFromSuMNotiURL == "Settings"){
+            if (SuMStaticVs.RedirectFromSuMNotiURL == "Settings") {
                 LoadSettings(null);
                 FoundAnIndex = true;
             }
-            if(!FoundAnIndex && SuMStaticVs.RedirectFromSuMNotiURL != null) {
+            if (!FoundAnIndex && SuMStaticVs.RedirectFromSuMNotiURL != null) {
 
             }
         }
 
         createNotificationChannel();
-
-        authenticationCallback = new BiometricPrompt.AuthenticationCallback() {
-            // here we need to implement two methods
-            // onAuthenticationError and
-            // onAuthenticationSucceeded If the
-            // fingerprint is not recognized by the
-            // app it will call onAuthenticationError
-            // and show a toast
-            @Override
-            public void onAuthenticationError(
-                    int errorCode, CharSequence errString)
-            {
-                super.onAuthenticationError(errorCode, errString);
-                notifyUser("Authentication Error : " + errString);
-                SUMAuthIsDone = true;
-                SuMAuthResult = false;
-                SuMAuthUnderPross = false;
-            }
-            // If the fingerprint is recognized by the
-            // app then it will call
-            // onAuthenticationSucceeded and show a
-            // toast that Authentication has Succeed
-            // Here you can also start a new activity
-            // after that
-            @Override
-            public void onAuthenticationSucceeded(BiometricPrompt.AuthenticationResult result)
-            {
-                super.onAuthenticationSucceeded(result);
-                notifyUser("Authentication Succeeded");
-                SUMAuthIsDone = true;
-                SuMAuthResult = true;
-                SuMAuthUnderPross = false;
-                // or start a new Activity
-            }
-        };
-
-        checkBiometricSupport();
 
         DarkSBIcons();
 
@@ -494,7 +559,7 @@ public class MainActivity extends AppCompatActivity {
                 boolean foundAA = false;
                 for (int i = 0; i < AA.length; i++) {
                     if (AA[i].contains("SuMUserThemeState=")) {
-                        RSBit = AA[i].replace(" ", "").replace("SuMUserThemeState=", "").replace("'","");
+                        RSBit = AA[i].replace(" ", "").replace("SuMUserThemeState=", "").replace("'", "");
                         foundAA = true;
                         i = AA.length;
                     }
@@ -518,7 +583,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-
         if (cookies != null) {
             if (cookies.toString().contains("UserName=")) {
                 String[] AA = cookies.toString().replace(" ", "").split(";");
@@ -526,12 +590,12 @@ public class MainActivity extends AppCompatActivity {
                 for (int i = 0; i < AA.length; i++) {
                     if (AA[i].contains("UserName=")) {
                         String[] BBA = AA[i].split("&");
-                                for(int ii = 0; ii<BBA.length;ii++) {
-                                    if (BBA[ii].contains("UserName=")) {
-                                        foundAA = true;
-                                        UserNameFC = BBA[ii].replace(" ", "").replace("UserName=", "").replace("SuMCurrentUser=", "");
-                                    }
-                                }
+                        for (int ii = 0; ii < BBA.length; ii++) {
+                            if (BBA[ii].contains("UserName=")) {
+                                foundAA = true;
+                                UserNameFC = BBA[ii].replace(" ", "").replace("UserName=", "").replace("SuMCurrentUser=", "");
+                            }
+                        }
                         foundAA = true;
                         i = AA.length;
                     }
@@ -561,47 +625,11 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.SuMUseNameTXT).getBackground().setColorFilter(Color.parseColor(hex), PorterDuff.Mode.ADD);
 
 
-        TextView textvivesubt = (TextView)findViewById(R.id.ExploreBTNTXT);
-        /*if(DetectedSuMURL.contains("Explore")) {
-            findViewById(R.id.ExploreBTN).setBackground(setTint(getResources().getDrawable(R.drawable.ic_dashboard_black_48dp), Color.parseColor(hex)));
-            textvivesubt.setTextColor(Color.parseColor(hex));
-        } else {
-            findViewById(R.id.ExploreBTN).setBackground(setTint(getResources().getDrawable(R.drawable.ic_dashboard_black_48dp), Color.parseColor(SecSelectColor)));
-            textvivesubt.setTextColor(Color.parseColor(SecSelectColor));
-        }
-        if(DetectedSuMURL.contains("/UserLibrary.aspx")) {
-            findViewById(R.id.LibraryBTN).setBackground(setTint(getResources().getDrawable(R.drawable.ic_bookmarks_black_48dp), Color.parseColor(hex)));
-            textvivesubt = (TextView)findViewById(R.id.LibraryBTNTXT);
-            textvivesubt.setTextColor(Color.parseColor(hex));
-        } else {
-            findViewById(R.id.LibraryBTN).setBackground(setTint(getResources().getDrawable(R.drawable.ic_bookmarks_black_48dp), Color.parseColor(SecSelectColor)));
-            textvivesubt = (TextView)findViewById(R.id.LibraryBTNTXT);
-            textvivesubt.setTextColor(Color.parseColor(SecSelectColor));
-        }
-        if(DetectedSuMURL.contains("/Hits.aspx")) {
-            findViewById(R.id.HitsBTN).setBackground(setTint(getResources().getDrawable(R.drawable.ic_local_library_black_48dp), Color.parseColor(hex)));
-            textvivesubt = (TextView)findViewById(R.id.HitsBTNTXT);
-            textvivesubt.setTextColor(Color.parseColor(hex));
-        } else {
-            findViewById(R.id.HitsBTN).setBackground(setTint(getResources().getDrawable(R.drawable.ic_local_library_black_48dp), Color.parseColor(SecSelectColor)));
-            textvivesubt = (TextView)findViewById(R.id.HitsBTNTXT);
-            textvivesubt.setTextColor(Color.parseColor(SecSelectColor));
-        }
-        if(DetectedSuMURL.contains("/AccountETC/")) {
-            findViewById(R.id.SettingsBTN).setBackground(setTint(getResources().getDrawable(R.drawable.ic_settings_black_48dp), Color.parseColor(hex)));
-            textvivesubt = (TextView)findViewById(R.id.SettingsBTNTXT);
-            textvivesubt.setTextColor(Color.parseColor(hex));
-        } else {
-            findViewById(R.id.SettingsBTN).setBackground(setTint(getResources().getDrawable(R.drawable.ic_settings_black_48dp), Color.parseColor(SecSelectColor)));
-            textvivesubt = (TextView)findViewById(R.id.SettingsBTNTXT);
-            textvivesubt.setTextColor(Color.parseColor(SecSelectColor));
-        }*/
-        textvivesubt = (TextView)findViewById(R.id.SuMMangaTXT);
+        TextView textvivesubt = (TextView) findViewById(R.id.ExploreBTNTXT);
+        textvivesubt = (TextView) findViewById(R.id.SuMMangaTXT);
         textvivesubt.setTextColor(Color.parseColor(hex));
-        textvivesubt = (TextView)findViewById(R.id.NavBackTXT);
+        textvivesubt = (TextView) findViewById(R.id.NavBackTXT);
         textvivesubt.setTextColor(Color.parseColor(hex));
-
-
         findViewById(R.id.SuMStatusBarExtendor).setVisibility(View.VISIBLE);
         findViewById(R.id.SuMNavBarExtendor).setVisibility(View.VISIBLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
@@ -609,63 +637,12 @@ public class MainActivity extends AppCompatActivity {
         getWindow().setStatusBarColor(Color.BLACK);
         getWindow().setNavigationBarColor(Color.BLACK);
         getWindow().setNavigationBarDividerColor(Color.BLACK);
-
-
         final TextView textViewToChange = (TextView) findViewById(R.id.SuMUseNameTXT);
-        textViewToChange.setText(UserNameFC);//IMPORTANAT
-
-                    /*int SBH = 0;
-                    int resourceId1 = getResources().getIdentifier("status_bar_height", "dimen", "android");
-                    if (resourceId1 > 0) {
-                        SBH = getResources().getDimensionPixelSize(resourceId1);
-                    }
-                    int NBH = 0;
-                    Resources resources = MainActivity.this.getResources();
-                    int resourceId0 = resources.getIdentifier("navigation_bar_height", "dimen", "android");
-                    if (resourceId0 > 0) {
-                        NBH = resources.getDimensionPixelSize(resourceId0);
-                    }
-                    ViewGroup.LayoutParams params0 = findViewById(R.id.SuMStatusBar).getLayoutParams();
-                    params0.height = SBH;
-                    findViewById(R.id.SuMStatusBar).setLayoutParams(params0);
-                        ViewGroup.LayoutParams params1 = findViewById(R.id.SuMNavBar).getLayoutParams();
-                    params1.height = NBH;
-                    findViewById(R.id.SuMNavBar).setLayoutParams(params1);
-                    findViewById(R.id.SuMStatusBar).setVisibility(View.VISIBLE);
-                    findViewById(R.id.SuMNavBar).setVisibility(View.VISIBLE);
-                    Animation fadeOut1 = new AlphaAnimation(1, 0);
-                    fadeOut1.setStartOffset(1640);
-                    fadeOut1.setDuration(320);
-                    SplashScreen.startAnimation(fadeOut1);
-                    final Handler handler0 = new Handler();
-                    handler0.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            SplashScreen.setVisibility(View.INVISIBLE);
-                            webView.setVisibility(View.VISIBLE);
-                            Animation fadeIn = new AlphaAnimation(0, 1);
-                            fadeIn.setDuration(320);
-                            webView.setAnimation(fadeIn);
-                            SplashScreen.setVisibility(View.GONE);
-                            SplashScreen.setImageResource(0);
-                            SplashScreen.setImageDrawable(null);
-                            SlpashSuMGone = true;
-                            DarkSBIcons();
-                            findViewById(R.id.SuMBottomWebNavBarABS).setVisibility(View.VISIBLE);
-                            findViewById(R.id.SuMBottomWebNavBarABS).startAnimation(fadeIn);
-                        }
-                    }, 320+1640);
-                DarkSBIcons();*/
-
-
-
-
-        findViewById(R.id.SuMMenuLayoutBG).setOnClickListener(new View.OnClickListener()
-        {
+        textViewToChange.setText(UserNameFC);
+        findViewById(R.id.SuMMenuLayoutBG).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
-                if(MenuonLongClick && !MenuonLongClickIsGoing) {
+            public void onClick(View v) {
+                if (MenuonLongClick && !MenuonLongClickIsGoing) {
                     MenuonLongClickIsGoing = true;
                     Animation fadeOut = new AlphaAnimation(1, 0);
                     fadeOut.setStartOffset(0);
@@ -688,20 +665,53 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        SetLongPressToViewX(findViewById(R.id.SuMBackCWA));
-        //SetLongPressToViewX(webView1);
-        //SetLongPressToViewX(webView2);
-        //SetLongPressToViewX(webView3AccountSettingsCard);
-        //SetLongPressToViewX(webView4);
-        /*RW.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                Toast.makeText(getApplicationContext(), "Not Long Enough :(",
-                        Toast.LENGTH_LONG).show();
+        ((Switch)findViewById(R.id.SuMLockInOnOrOff)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            SharedPreferences mPrefs = getSharedPreferences("summanga", 0);
+                            SharedPreferences.Editor mEditor = mPrefs.edit();
+                            mEditor.putString("sumlockbit", "1").apply();
+                        }
+                    });
+                }
+                else {
+                    SharedPreferences mPrefs = getSharedPreferences("summanga", 0);
+                    SharedPreferences.Editor mEditor = mPrefs.edit();
+                    mEditor.putString("sumlockbit", "0").apply();
+                }
             }
-        });*/
+        });
 
+        ((Switch)findViewById(R.id.SuMDarkModeInOnOrOff)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            SharedPreferences mPrefs = getSharedPreferences("summanga", 0);
+                            SharedPreferences.Editor mEditor = mPrefs.edit();
+                            mEditor.putString("sumthemebit", "1").apply();
+                            //webView3AccountSettingsCard.loadUrl("javascript:SetSuMThemeBitStateIO(1);");
+                            String cookieString = "SuMUserThemeState=1; path=/";
+                            CookieManager.getInstance().setCookie("https://sum-manga.azurewebsites.net/", cookieString);
+                        }
+                    });
+                }
+                else {
+                    SharedPreferences mPrefs = getSharedPreferences("summanga", 0);
+                    SharedPreferences.Editor mEditor = mPrefs.edit();
+                    mEditor.putString("sumthemebit", "0").apply();
+                    //webView3AccountSettingsCard.loadUrl("javascript:SetSuMThemeBitStateIO(0);");
+                    String cookieString = "SuMUserThemeState=0; path=/";
+                    CookieManager.getInstance().setCookie("https://sum-manga.azurewebsites.net/", cookieString);
+                }
+            }
+        });
+
+        SetLongPressToViewX(findViewById(R.id.SuMBackCWA));
 
         LoadAdX();
 
@@ -709,26 +719,23 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
-        final Handler handlerBlur = new Handler();
+        /*final Handler handlerBlur = new Handler();
         handlerBlur.postDelayed(new Runnable() {
             @Override
             public void run() {
 
                 final WallpaperManager wallpaperManager = WallpaperManager.getInstance(MainActivity.this);
-                //Toke PerAsking from here
                 @SuppressLint("MissingPermission") final Drawable wallpaperDrawable = wallpaperManager.getDrawable();
-                Bitmap bitmap = Bitmap.createScaledBitmap(((BitmapDrawable)wallpaperDrawable).getBitmap(), 480, ((480)*(Device_Height/Device_Width)), false);
+                Bitmap bitmap = Bitmap.createScaledBitmap(((BitmapDrawable) wallpaperDrawable).getBitmap(), 480, ((480) * (Device_Height / Device_Width)), false);
                 bitmap = blur(MainActivity.this, bitmap);
                 findViewById(R.id.MainLayout).setBackground(new BitmapDrawable(getApplicationContext().getResources(), bitmap));
                 findViewById(R.id.SuMMangaReader).setBackground(new BitmapDrawable(getApplicationContext().getResources(), bitmap));
 
 
             }
-        }, 0);
+        }, SPLASH_TIME_OUT + 960);*/
 
         onRequestAd();
-
-
 
 
     }
@@ -765,6 +772,38 @@ public class MainActivity extends AppCompatActivity {
 
     }
     public void SuMLockToggle(View view){
+
+        if (((Switch)findViewById(R.id.SuMLockInOnOrOff)).isChecked()) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    ((Switch)findViewById(R.id.SuMLockInOnOrOff)).setChecked(false);
+                    AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+                    alertDialog.setTitle("Was ON");
+                    alertDialog.setMessage("Now OFF");
+                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    alertDialog.show();
+                }
+            });
+        }
+        else {
+            ((Switch)findViewById(R.id.SuMLockInOnOrOff)).setChecked(true);
+            AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+            alertDialog.setTitle("Was OFF");
+            alertDialog.setMessage("Now ON");
+            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            alertDialog.show();
+        }
 
     }
 
@@ -987,7 +1026,96 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     public void LoadExplore(View view) {
+        if(RootStateBit == 1){
+            findViewById(R.id.SuMExplore_LaterstCard_BG).setBackground(getDrawable(R.drawable.gb_dark_c22dp));
+            findViewById(R.id.SuMExplore_recentsCard_BG).setBackground(getDrawable(R.drawable.gb_dark_c22dp));
+            findViewById(R.id.SuMExplore_ActionCard_BG).setBackground(getDrawable(R.drawable.gb_dark_c22dp));
+            findViewById(R.id.SuMExplore_DramaCard_BG).setBackground(getDrawable(R.drawable.gb_dark_c22dp));
+            findViewById(R.id.SuMExplore_FantsyCard_BG).setBackground(getDrawable(R.drawable.gb_dark_c22dp));
+            findViewById(R.id.SuMExplore_ComedyCard_BG).setBackground(getDrawable(R.drawable.gb_dark_c22dp));
+            findViewById(R.id.SuMExplore_SliceOfLifeCard_BG).setBackground(getDrawable(R.drawable.gb_dark_c22dp));
+            findViewById(R.id.SuMExplore_SciFiCard_BG).setBackground(getDrawable(R.drawable.gb_dark_c22dp));
+            findViewById(R.id.SuMExplore_SupernaturalCard_BG).setBackground(getDrawable(R.drawable.gb_dark_c22dp));
+            findViewById(R.id.SuMExplore_MysteryCard_BG).setBackground(getDrawable(R.drawable.gb_dark_c22dp));
+            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Action_TXT)).setTextColor(Color.WHITE);
+            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Action_NewestTXT)).setTextColor(Color.WHITE);
+            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Action_MoreTXT)).setTextColor(Color.WHITE);
+            findViewById(R.id.SuMExploreCard_GernCard_Action_MoreIMG).setBackground(setTint(getDrawable(R.drawable.ic_forword_black), Color.WHITE));
+            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Drama_TXT)).setTextColor(Color.WHITE);
+            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Drama_NewestTXT)).setTextColor(Color.WHITE);
+            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Drama_MoreTXT)).setTextColor(Color.WHITE);
+            findViewById(R.id.SuMExploreCard_GernCard_Drama_MoreIMG).setBackground(setTint(getDrawable(R.drawable.ic_forword_black), Color.WHITE));
+            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Fantasy_TXT)).setTextColor(Color.WHITE);
+            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Fantasy_NewestTXT)).setTextColor(Color.WHITE);
+            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Fantasy_MoreTXT)).setTextColor(Color.WHITE);
+            findViewById(R.id.SuMExploreCard_GernCard_Fantasy_MoreIMG).setBackground(setTint(getDrawable(R.drawable.ic_forword_black), Color.WHITE));
+            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Comedy_TXT)).setTextColor(Color.WHITE);
+            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Comedy_NewestTXT)).setTextColor(Color.WHITE);
+            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Comedy_MoreTXT)).setTextColor(Color.WHITE);
+            findViewById(R.id.SuMExploreCard_GernCard_Comedy_MoreIMG).setBackground(setTint(getDrawable(R.drawable.ic_forword_black), Color.WHITE));
+            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_SliceofLife_TXT)).setTextColor(Color.WHITE);
+            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_SliceofLife_NewestTXT)).setTextColor(Color.WHITE);
+            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_SliceofLife_MoreTXT)).setTextColor(Color.WHITE);
+            findViewById(R.id.SuMExploreCard_GernCard_SliceofLife_MoreIMG).setBackground(setTint(getDrawable(R.drawable.ic_forword_black), Color.WHITE));
+            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_SciFi_TXT)).setTextColor(Color.WHITE);
+            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_SciFi_NewestTXT)).setTextColor(Color.WHITE);
+            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_SciFi_MoreTXT)).setTextColor(Color.WHITE);
+            findViewById(R.id.SuMExploreCard_GernCard_SciFi_MoreIMG).setBackground(setTint(getDrawable(R.drawable.ic_forword_black), Color.WHITE));
+            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Supernatural_TXT)).setTextColor(Color.WHITE);
+            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Supernatural_NewestTXT)).setTextColor(Color.WHITE);
+            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Supernatural_MoreTXT)).setTextColor(Color.WHITE);
+            findViewById(R.id.SuMExploreCard_GernCard_Supernatural_MoreIMG).setBackground(setTint(getDrawable(R.drawable.ic_forword_black), Color.WHITE));
+            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Mystery_TXT)).setTextColor(Color.WHITE);
+            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Mystery_NewestTXT)).setTextColor(Color.WHITE);
+            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Mystery_MoreTXT)).setTextColor(Color.WHITE);
+            findViewById(R.id.SuMExploreCard_GernCard_Mystery_MoreIMG).setBackground(setTint(getDrawable(R.drawable.ic_forword_black), Color.WHITE));
+        }
+        else {
+            findViewById(R.id.SuMExplore_LaterstCard_BG).setBackground(getDrawable(R.drawable.bg_white_c22dp));
+            findViewById(R.id.SuMExplore_recentsCard_BG).setBackground(getDrawable(R.drawable.bg_white_c22dp));
+            findViewById(R.id.SuMExplore_ActionCard_BG).setBackground(getDrawable(R.drawable.bg_white_c22dp));
+            findViewById(R.id.SuMExplore_DramaCard_BG).setBackground(getDrawable(R.drawable.bg_white_c22dp));
+            findViewById(R.id.SuMExplore_FantsyCard_BG).setBackground(getDrawable(R.drawable.bg_white_c22dp));
+            findViewById(R.id.SuMExplore_ComedyCard_BG).setBackground(getDrawable(R.drawable.bg_white_c22dp));
+            findViewById(R.id.SuMExplore_SliceOfLifeCard_BG).setBackground(getDrawable(R.drawable.bg_white_c22dp));
+            findViewById(R.id.SuMExplore_SciFiCard_BG).setBackground(getDrawable(R.drawable.bg_white_c22dp));
+            findViewById(R.id.SuMExplore_SupernaturalCard_BG).setBackground(getDrawable(R.drawable.bg_white_c22dp));
+            findViewById(R.id.SuMExplore_MysteryCard_BG).setBackground(getDrawable(R.drawable.bg_white_c22dp));
+            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Action_TXT)).setTextColor(Color.BLACK);
+            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Action_NewestTXT)).setTextColor(Color.BLACK);
+            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Action_MoreTXT)).setTextColor(Color.BLACK);
+            findViewById(R.id.SuMExploreCard_GernCard_Action_MoreIMG).setBackground(setTint(getDrawable(R.drawable.ic_forword_black), Color.BLACK));
+            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Drama_TXT)).setTextColor(Color.BLACK);
+            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Drama_NewestTXT)).setTextColor(Color.BLACK);
+            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Drama_MoreTXT)).setTextColor(Color.BLACK);
+            findViewById(R.id.SuMExploreCard_GernCard_Drama_MoreIMG).setBackground(setTint(getDrawable(R.drawable.ic_forword_black), Color.BLACK));
+            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Fantasy_TXT)).setTextColor(Color.BLACK);
+            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Fantasy_NewestTXT)).setTextColor(Color.BLACK);
+            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Fantasy_MoreTXT)).setTextColor(Color.BLACK);
+            findViewById(R.id.SuMExploreCard_GernCard_Fantasy_MoreIMG).setBackground(setTint(getDrawable(R.drawable.ic_forword_black), Color.BLACK));
+            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Comedy_TXT)).setTextColor(Color.BLACK);
+            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Comedy_NewestTXT)).setTextColor(Color.BLACK);
+            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Comedy_MoreTXT)).setTextColor(Color.BLACK);
+            findViewById(R.id.SuMExploreCard_GernCard_Comedy_MoreIMG).setBackground(setTint(getDrawable(R.drawable.ic_forword_black), Color.BLACK));
+            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_SliceofLife_TXT)).setTextColor(Color.BLACK);
+            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_SliceofLife_NewestTXT)).setTextColor(Color.BLACK);
+            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_SliceofLife_MoreTXT)).setTextColor(Color.BLACK);
+            findViewById(R.id.SuMExploreCard_GernCard_SliceofLife_MoreIMG).setBackground(setTint(getDrawable(R.drawable.ic_forword_black), Color.BLACK));
+            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_SciFi_TXT)).setTextColor(Color.BLACK);
+            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_SciFi_NewestTXT)).setTextColor(Color.BLACK);
+            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_SciFi_MoreTXT)).setTextColor(Color.BLACK);
+            findViewById(R.id.SuMExploreCard_GernCard_SciFi_MoreIMG).setBackground(setTint(getDrawable(R.drawable.ic_forword_black), Color.BLACK));
+            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Supernatural_TXT)).setTextColor(Color.BLACK);
+            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Supernatural_NewestTXT)).setTextColor(Color.BLACK);
+            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Supernatural_MoreTXT)).setTextColor(Color.BLACK);
+            findViewById(R.id.SuMExploreCard_GernCard_Supernatural_MoreIMG).setBackground(setTint(getDrawable(R.drawable.ic_forword_black), Color.BLACK));
+            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Mystery_TXT)).setTextColor(Color.BLACK);
+            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Mystery_NewestTXT)).setTextColor(Color.BLACK);
+            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Mystery_MoreTXT)).setTextColor(Color.BLACK);
+            findViewById(R.id.SuMExploreCard_GernCard_Mystery_MoreIMG).setBackground(setTint(getDrawable(R.drawable.ic_forword_black), Color.BLACK));
+        }
         if(findViewById(R.id.SuMExploreInfo_ABS).getVisibility() == View.VISIBLE) {
             CloseSuMExploreInfo(null);
         }
@@ -1116,6 +1244,64 @@ public class MainActivity extends AppCompatActivity {
     }
     @SuppressLint({"UseCompatLoadingForDrawables", "DefaultLocale"})
     public void LoadSettings(View view) {
+        if(RootStateBit == 1) {
+            findViewById(R.id.SuMWebViewIndex3AccountSettingsCardBG).setBackground(getDrawable(R.drawable.gb_dark_c22dp));
+            findViewById(R.id.SuMCoinnsABDCard_BG).setBackground(getDrawable(R.drawable.gb_dark_c22dp));
+            findViewById(R.id.SuMSettingsCard_BG).setBackground(getDrawable(R.drawable.gb_dark_c22dp));
+            ((TextView)findViewById(R.id.SuMCoinsCardTXT_SuMCoins)).setTextColor(Color.WHITE);
+            ((TextView)findViewById(R.id.SuMCoinsCardTXT_ToUnlockANewWorld)).setTextColor(Color.WHITE);
+            ((TextView)findViewById(R.id.SuMCoinCard_CountTXT)).setTextColor(Color.WHITE);
+            ((TextView)findViewById(R.id.SuMCoinCardTXT_OneCoin)).setTextColor(Color.WHITE);
+            ((TextView)findViewById(R.id.SuMCoinCardTXT_OneCoinByADExtraInfo)).setTextColor(Color.WHITE);
+            ((TextView)findViewById(R.id.SuMSettingsCardTXT_SuMSteiings)).setTextColor(Color.WHITE);
+            ((TextView)findViewById(R.id.SuMSettingsCardTXT_DoAsYouSeeFit)).setTextColor(Color.WHITE);
+            findViewById(R.id.SuMLockIMG).setBackground(setTint(getDrawable(R.drawable.ic_lock_black_36dp), Color.WHITE));
+            findViewById(R.id.SuMDrackModeIMG).setBackground(setTint(getDrawable(R.drawable.ic_dark_mode_black_36dp), Color.WHITE));
+            ((TextView)findViewById(R.id.SuMLockTXT)).setTextColor(Color.WHITE);
+            ((TextView)findViewById(R.id.SuMLockDisc)).setTextColor(Color.WHITE);
+            ((TextView)findViewById(R.id.SuMDarkModeTXT)).setTextColor(Color.WHITE);
+            ((TextView)findViewById(R.id.SuMDarkModeDisc)).setTextColor(Color.WHITE);
+            ((TextView)findViewById(R.id.SuMSettingsTXT_CacheSizeValueTXT)).setTextColor(Color.WHITE);
+            ((TextView)findViewById(R.id.SuMSettingsTXT_CacheSizeTXT)).setTextColor(Color.WHITE);
+            ((TextView)findViewById(R.id.SuMSettingsTXT_SuMMoreInfo_ThisAppWebIsTemp)).setTextColor(Color.WHITE);
+            ((TextView)findViewById(R.id.SuMSettingsTXT_SuM__)).setTextColor(Color.WHITE);
+            ((TextView)findViewById(R.id.SuMSettingsTXT_WebVersionTXT)).setTextColor(Color.WHITE);
+            ((TextView)findViewById(R.id.SuMSettingsTXT_WebVersionValueTXT)).setTextColor(Color.WHITE);
+            ((TextView)findViewById(R.id.SuMSettingsTXT_ApplicationVersionTXT)).setTextColor(Color.WHITE);
+            ((TextView)findViewById(R.id.SuMSettingsTXT_ApplicationVersionValue_AutoFilled)).setTextColor(Color.WHITE);
+            findViewById(R.id.SuMSettingsHr0).setBackground(setTint(getDrawable(R.drawable.hr_black), Color.WHITE));
+            findViewById(R.id.SuMSettingsHr1).setBackground(setTint(getDrawable(R.drawable.hr_black), Color.WHITE));
+            findViewById(R.id.SuMSettingsHr2).setBackground(setTint(getDrawable(R.drawable.hr_black), Color.WHITE));
+
+        } else {
+            findViewById(R.id.SuMWebViewIndex3AccountSettingsCardBG).setBackground(getDrawable(R.drawable.bg_white_c22dp));
+            findViewById(R.id.SuMCoinnsABDCard_BG).setBackground(getDrawable(R.drawable.bg_white_c22dp));
+            findViewById(R.id.SuMSettingsCard_BG).setBackground(getDrawable(R.drawable.bg_white_c22dp));
+            ((TextView)findViewById(R.id.SuMCoinsCardTXT_SuMCoins)).setTextColor(Color.BLACK);
+            ((TextView)findViewById(R.id.SuMCoinsCardTXT_ToUnlockANewWorld)).setTextColor(Color.BLACK);
+            ((TextView)findViewById(R.id.SuMCoinCard_CountTXT)).setTextColor(Color.BLACK);
+            ((TextView)findViewById(R.id.SuMCoinCardTXT_OneCoin)).setTextColor(Color.BLACK);
+            ((TextView)findViewById(R.id.SuMCoinCardTXT_OneCoinByADExtraInfo)).setTextColor(Color.BLACK);
+            ((TextView)findViewById(R.id.SuMSettingsCardTXT_SuMSteiings)).setTextColor(Color.BLACK);
+            ((TextView)findViewById(R.id.SuMSettingsCardTXT_DoAsYouSeeFit)).setTextColor(Color.BLACK);
+            findViewById(R.id.SuMLockIMG).setBackground(setTint(getDrawable(R.drawable.ic_lock_black_36dp), Color.BLACK));
+            findViewById(R.id.SuMDrackModeIMG).setBackground(setTint(getDrawable(R.drawable.ic_dark_mode_black_36dp), Color.BLACK));
+            ((TextView)findViewById(R.id.SuMLockTXT)).setTextColor(Color.BLACK);
+            ((TextView)findViewById(R.id.SuMLockDisc)).setTextColor(Color.BLACK);
+            ((TextView)findViewById(R.id.SuMDarkModeTXT)).setTextColor(Color.BLACK);
+            ((TextView)findViewById(R.id.SuMDarkModeDisc)).setTextColor(Color.BLACK);
+            ((TextView)findViewById(R.id.SuMSettingsTXT_CacheSizeValueTXT)).setTextColor(Color.BLACK);
+            ((TextView)findViewById(R.id.SuMSettingsTXT_CacheSizeTXT)).setTextColor(Color.BLACK);
+            ((TextView)findViewById(R.id.SuMSettingsTXT_SuMMoreInfo_ThisAppWebIsTemp)).setTextColor(Color.BLACK);
+            ((TextView)findViewById(R.id.SuMSettingsTXT_SuM__)).setTextColor(Color.BLACK);
+            ((TextView)findViewById(R.id.SuMSettingsTXT_WebVersionTXT)).setTextColor(Color.BLACK);
+            ((TextView)findViewById(R.id.SuMSettingsTXT_WebVersionValueTXT)).setTextColor(Color.BLACK);
+            ((TextView)findViewById(R.id.SuMSettingsTXT_ApplicationVersionTXT)).setTextColor(Color.BLACK);
+            ((TextView)findViewById(R.id.SuMSettingsTXT_ApplicationVersionValue_AutoFilled)).setTextColor(Color.BLACK);
+            findViewById(R.id.SuMSettingsHr0).setBackground(setTint(getDrawable(R.drawable.hr_black), Color.BLACK));
+            findViewById(R.id.SuMSettingsHr1).setBackground(setTint(getDrawable(R.drawable.hr_black), Color.BLACK));
+            findViewById(R.id.SuMSettingsHr2).setBackground(setTint(getDrawable(R.drawable.hr_black), Color.BLACK));
+        }
         if(findViewById(R.id.SuMExploreInfo_ABS).getVisibility() == View.VISIBLE) {
             CloseSuMExploreInfo(null);
         }
@@ -1171,6 +1357,20 @@ public class MainActivity extends AppCompatActivity {
                 }
 
         );
+        SharedPreferences mPrefs = getSharedPreferences("summanga", 0);
+        String mSuMlOCKBit = mPrefs.getString("sumlockbit", "0");
+        if(mSuMlOCKBit.equals("1")) {
+            ((Switch)findViewById(R.id.SuMLockInOnOrOff)).setChecked(true);
+        }else {
+            ((Switch)findViewById(R.id.SuMLockInOnOrOff)).setChecked(false);
+        }
+        String mThemeBit = mPrefs.getString("sumthemebit", "0");
+        if(mThemeBit.equals("1")) {
+            ((Switch)findViewById(R.id.SuMDarkModeInOnOrOff)).setChecked(true);
+        }else {
+            ((Switch)findViewById(R.id.SuMDarkModeInOnOrOff)).setChecked(false);
+        }
+
         @SuppressLint("UseSwitchCompatOrMaterialCode") Switch SuMLockToggle = (Switch)findViewById(R.id.SuMLockInOnOrOff);
         SuMLockToggle.setThumbTintList(thumbStates);
         ColorStateList trackStates = new ColorStateList(
@@ -1604,7 +1804,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
 
-                simpleViewFlipper.setDisplayedChild(LastBSearchView);
+                onKeyDown(KeyEvent.KEYCODE_BACK,null);
 
             }
         });
@@ -1858,6 +2058,10 @@ public class MainActivity extends AppCompatActivity {
         webView2.saveState(outState);
         webView1.saveState(outState);
         webView4.saveState(outState);
+        webView5.saveState(outState);
+        if(findViewById(R.id.SuMExploreInfo_ABS).getVisibility()==View.VISIBLE) {
+            webView6_SECURE.saveState(outState);
+        }
     }
 
     @Override
@@ -1871,6 +2075,10 @@ public class MainActivity extends AppCompatActivity {
         webView2.restoreState(savedInstanceState);
         webView1.restoreState(savedInstanceState);
         webView4.restoreState(savedInstanceState);
+        webView5.restoreState(savedInstanceState);
+        if(findViewById(R.id.SuMExploreInfo_ABS).getVisibility()==View.VISIBLE) {
+            webView6_SECURE.restoreState(savedInstanceState);
+        }
     }
 
     public void updateLayout(){
@@ -1937,22 +2145,30 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
-        if(findViewById(R.id.SuMMangaReader).getVisibility()==View.VISIBLE){
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (findViewById(R.id.SuMMangaReader).getVisibility() == View.VISIBLE) {
 
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(MainActivity.this, "To exit reading mode PRESS ON THE BOOK ICON", Toast.LENGTH_LONG).show();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(MainActivity.this, "To exit reading mode PRESS ON THE BOOK ICON", Toast.LENGTH_LONG).show();
+                    }
+                });
+                return false;
+            }
+            if (findViewById(R.id.SuMExploreInfo_ABS).getVisibility() != View.VISIBLE) {
+                if (simpleViewFlipper.getDisplayedChild() != 0) {
+                    LoadExplore(null);
+                    return false;
                 }
-            });
-            return false;
+            } else {
+                findViewById(R.id.SuMExploreInfo_ABS).setVisibility(View.GONE);
+                LoadExplore(null);
+                return false;
+            }
+            return super.onKeyDown(keyCode, event);
         }
-        if(LastBSearchView != -1) {
-            simpleViewFlipper.setDisplayedChild(LastBSearchView);
-            return false;
-        }
-
-        return super.onKeyDown(keyCode, event);
+        return false;
     }
 
     private void notifyUser(String message)
@@ -1969,11 +2185,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override public void onCancel()
                     {
                         notifyUser("Authentication was Cancelled by the user");
-                        SUMAuthIsDone = true;
-                        SuMAuthResult = false;
-                        SuMAuthUnderPross = false;
-                        //SplashScreen.setVisibility(View.VISIBLE);
-                        //SUMAppLock();
+                        MainActivity.this.finish();
                     }
                 });
         return cancellationSignal;
@@ -2001,11 +2213,7 @@ public class MainActivity extends AppCompatActivity {
                     onClick(DialogInterface dialogInterface, int i)
                     {
                         notifyUser("Authentication Cancelled");
-                        SUMAuthIsDone = true;
-                        SuMAuthResult = false;
-                        SuMAuthUnderPross = false;
-                        //SplashScreen.setVisibility(View.VISIBLE);
-                        //SUMAppLock();
+                        MainActivity.this.finish();
                     }
                 }).build();
 
@@ -2026,18 +2234,13 @@ public class MainActivity extends AppCompatActivity {
     {
         KeyguardManager keyguardManager = (KeyguardManager)getSystemService(Context.KEYGUARD_SERVICE);
         if (!keyguardManager.isDeviceSecure()) {
-            notifyUser("Fingerprint authentication has not been enabled in settings");
-            SUMAuthIsDone = true;
-            SuMAuthResult = false;
-            SuMAuthUnderPross = false;
-            //SplashScreen.setVisibility(View.VISIBLE);
+            notifyUser("Fingerprint authentication has not been enabled in settings - clear app data to reset sumlock");
+            MainActivity.this.finish();
             return false;
         }
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.USE_BIOMETRIC)!= PackageManager.PERMISSION_GRANTED) {
             notifyUser("Fingerprint Authentication Permission is not enabled");
-            SUMAuthIsDone = true;
-            SuMAuthResult = false;
-            SuMAuthUnderPross = false;
+            MainActivity.this.finish();
             //SplashScreen.setVisibility(View.VISIBLE);
             return false;
         }
@@ -2564,9 +2767,7 @@ public class MainActivity extends AppCompatActivity {
                     public void
                     onClick(DialogInterface dialogInterface, int i) {
                         notifyUser("Authentication Cancelled");
-                        SUMAuthIsDone = true;
-                        SuMAuthResult = false;
-                        SuMAuthUnderPross = false;
+                        MainActivity.this.finish();
                     }
                 }).build();
 
@@ -3467,6 +3668,7 @@ public class MainActivity extends AppCompatActivity {
                                 | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
 
                 );
+                getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
                 Toast.makeText(MainActivity.this, "Reading mode is activated", Toast.LENGTH_SHORT).show();
             }
@@ -3486,6 +3688,7 @@ public class MainActivity extends AppCompatActivity {
                 getWindow().setStatusBarColor(Color.BLACK);
                 getWindow().setNavigationBarColor(Color.BLACK);
                 getWindow().setNavigationBarDividerColor(Color.BLACK);
+                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
                 Animation fadeOut = new AlphaAnimation(1, 0);
                 fadeOut.setStartOffset(0);
                 fadeOut.setDuration(320);
