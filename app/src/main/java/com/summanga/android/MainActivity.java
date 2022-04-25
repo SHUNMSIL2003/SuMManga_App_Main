@@ -101,9 +101,7 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static int SPLASH_TIME_OUT = 6000;
-
-    public int SuMMangaCoinsConsumeValue = 0;
+    private static final int SPLASH_TIME_OUT = 6000;
 
     boolean FirstLoad = true;
 
@@ -117,12 +115,8 @@ public class MainActivity extends AppCompatActivity {
     private static final float BITMAP_SCALE = 0.4f;
     private static final float BLUR_RADIUS = 12.0f;
 
-    public Color DoCo;
-
     public String UserNameFC = "";
 
-    public int StatusBarH = 1;
-    public int NavBarH = 1;
 
     public String RootHexColor = "";
     public int RootStateBit = 0;
@@ -150,6 +144,9 @@ public class MainActivity extends AppCompatActivity {
     WebView webView6_SECURE;
     WebView webViewX_SECURE;
 
+    int Device_Width=0;
+    int Device_Height=0;
+
 
 
     private ValueCallback<Uri> mUploadMessage;
@@ -159,16 +156,11 @@ public class MainActivity extends AppCompatActivity {
 
     public String[] url;
 
-    //ImageView SplashScreen;
-    int statusBarHeight,
-            currentAppVersionCode = -15;
     boolean SUMAuthIsDone = false;
     boolean SuMAuthResult = false;
     boolean SuMAuthUnderPross = false;
     private CancellationSignal cancellationSignal = null;
     private BiometricPrompt.AuthenticationCallback authenticationCallback;
-
-    boolean SlpashSuMGone = false;
 
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -237,12 +229,10 @@ public class MainActivity extends AppCompatActivity {
         contentWebViewSettings.setJavaScriptEnabled(true);
         webViewx.addJavascriptInterface(MainActivity.this, "androidAPIs");
         contentWebViewSettings.setDomStorageEnabled(true);
-        //contentWebViewSettings.setBuiltInZoomControls(true);
         contentWebViewSettings.setDisplayZoomControls(false);
-        //contentWebViewSettings.setSupportMultipleWindows(true);
-        contentWebViewSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
+        //contentWebViewSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
         contentWebViewSettings.setUseWideViewPort(true);
-        contentWebViewSettings.setSaveFormData(true);
+        //contentWebViewSettings.setSaveFormData(true);
         contentWebViewSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
         webViewx.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         contentWebViewSettings.setAllowFileAccess(true);
@@ -257,45 +247,23 @@ public class MainActivity extends AppCompatActivity {
             webViewx.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
             webViewx.setScrollbarFadingEnabled(true);
             webViewx.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-            contentWebViewSettings.setEnableSmoothTransition(true);
+            //contentWebViewSettings.setEnableSmoothTransition(true);
         }
 
         contentWebViewSettings.setAppCacheEnabled(true);
-        contentWebViewSettings.setSavePassword(true);
-        contentWebViewSettings.setSaveFormData(true);
+        //contentWebViewSettings.setSavePassword(true);
+        //contentWebViewSettings.setSaveFormData(true);
 
         webViewx.setBackgroundColor(Color.TRANSPARENT);
         webViewx.loadUrl("about:blank");
         webViewx.clearHistory();
-        webViewx.destroyDrawingCache();
-        webViewx.clearView();
+        //webViewx.destroyDrawingCache();
+        //webViewx.clearView();
         webViewx.removeAllViews();
         //webViewx.onPause();
     }
 
 
-    public static int getDominantColor(Bitmap bitmap) {
-        Bitmap newBitmap = Bitmap.createScaledBitmap(bitmap, 1, 1, true);
-        final int color = newBitmap.getPixel(0, 0);
-        newBitmap.recycle();
-        return color;
-    }
-
-    // Generate palette synchronously and return it
-    public Palette createPaletteSync(Bitmap bitmap) {
-        Palette p = Palette.from(bitmap).generate();
-        return p;
-    }
-
-    // Generate palette asynchronously and use it on a different
-// thread using onGenerated()
-    public void createPaletteAsync(Bitmap bitmap) {
-        Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
-            public void onGenerated(Palette p) {
-                // Use generated instance
-            }
-        });
-    }
 
     @SuppressLint({"SetJavaScriptEnabled", "UseCompatLoadingForDrawables"})
     @Override
@@ -304,8 +272,8 @@ public class MainActivity extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        int Device_Height = displayMetrics.heightPixels;
-        int Device_Width = displayMetrics.widthPixels;
+        Device_Height = displayMetrics.heightPixels;
+        Device_Width = displayMetrics.widthPixels;
         setContentView(R.layout.activity_main);
         findViewById(R.id.MainLayout).setVisibility(View.GONE);
 
@@ -474,10 +442,6 @@ public class MainActivity extends AppCompatActivity {
         webViewX_SECURE.setVisibility(View.GONE);
         GetThisWenViewReady(webViewX_SECURE, false, false, false);
         webViewX_SECURE.loadUrl("https://sum-manga.azurewebsites.net/storeitems/MangaExplorerCardHolder.aspx");
-        //Set a chosen URL to load
-        Intent intent = getIntent();
-        String action = intent.getAction();
-        Uri data = intent.getData();
 
 
         LoadXView(new String[]{"https://sum-manga.azurewebsites.net/ExploreMainCard.aspx",
@@ -625,8 +589,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.SuMUseNameTXT).getBackground().setColorFilter(Color.parseColor(hex), PorterDuff.Mode.ADD);
 
 
-        TextView textvivesubt = (TextView) findViewById(R.id.ExploreBTNTXT);
-        textvivesubt = (TextView) findViewById(R.id.SuMMangaTXT);
+        TextView textvivesubt = (TextView) findViewById(R.id.SuMMangaTXT);
         textvivesubt.setTextColor(Color.parseColor(hex));
         textvivesubt = (TextView) findViewById(R.id.NavBackTXT);
         textvivesubt.setTextColor(Color.parseColor(hex));
@@ -824,21 +787,22 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+    @SuppressLint({"UseCompatLoadingForDrawables", "SetTextI18n"})
     public void ClearCacheX(View view){
 
         //clearCache(MainActivity.this,0);
         //deleteDir(getCacheDir());
         //deleteDir(getExternalCacheDir());
         WebView[] WebViewsFoCache = new WebView[]{ webView0LatestCard,webView0LatestCard,webView0ActionCard, webView1,webView2,webView3AccountSettingsCard,webView4 };
-        for(int i = 0; i <WebViewsFoCache.length; i++){
-            WebViewsFoCache[i].clearCache(true);
-            WebViewsFoCache[i].clearHistory();
+        for (WebView webView : WebViewsFoCache) {
+            webView.clearCache(true);
+            webView.clearHistory();
         }
         MainActivity.this.deleteDatabase("webview.db");
         MainActivity.this.deleteDatabase("webviewCache.db");
         clearApplicationCache();
-        for(int i = 0; i <WebViewsFoCache.length; i++){
-            WebViewsFoCache[i].clearCache(false);
+        for (WebView webView : WebViewsFoCache) {
+            webView.clearCache(false);
         }
         webView4.clearFormData();
         findViewById(R.id.SuMClearCacheBTNBG).setBackground(setTint(getResources().getDrawable(R.drawable.bg_btn_c14dp), Color.parseColor("#8a8a8a")));
@@ -982,49 +946,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void HideSuMUltraCard(View view) {
-        MainActivity.this.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Animation fadeOut = new AlphaAnimation(1, 0);
-                fadeOut.setStartOffset(0);
-                fadeOut.setDuration(320);
-                findViewById(R.id.SuMUltarCardPort).startAnimation(fadeOut);
-
-                final Handler handler0 = new Handler();
-                handler0.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        findViewById(R.id.SuMUltarCardPort).setVisibility(View.INVISIBLE);
-
-                    }
-                }, 320);
-            }
-        });
-    }
-
-    public void ShowSuMUltraCard() {
-        MainActivity.this.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Animation fadeIn = new AlphaAnimation(0, 1);
-                fadeIn.setStartOffset(0);
-                fadeIn.setDuration(320);
-                findViewById(R.id.SuMUltarCardPort).setVisibility(View.VISIBLE);
-                findViewById(R.id.SuMUltarCardPort).startAnimation(fadeIn);
-
-            }
-        });
-    }
-
-    public void GetSuMUltraReady(String RootJSFunc,Object CurrChapterNum,Object ChaptersNum,Object ProdYear,Object AgeRating,Object MangaDisc,Object MangaTitle,Object IsFav,Object IsWanna) {
-
-        //Do Sth
-
-        ShowSuMUltraCard();
-
-    }
 
     @SuppressLint("UseCompatLoadingForDrawables")
     public void LoadExplore(View view) {
@@ -1553,6 +1474,8 @@ public class MainActivity extends AppCompatActivity {
                 if (resourceId1 > 0) {
                     SBH = getResources().getDimensionPixelSize(resourceId1);
                 }
+                if(SBH<1){SBH = 1;}
+                if(NBH<1){NBH = 1;}
                 ViewGroup.LayoutParams params0 = findViewById(R.id.SuMStatusBar).getLayoutParams();
                 params0.height = SBH;
                 findViewById(R.id.SuMStatusBar).setLayoutParams(params0);
@@ -1582,6 +1505,8 @@ public class MainActivity extends AppCompatActivity {
                 if (resourceId1 > 0) {
                     SBH = getResources().getDimensionPixelSize(resourceId1);
                 }
+                if(SBH<1){SBH = 1;}
+                if(NBH<1){NBH = 1;}
                 ViewGroup.LayoutParams params0 = findViewById(R.id.SuMStatusBar).getLayoutParams();
                 params0.height = SBH;
                 findViewById(R.id.SuMStatusBar).setLayoutParams(params0);
@@ -1768,7 +1693,12 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.SuMNavBar).setBackground(setTint(getResources().getDrawable(R.drawable.bg_xcolor_nb_c0dp), Color.parseColor(hex)));
         findViewById(R.id.SuMUseNameTXT).getBackground().setColorFilter(Color.parseColor(hex), PorterDuff.Mode.ADD);
 
-        TextView textvivesubt = (TextView) findViewById(R.id.ExploreBTNTXT);
+        TextView textvivesubt = (TextView) findViewById(R.id.SuMMangaTXT);
+        textvivesubt.setTextColor(Color.parseColor(hex));
+        textvivesubt = (TextView) findViewById(R.id.NavBackTXT);
+        textvivesubt.setTextColor(Color.parseColor(hex));
+
+        textvivesubt = (TextView) findViewById(R.id.ExploreBTNTXT);
         findViewById(R.id.ExploreBTN).setBackground(setTint(getResources().getDrawable(R.drawable.ic_dashboard_black_48dp), Color.parseColor(SecSelectColor)));
         textvivesubt.setTextColor(Color.parseColor(SecSelectColor));
 
@@ -1785,9 +1715,9 @@ public class MainActivity extends AppCompatActivity {
         textvivesubt.setTextColor(Color.parseColor(SecSelectColor));
 
         textvivesubt = (TextView) findViewById(R.id.SuMMangaTXT);
-        textvivesubt.setTextColor(Color.parseColor(SecSelectColor));
+        textvivesubt.setTextColor(Color.parseColor(hex));
         textvivesubt = (TextView) findViewById(R.id.NavBackTXT);
-        textvivesubt.setTextColor(Color.parseColor(SecSelectColor));
+        textvivesubt.setTextColor(Color.parseColor(hex));
 
         findViewById(R.id.SuMStatusBarExtendor).setVisibility(View.VISIBLE);
         findViewById(R.id.SuMNavBarExtendor).setVisibility(View.VISIBLE);
@@ -2162,8 +2092,8 @@ public class MainActivity extends AppCompatActivity {
                     return false;
                 }
             } else {
-                findViewById(R.id.SuMExploreInfo_ABS).setVisibility(View.GONE);
-                LoadExplore(null);
+                CloseSuMExploreInfo(null);
+                //LoadExplore(null);
                 return false;
             }
             return super.onKeyDown(keyCode, event);
@@ -2979,6 +2909,8 @@ public class MainActivity extends AppCompatActivity {
                 if (resourceId1 > 0) {
                     SBH = getResources().getDimensionPixelSize(resourceId1);
                 }
+                if(SBH<1){SBH = 1;}
+                if(NBH<1){NBH = 1;}
                 ViewGroup.LayoutParams params0 = findViewById(R.id.SuMStatusBar).getLayoutParams();
                 params0.height = SBH;
                 findViewById(R.id.SuMStatusBar).setLayoutParams(params0);
@@ -3012,6 +2944,8 @@ public class MainActivity extends AppCompatActivity {
                 if (resourceId1 > 0) {
                     SBH = getResources().getDimensionPixelSize(resourceId1);
                 }
+                if(SBH<1){SBH = 1;}
+                if(NBH<1){NBH = 1;}
                 ViewGroup.LayoutParams params0 = findViewById(R.id.SuMStatusBar).getLayoutParams();
                 params0.height = SBH;
                 findViewById(R.id.SuMStatusBar).setLayoutParams(params0);
@@ -3172,44 +3106,6 @@ public class MainActivity extends AppCompatActivity {
     public String UltraThemeHexRoot = "";
 
     @JavascriptInterface
-    public void SetSuMUltraColor(Object A){
-
-        runOnUiThread(new Runnable() {
-            @SuppressLint("UseCompatLoadingForDrawables")
-            @Override
-            public void run() {
-
-                String[] RGBXR = A.toString().replace(" ","").replace("rgb","").replace("a","").replace("(","").replace(")","").split(",");
-                String hex = String.format("#%02X%02X%02X", Integer.parseInt(RGBXR[0]), Integer.parseInt(RGBXR[1]), Integer.parseInt(RGBXR[2]));
-                UltraThemeHexRoot = hex;
-                findViewById(R.id.SuMUltraBackColor).setBackground(setTint(getDrawable(R.drawable.bg_x_x_ul_ca),Color.parseColor(hex)));
-                findViewById(R.id.UltraCuurBookIc).setBackground(setTint(getDrawable(R.drawable.ic_menu_book_black_48dp),Color.parseColor(hex)));
-                findViewById(R.id.UltraWannaAddIc).setBackground(setTint(getDrawable(R.drawable.ic_add_black_48dp),Color.parseColor(hex)));
-                findViewById(R.id.UltraFavAddIc).setBackground(setTint(getDrawable(R.drawable.ic_favorite_border_black_48dp),Color.parseColor(hex)));
-
-
-            }
-        });
-
-    }
-    @JavascriptInterface
-    public void SetUltraDisc(Object A){
-
-        runOnUiThread(new Runnable() {
-            @SuppressLint("UseCompatLoadingForDrawables")
-            @Override
-            public void run() {
-
-                TextView B = (TextView) findViewById(R.id.SuMUltraDisc);
-                B.setText(A.toString());
-
-
-            }
-        });
-
-    }
-
-    @JavascriptInterface
     public void SetUltraShareLink(Object A){
 
         runOnUiThread(new Runnable() {
@@ -3227,44 +3123,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-    @JavascriptInterface
-    public void SetFavState(Boolean A,String JSRemove,String JSAdd){
-
-        runOnUiThread(new Runnable() {
-            @SuppressLint("UseCompatLoadingForDrawables")
-            @Override
-            public void run() {
-
-                if(A){
-
-                    findViewById(R.id.UltraFavAddIc).setBackground(setTint(getDrawable(R.drawable.ic_favorite_black_48dp),Color.parseColor(UltraThemeHexRoot)));
-                }
-                else {
-
-
-                    findViewById(R.id.UltraFavAddIc).setBackground(setTint(getDrawable(R.drawable.ic_favorite_border_black_48dp),Color.parseColor(UltraThemeHexRoot)));
-
-                }
-
-            }
-        });
-
-    }
-    @JavascriptInterface
-    public void ShowUltraCardX(){
-
-        runOnUiThread(new Runnable() {
-            @SuppressLint("UseCompatLoadingForDrawables")
-            @Override
-            public void run() {
-
-                ShowSuMUltraCard();
-
-            }
-        });
-
-    }
-
     @JavascriptInterface
     public void ResizewebView3AccountSettingsCard(final int HDFSJSFromCardIsHeight){
 
@@ -3437,12 +3295,18 @@ public class MainActivity extends AppCompatActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Bitmap ResizedIMGForBlur = Bitmap.createScaledBitmap(MangaCoverBitmap, 260, 390, false);//Bitmap.createScaledBitmap(MangaCoverBitmap, 60, 90, false);
+                Bitmap ResizedIMGForFrame = Bitmap.createScaledBitmap(MangaCoverBitmap, 360, 540, false);//Bitmap.createScaledBitmap(MangaCoverBitmap, 60, 90, false);
+                //double aspectRatio = (double) findViewById(R.id.MainLayout).getHeight() / (double) findViewById(R.id.MainLayout).getWidth();
+                //int targetHeight = (int) (180 * aspectRatio);
+                int b = (260*(Device_Height/Device_Width));
+                if(b>540){ b = 540; }
+                Bitmap ResizedIMGForBlur = Bitmap.createBitmap(ResizedIMGForFrame, 0, 0, 260, b);
+                ResizedIMGForBlur = Bitmap.createScaledBitmap(ResizedIMGForBlur, 320, (320*(Device_Height/Device_Width)), false);
                 final Bitmap BluredCover = blur(MainActivity.this, ResizedIMGForBlur);
                 //findViewById(R.id.SuMExploreInfo_MangaBluredBG).setBackground(new BitmapDrawable(getApplicationContext().getResources(), BluredCover));
                 findViewById(R.id.SuMExploreInfo_MangaBGABSBlured).setBackground(new BitmapDrawable(getApplicationContext().getResources(), BluredCover));
                 //Bitmap ResizedIMGForShow = Bitmap.createScaledBitmap(MangaCoverBitmap, 260, 390, false);
-                ((ImageView)findViewById(R.id.SuMExploreInfo_MangaIMG)).setImageBitmap(ResizedIMGForBlur);
+                ((ImageView)findViewById(R.id.SuMExploreInfo_MangaIMG)).setImageBitmap(ResizedIMGForFrame);
             }
         });
     }
@@ -3525,8 +3389,13 @@ public class MainActivity extends AppCompatActivity {
                     findViewById(R.id.ExploreBTN).setBackground(setTint(getResources().getDrawable(R.drawable.ic_dashboard_black_48dp), Color.parseColor(hex)));
                     ((TextView) findViewById(R.id.ExploreBTNTXT)).setTextColor(Color.parseColor(hex));
                     findViewById(R.id.SuMNavBarExtendor).setBackground(setTint(getResources().getDrawable(R.drawable.bg_xcolor_nb_c0dp), Color.parseColor(hex)));
-                    findViewById(R.id.SuMNavBarExtendor).setAlpha((float) 0.74);
+                    findViewById(R.id.SuMNavBarExtendor).setAlpha((float) 0.0);
+                    findViewById(R.id.SuMNavBar).setAlpha((float) 0.0);
                     findViewById(R.id.SuMNavBar).setBackground(setTint(getResources().getDrawable(R.drawable.bg_xcolor_nb_c0dp), Color.parseColor(hex)));
+                    TextView textvivesubt = (TextView) findViewById(R.id.SuMMangaTXT);
+                    textvivesubt.setTextColor(Color.parseColor(hex));
+                    textvivesubt = (TextView) findViewById(R.id.NavBackTXT);
+                    textvivesubt.setTextColor(Color.parseColor(hex));
                     ((TextView) findViewById(R.id.SuMExploreInfo_MangaAgeRating)).setText(MangaAgeRating);
                     webView5.onResume();
                     webView5.loadUrl("https://sum-manga.azurewebsites.net" + SuMExploreURL.replace("ContantExplorer.aspx", "ContantExplorerCard.aspx"));
@@ -3571,6 +3440,7 @@ public class MainActivity extends AppCompatActivity {
                 ((TextView)findViewById(R.id.ExploreBTNTXT)).setTextColor(Color.parseColor(RootHexColor));
                 findViewById(R.id.SuMNavBarExtendor).setBackground(setTint(getResources().getDrawable(R.drawable.bg_xcolor_nb_c0dp), Color.parseColor(RootHexColor)));
                 findViewById(R.id.SuMNavBarExtendor).setAlpha((float)1);
+                findViewById(R.id.SuMNavBar).setAlpha((float)1);
                 findViewById(R.id.SuMNavBar).setBackground(setTint(getResources().getDrawable(R.drawable.bg_xcolor_nb_c0dp), Color.parseColor(RootHexColor)));
                 final Handler handlerBlur = new Handler();
                 handlerBlur.postDelayed(new Runnable() {

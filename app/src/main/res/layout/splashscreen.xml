@@ -18,7 +18,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="0dp"
         android:layout_marginBottom="0dp"
-        android:alpha="0.86"
+        android:alpha="0.98"
         android:background="@drawable/bg_white_c22dp"
         android:paddingStart="22dp"
         android:paddingEnd="22dp"

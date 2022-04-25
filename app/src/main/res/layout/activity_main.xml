@@ -93,7 +93,7 @@
         app:layout_constraintBottom_toBottomOf="@id/SuMNavBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_height="0dp">
+        android:layout_height="match_parent">
         <include layout="@layout/index_explore_info" />
     </RelativeLayout>
     <View
@@ -137,7 +137,7 @@
         <LinearLayout
             android:id="@+id/SuMBarTopPart"
             android:layout_width="match_parent"
-            android:padding="0dp"
+            android:paddingStart="4dp"
             app:layout_constraintEnd_toStartOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:orientation="horizontal"

@@ -1,8 +1,8 @@
 <resources>
     <string name="admob_app_id">ca-app-pub-3940256099942544~3347511713</string>
     <string name="app_name">SuM Manga</string>
-    <string name="app_version_Raw">5.6.4</string>
-    <string name="app_version">V-5.6.4</string>
+    <string name="app_version_Raw">5.6.5</string>
+    <string name="app_version">V-5.6.5</string>
     <string name="app_info_txt">This is a temporary app it will be removed soon!</string>
     <string name="app_navigate_back">Navigate Back</string>
     <string name="shortcut_explore">explore</string>
