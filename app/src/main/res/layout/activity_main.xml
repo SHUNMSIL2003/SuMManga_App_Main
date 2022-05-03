@@ -6,10 +6,9 @@
     android:id="@+id/MainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/transparent"
+    android:background="@android:color/white"
     android:fitsSystemWindows="false"
     android:orientation="vertical"
-    android:visibility="gone"
     android:theme="@style/Theme.TransparentActivity"
     android:windowSoftInputMode="adjustResize"
     tools:context=".MainActivity">
@@ -18,8 +17,19 @@
         android:id="@+id/SuMBackCWA"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:alpha="0.26"
-        android:background="#ffffff"
+        android:alpha="1.0"
+        android:background="#e3e3e3"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <View
+        android:id="@+id/SuMBackCWA2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.32"
+        android:background="#e3e3e3"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="parent"
@@ -100,7 +110,7 @@
         android:onClick="VoidX"
         android:id="@+id/SuMNavBarExtendor"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="56dp"
         android:background="#000000"
         android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@id/SuMNavBar"
@@ -172,22 +182,24 @@
                     tools:ignore="SmallSp" />
             </LinearLayout>
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:orientation="horizontal"
             android:padding="0dp"
             app:layout_constraintEnd_toStartOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:orientation="horizontal"
-            android:gravity="right"
-            android:layout_height="wrap_content"
             tools:ignore="RtlHardcoded">
+
             <View
-                android:onClick="LoadSearch"
-                app:layout_constraintBottom_toBottomOf="@id/SuMMenuLayout"
-                android:background="@drawable/ic_search_black_36dp"
-                android:layout_marginTop="-2dp"
                 android:layout_width="28dp"
-                android:layout_height="28dp" />
+                android:layout_height="28dp"
+                android:layout_marginTop="-2dp"
+                android:background="@drawable/ic_search_black_36dp"
+                android:onClick="LoadSearch"
+                app:layout_constraintBottom_toBottomOf="@id/SuMMenuLayout" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"

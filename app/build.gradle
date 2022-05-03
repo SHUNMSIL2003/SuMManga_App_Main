@@ -4,14 +4,20 @@ plugins {
 
 android {
     compileSdk 32
-
+    splits {
+        abi {
+            enable true
+            reset()
+            include 'x86', 'x86_64', 'arm64-v8a', 'armeabi-v7a'
+            universalApk true
+        }
+    }
     defaultConfig {
         applicationId "com.summanga.android"
-        minSdk 28
+        minSdk 29
         targetSdk 32
-        versionCode 6
-        versionName "5.6.5"
-        //testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        versionCode 7
+        versionName "5.7.0"
     }
 
     buildTypes {
@@ -21,29 +27,30 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
 }
 
-ext {
+/*ext {
     geckoviewChannel = "nightly"
-    geckoviewVersion = "100.0.20220308100756"//"97.0.20211210143634"
-}
+    geckoviewVersion = "102.0.20220503094208"
+}*/
 
 dependencies {
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    //implementation "org.mozilla.geckoview:geckoview-${geckoviewChannel}:${geckoviewVersion}"
     implementation 'androidx.appcompat:appcompat:1.4.1'
-    implementation 'com.google.android.material:material:1.5.0'
+    implementation 'com.google.android.material:material:1.7.0-alpha01'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
     implementation "androidx.core:core:1.7.0"
+    //implementation "org.mozilla.geckoview:geckoview-nightly:102.0.20220503094208"
     //implementation 'com.google.firebase:firebase-crashlytics-buildtools:2.8.1'
     implementation 'com.google.android.gms:play-services-ads:19.3.0'
-    implementation "com.android.billingclient:billing:4.0.0"
+    implementation "com.android.billingclient:billing:4.1.0"
     implementation("androidx.palette:palette:1.0.0")
     implementation("androidx.palette:palette-ktx:1.0.0")
-    //implementation "org.mozilla.geckoview:geckoview-${geckoviewChannel}:${geckoviewVersion}"
     //testImplementation 'junit:junit:4.13.2'
     //androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     //androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'

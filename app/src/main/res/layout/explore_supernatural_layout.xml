@@ -111,18 +111,28 @@
                 android:layout_width="match_parent"
                 android:layout_height="226dp">
 
-                <WebView
-                    android:id="@+id/SuMWebView_SupernaturalCard"
-                    style="@android:style/Widget.Material.WebView"
+                <HorizontalScrollView
+                    android:scrollbarSize="0dp"
                     android:layout_width="match_parent"
-                    android:layout_height="224dp"
-                    android:background="@android:color/transparent"
-                    android:fontFamily="@font/varela_round"
-                    android:visibility="visible"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:layout_height="match_parent">
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        tools:ignore="ScrollViewSize">
+                        <WebView
+                            android:id="@+id/SuMWebView_SupernaturalCard"
+                            android:layout_width="1486dp"
+                            android:layout_height="224dp"
+                            android:background="@android:color/transparent"
+                            android:fontFamily="@font/varela_round"
+                            android:visibility="visible"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </LinearLayout>
+                </HorizontalScrollView>
             </RelativeLayout>
         </LinearLayout>
 

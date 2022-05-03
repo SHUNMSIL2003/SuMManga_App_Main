@@ -59,6 +59,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -164,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     @SuppressLint("SetJavaScriptEnabled")
-    public void GetThisWenViewReady(WebView webViewx, boolean ReqPer, boolean ReqFileUpload,boolean CanLoadMoreLinks) {
+    public void GetThisWenViewReady(WebView webViewx, boolean ReqPer, boolean ReqFileUpload,boolean CanLoadMoreLinks,boolean ZoomEnabled) {
 
 
         if (!CanLoadMoreLinks) {
@@ -228,37 +229,32 @@ public class MainActivity extends AppCompatActivity {
         WebSettings contentWebViewSettings = webViewx.getSettings();
         contentWebViewSettings.setJavaScriptEnabled(true);
         webViewx.addJavascriptInterface(MainActivity.this, "androidAPIs");
-        contentWebViewSettings.setDomStorageEnabled(true);
-        contentWebViewSettings.setDisplayZoomControls(false);
-        //contentWebViewSettings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
+        //contentWebViewSettings.setDomStorageEnabled(true);
         contentWebViewSettings.setUseWideViewPort(true);
-        //contentWebViewSettings.setSaveFormData(true);
         contentWebViewSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
-        webViewx.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
-        contentWebViewSettings.setAllowFileAccess(true);
+        //contentWebViewSettings.setAllowFileAccess(true);
         contentWebViewSettings.setAllowFileAccessFromFileURLs(true);
         contentWebViewSettings.setAllowUniversalAccessFromFileURLs(true);
-        contentWebViewSettings.setAllowContentAccess(true);
-        contentWebViewSettings.setSupportZoom(false);
+        //contentWebViewSettings.setAllowContentAccess(true);
         //webViewx.getSettings().setBuiltInZoomControls(true);
         if(ReqPer) {
+            webViewx.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
             webViewx.setLayerType(View.LAYER_TYPE_HARDWARE, null);
-            contentWebViewSettings.setRenderPriority(WebSettings.RenderPriority.HIGH);
-            webViewx.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
-            webViewx.setScrollbarFadingEnabled(true);
-            webViewx.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-            //contentWebViewSettings.setEnableSmoothTransition(true);
         }
-
+        if(ZoomEnabled){
+            webViewx.getSettings().setBuiltInZoomControls(true);
+            contentWebViewSettings.setSupportZoom(true);
+            webViewx.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+            contentWebViewSettings.setDisplayZoomControls(true);
+        }else {
+            webViewx.getSettings().setBuiltInZoomControls(false);
+            contentWebViewSettings.setSupportZoom(false);
+            contentWebViewSettings.setDisplayZoomControls(false);
+        }
         contentWebViewSettings.setAppCacheEnabled(true);
-        //contentWebViewSettings.setSavePassword(true);
-        //contentWebViewSettings.setSaveFormData(true);
-
         webViewx.setBackgroundColor(Color.TRANSPARENT);
         webViewx.loadUrl("about:blank");
         webViewx.clearHistory();
-        //webViewx.destroyDrawingCache();
-        //webViewx.clearView();
         webViewx.removeAllViews();
         //webViewx.onPause();
     }
@@ -275,7 +271,7 @@ public class MainActivity extends AppCompatActivity {
         Device_Height = displayMetrics.heightPixels;
         Device_Width = displayMetrics.widthPixels;
         setContentView(R.layout.activity_main);
-        findViewById(R.id.MainLayout).setVisibility(View.GONE);
+        //findViewById(R.id.MainLayout).setVisibility(View.GONE);
 
         SharedPreferences mPrefs = getSharedPreferences("summanga", 0);
         String mSuMlOCKBit = mPrefs.getString("sumlockbit", "0");
@@ -332,14 +328,14 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-        final WallpaperManager wallpaperManager = WallpaperManager.getInstance(MainActivity.this);
-        @SuppressLint("MissingPermission") final Drawable wallpaperDrawable = wallpaperManager.getDrawable();
-        Bitmap bitmap = Bitmap.createScaledBitmap(((BitmapDrawable) wallpaperDrawable).getBitmap(), 1080, ((1080) * (Device_Height / Device_Width)), false);
+        //final WallpaperManager wallpaperManager = WallpaperManager.getInstance(MainActivity.this);
+        //@SuppressLint("MissingPermission") final Drawable wallpaperDrawable = wallpaperManager.getDrawable();
+        //Bitmap bitmap = Bitmap.createScaledBitmap(((BitmapDrawable) wallpaperDrawable).getBitmap(), 1080, ((1080) * (Device_Height / Device_Width)), false);
 
-        Palette.generateAsync(bitmap, new Palette.PaletteAsyncListener() {
+        /*Palette.generateAsync(bitmap, new Palette.PaletteAsyncListener() {
             public void onGenerated(Palette palette) {
                 // Do something with colors...
-                int PreRGBRaw = palette.getDarkMutedColor(1);
+                int PreRGBRaw = palette.getLightMutedColor(1);
                 int red = Color.red(PreRGBRaw);
                 int green = Color.green(PreRGBRaw);
                 int blue = Color.blue(PreRGBRaw);
@@ -347,13 +343,13 @@ public class MainActivity extends AppCompatActivity {
                 String cookieString = "SuMUserThemeColor=RGBRoot=" + THEMECOLORChossenRGB + "; path=/";
                 CookieManager.getInstance().setCookie("https://sum-manga.azurewebsites.net/", cookieString);
             }
-        });
+        });*/
 
-        bitmap = blur(MainActivity.this, bitmap);
-        findViewById(R.id.MainLayout).setBackground(new BitmapDrawable(getApplicationContext().getResources(), bitmap));
-        findViewById(R.id.SuMMangaReader).setBackground(new BitmapDrawable(getApplicationContext().getResources(), bitmap));
+        //bitmap = blur(MainActivity.this, bitmap);
+        //findViewById(R.id.MainLayout).setBackground(new BitmapDrawable(getApplicationContext().getResources(), bitmap));
+        //findViewById(R.id.SuMMangaReader).setBackground(new BitmapDrawable(getApplicationContext().getResources(), bitmap));
 
-        new Handler().postDelayed(new Runnable() {
+        /*new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 // This method will be executed once the timer is over
@@ -364,7 +360,7 @@ public class MainActivity extends AppCompatActivity {
                 findViewById(R.id.MainLayout).setVisibility(View.VISIBLE);
                 findViewById(R.id.MainLayout).startAnimation(fadeIn);
             }
-        }, SPLASH_TIME_OUT);
+        }, SPLASH_TIME_OUT);*/
 
         updateLayout();
         simpleViewFlipper = (ViewFlipper) findViewById(R.id.simpleViewFlipper);
@@ -392,55 +388,55 @@ public class MainActivity extends AppCompatActivity {
 
         webView0LatestCard = (WebView) findViewById(R.id.SuMWebView_NewestCardSlideView);
         webView0LatestCard.setVisibility(View.VISIBLE);
-        GetThisWenViewReady(webView0LatestCard, false, false, false);
+        GetThisWenViewReady(webView0LatestCard, false, false, false,false);
         WebView0RecentsCard = (WebView) findViewById(R.id.SuMWebView_ResentsCard);
         WebView0RecentsCard.setVisibility(View.VISIBLE);
-        GetThisWenViewReady(WebView0RecentsCard, false, false, false);
+        GetThisWenViewReady(WebView0RecentsCard, false, false, false,false);
         webView0ActionCard = (WebView) findViewById(R.id.SuMWebView_ActionCard);
         webView0ActionCard.setVisibility(View.VISIBLE);
-        GetThisWenViewReady(webView0ActionCard, false, false, false);
+        GetThisWenViewReady(webView0ActionCard, false, false, false,false);
         WebView0DramaCard = (WebView) findViewById(R.id.SuMWebView_DramaCard);
         WebView0DramaCard.setVisibility(View.VISIBLE);
-        GetThisWenViewReady(WebView0DramaCard, false, false, false);
+        GetThisWenViewReady(WebView0DramaCard, false, false, false,false);
         webView0FantasyCard = (WebView) findViewById(R.id.SuMWebView_FantasyCard);
         webView0FantasyCard.setVisibility(View.VISIBLE);
-        GetThisWenViewReady(webView0FantasyCard, false, false, false);
+        GetThisWenViewReady(webView0FantasyCard, false, false, false,false);
         webView0ComedyCard = (WebView) findViewById(R.id.SuMWebView_ComedyCard);
         webView0ComedyCard.setVisibility(View.VISIBLE);
-        GetThisWenViewReady(webView0ComedyCard, false, false, false);
+        GetThisWenViewReady(webView0ComedyCard, false, false, false,false);
         webView0SliceofLifeCard = (WebView) findViewById(R.id.SuMWebView_SliceofLifeCard);
         webView0SliceofLifeCard.setVisibility(View.VISIBLE);
-        GetThisWenViewReady(webView0SliceofLifeCard, false, false, false);
+        GetThisWenViewReady(webView0SliceofLifeCard, false, false, false,false);
         webView0SciFiCard = (WebView) findViewById(R.id.SuMWebView_SciFiCard);
         webView0SciFiCard.setVisibility(View.VISIBLE);
-        GetThisWenViewReady(webView0SciFiCard, false, false, false);
+        GetThisWenViewReady(webView0SciFiCard, false, false, false,false);
         webView0SupernaturalCard = (WebView) findViewById(R.id.SuMWebView_SupernaturalCard);
         webView0SupernaturalCard.setVisibility(View.VISIBLE);
-        GetThisWenViewReady(webView0SupernaturalCard, false, false, false);
+        GetThisWenViewReady(webView0SupernaturalCard, false, false, false,false);
         webView0MysteryCard = (WebView) findViewById(R.id.SuMWebView_MysteryCard);
         webView0MysteryCard.setVisibility(View.VISIBLE);
-        GetThisWenViewReady(webView0MysteryCard, false, false, false);
+        GetThisWenViewReady(webView0MysteryCard, false, false, false,false);
         webView4 = (WebView) findViewById(R.id.SuMWebViewIndex4);
         webView4.setVisibility(View.VISIBLE);
-        GetThisWenViewReady(webView4, false, false, false);
+        GetThisWenViewReady(webView4, false, false, false,false);
         webView2 = (WebView) findViewById(R.id.SuMWebViewIndex2);
         webView2.setVisibility(View.VISIBLE);
-        GetThisWenViewReady(webView2, false, false, false);
+        GetThisWenViewReady(webView2, false, false, false,false);
         webView3AccountSettingsCard = (WebView) findViewById(R.id.SuMWebViewIndex3AccountSettingsCard);
         webView3AccountSettingsCard.setVisibility(View.VISIBLE);
-        GetThisWenViewReady(webView3AccountSettingsCard, false, true, true);
+        GetThisWenViewReady(webView3AccountSettingsCard, false, true, true,false);
         webView1 = (WebView) findViewById(R.id.SuMWebViewIndex1);
         webView1.setVisibility(View.VISIBLE);
-        GetThisWenViewReady(webView1, false, false, false);
+        GetThisWenViewReady(webView1, false, false, false,false);
         webView5 = (WebView) findViewById(R.id.SuMWebViewIndex5);
         webView5.setVisibility(View.VISIBLE);
-        GetThisWenViewReady(webView5, false, false, false);
+        GetThisWenViewReady(webView5, false, false, false,false);
         webView6_SECURE = (WebView) findViewById(R.id.SuMWebViewIndex6_MangaReader);
         webView6_SECURE.setVisibility(View.VISIBLE);
-        GetThisWenViewReady(webView6_SECURE, false, false, false);
+        GetThisWenViewReady(webView6_SECURE, false, false, false,true);
         webViewX_SECURE = (WebView) findViewById(R.id.webViewX_SECURE_JS);
         webViewX_SECURE.setVisibility(View.GONE);
-        GetThisWenViewReady(webViewX_SECURE, false, false, false);
+        GetThisWenViewReady(webViewX_SECURE, false, false, false,false);
         webViewX_SECURE.loadUrl("https://sum-manga.azurewebsites.net/storeitems/MangaExplorerCardHolder.aspx");
 
 
@@ -545,6 +541,7 @@ public class MainActivity extends AppCompatActivity {
             findViewById(R.id.SuMWebNavColorShaper).setBackground(getDrawable(R.drawable.bg_white_c22dp));
             RootStateBit = 0;
         }
+        findViewById(R.id.SuMBackCWA2).setBackgroundColor(Color.parseColor(RootHexColor));
 
 
         if (cookies != null) {
@@ -671,10 +668,12 @@ public class MainActivity extends AppCompatActivity {
                     String cookieString = "SuMUserThemeState=0; path=/";
                     CookieManager.getInstance().setCookie("https://sum-manga.azurewebsites.net/", cookieString);
                 }
+                LoadSettings(null);
+                LoadSettings(null);
             }
         });
 
-        SetLongPressToViewX(findViewById(R.id.SuMBackCWA));
+        //SetLongPressToViewX(findViewById(R.id.SuMBackCWA));
 
         LoadAdX();
 
@@ -1087,6 +1086,7 @@ public class MainActivity extends AppCompatActivity {
                             "https://sum-manga.azurewebsites.net/ExploreGetByGarn.aspx?GR=Mystery"}
             );
         }
+        ((ScrollView)findViewById(R.id.SuMExplore_Home_ScrollView_Main)).setVerticalScrollbarThumbDrawable(setTint(getDrawable(R.drawable.scrollbar_thum), Color.parseColor(RootHexColor)));
     }
     @SuppressLint("UseCompatLoadingForDrawables")
     public void LoadHit(View view) {
@@ -1291,6 +1291,8 @@ public class MainActivity extends AppCompatActivity {
         }else {
             ((Switch)findViewById(R.id.SuMDarkModeInOnOrOff)).setChecked(false);
         }
+
+        ((ScrollView)findViewById(R.id.SuMSettings_ScrollView_Main)).setVerticalScrollbarThumbDrawable(setTint(getDrawable(R.drawable.scrollbar_thum), Color.parseColor(RootHexColor)));
 
         @SuppressLint("UseSwitchCompatOrMaterialCode") Switch SuMLockToggle = (Switch)findViewById(R.id.SuMLockInOnOrOff);
         SuMLockToggle.setThumbTintList(thumbStates);
@@ -2469,25 +2471,25 @@ public class MainActivity extends AppCompatActivity {
     @JavascriptInterface
     public void SuMShareThisLink(String SuMLink) {
 
-            runOnUiThread(new Runnable() {
+        runOnUiThread(new Runnable() {
 
-                @Override
-                public void run() {
+            @Override
+            public void run() {
 
-                    if (SuMLink != null) {
+                if (SuMLink != null) {
 
-                        Intent sendIntent = new Intent();
-                        sendIntent.setAction(Intent.ACTION_SEND);
-                        sendIntent.putExtra(Intent.EXTRA_TEXT, "Check out: " + SuMLink.toString());
-                        sendIntent.setType("text/plain");
-                        Intent shareIntent = Intent.createChooser(sendIntent, null);
-                        startActivity(shareIntent);
-
-                    }
+                    Intent sendIntent = new Intent();
+                    sendIntent.setAction(Intent.ACTION_SEND);
+                    sendIntent.putExtra(Intent.EXTRA_TEXT, "Check out: " + SuMLink.toString());
+                    sendIntent.setType("text/plain");
+                    Intent shareIntent = Intent.createChooser(sendIntent, null);
+                    startActivity(shareIntent);
 
                 }
 
-            });
+            }
+
+        });
 
     }
 
@@ -3041,7 +3043,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
 
-                    GoBackABS();
+                GoBackABS();
 
             }
         });
@@ -3668,4 +3670,3 @@ public class MainActivity extends AppCompatActivity {
         return super.onTouchEvent(event);
     }
 }*/
-

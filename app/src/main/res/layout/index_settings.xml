@@ -13,7 +13,6 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_width="match_parent"
         android:gravity="top"
-        android:padding="12dp"
         android:layout_height="match_parent">
 
         <LinearLayout
@@ -22,16 +21,22 @@
             tools:ignore="UselessParent">
 
             <ScrollView
-                android:scrollIndicators="none"
-                android:fadeScrollbars="false"
+                android:id="@+id/SuMSettings_ScrollView_Main"
+                android:scrollIndicators="right"
+                android:fadeScrollbars="true"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:fillViewport="true"
+                android:nestedScrollingEnabled="true"
                 android:scrollbarAlwaysDrawVerticalTrack="false"
                 android:scrollbarAlwaysDrawHorizontalTrack="false"
-                android:scrollbarSize="0dp"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:scrollbarSize="4dp"
+                android:scrollbarTrackVertical="@drawable/scrollbar_track"
+                android:scrollbarThumbVertical="@drawable/scrollbar_thum"
                 tools:ignore="UselessParent">
 
                 <LinearLayout
+                    android:padding="12dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
