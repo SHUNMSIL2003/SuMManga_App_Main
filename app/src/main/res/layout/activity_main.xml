@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:alpha="1.0"
-        android:background="#e3e3e3"
+        android:background="#f0f0f0"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="parent"
@@ -198,8 +198,8 @@
                 android:layout_height="28dp"
                 android:layout_marginTop="-2dp"
                 android:background="@drawable/ic_search_black_36dp"
-                android:onClick="LoadSearch"
-                app:layout_constraintBottom_toBottomOf="@id/SuMMenuLayout" />
+                android:onClick="LoadSearch" />
+            <!-- app:layout_constraintBottom_toBottomOf="@id/SuMMenuLayout"-->
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -424,7 +424,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </RelativeLayout>
-    <include layout="@layout/hold_menu_fullscreen" />
     <WebView
         android:id="@+id/webViewX_SECURE_JS"
         style="@android:style/Widget.Material.WebView"

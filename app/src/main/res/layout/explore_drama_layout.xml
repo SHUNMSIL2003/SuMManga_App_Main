@@ -123,7 +123,7 @@
                         tools:ignore="ScrollViewSize">
                         <WebView
                             android:id="@+id/SuMWebView_DramaCard"
-                            android:layout_width="1486dp"
+                            android:layout_width="1488dp"
                             android:layout_height="224dp"
                             android:background="@android:color/transparent"
                             android:fontFamily="@font/varela_round"

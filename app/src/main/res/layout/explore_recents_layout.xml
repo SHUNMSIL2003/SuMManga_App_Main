@@ -10,20 +10,18 @@
         android:id="@+id/SuMRecentsABSCard_ToHide"
         android:paddingLeft="12dp"
         android:paddingRight="12dp"
-        android:paddingTop="18dp"
+        android:paddingTop="12dp"
         android:gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="192dp"
+        android:layout_height="186dp"
         tools:ignore="MissingConstraints">
 
         <View
             android:id="@+id/SuMExplore_recentsCard_BG"
-            android:layout_centerVertical="false"
-            android:layout_centerInParent="true"
-            android:layout_centerHorizontal="true"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:alpha="0.64"
+            android:layout_centerInParent="true"
+            android:alpha="0.86"
             android:background="@drawable/bg_white_c22dp" />
 
         <RelativeLayout
@@ -35,7 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <WebView
+            <com.summanga.android.TouchyWebView
                 android:id="@+id/SuMWebView_ResentsCard"
                 style="@android:style/Widget.Material.WebView"
                 android:layout_width="match_parent"
