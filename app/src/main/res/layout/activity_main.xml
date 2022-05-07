@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:alpha="1.0"
-        android:background="#f0f0f0"
+        android:background="#e3e3e3"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="parent"
@@ -28,7 +28,7 @@
         android:id="@+id/SuMBackCWA2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:alpha="0.32"
+        android:alpha="0.16"
         android:background="#e3e3e3"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -78,6 +78,7 @@
         android:fontFamily="@font/varela_round"
         android:gravity="center"
         android:text=""
+        android:onClick="VoidY"
         android:visibility="visible"
         android:background="@android:color/transparent"
         android:textColor="@android:color/white"
@@ -405,13 +406,21 @@
         android:id="@+id/SuMMangaReader"
         android:visibility="gone"
         android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <View
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             android:background="@android:color/black"
-            android:alpha="0.32"/>
+            android:alpha="0.86"/>
         <WebView
             android:id="@+id/SuMWebViewIndex6_MangaReader"
             style="@android:style/Widget.Material.WebView"
@@ -426,14 +435,9 @@
     </RelativeLayout>
     <WebView
         android:id="@+id/webViewX_SECURE_JS"
-        style="@android:style/Widget.Material.WebView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:background="@android:color/black"
-        android:fontFamily="@font/varela_round"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        tools:ignore="MissingConstraints" />
 </androidx.constraintlayout.widget.ConstraintLayout>

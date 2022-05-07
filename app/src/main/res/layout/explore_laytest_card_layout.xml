@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <RelativeLayout
+    <!-- <RelativeLayout
         android:paddingLeft="12dp"
         android:paddingRight="12dp"
         android:paddingTop="26dp"
@@ -42,6 +42,6 @@
                 app:layout_constraintTop_toTopOf="parent" />
         </RelativeLayout>
 
-    </RelativeLayout>
+    </RelativeLayout> -->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

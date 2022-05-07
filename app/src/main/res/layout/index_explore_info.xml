@@ -20,10 +20,10 @@
                        android:layout_height="match_parent">
 
                        <View
-                           android:background="@android:color/black"
-                           android:alpha="0.32"
                            android:layout_width="match_parent"
-                           android:layout_height="match_parent"/>
+                           android:layout_height="match_parent"
+                           android:alpha="0.45"
+                           android:background="@android:color/black" />
                        <LinearLayout
                            android:layout_width="match_parent"
                            android:layout_height="match_parent"
@@ -58,7 +58,7 @@
 
                                    <View
                                        android:layout_width="match_parent"
-                                       android:layout_height="match_parent"
+                                       android:layout_height="224dp"
                                        android:alpha="0.32"
                                        android:background="@android:color/black" />
 
@@ -95,13 +95,7 @@
                                    app:layout_constraintStart_toStartOf="parent"
                                    app:layout_constraintTop_toTopOf="parent" >
 
-                                   <View
-                                       android:layout_width="match_parent"
-                                       android:layout_height="match_parent"
-                                       android:layout_x="1dp"
-                                       android:layout_y="-294dp"
-                                       android:alpha="0.32"
-                                       android:background="@android:color/black" />
+
                                </WebView>
                            </RelativeLayout>
                        </LinearLayout>

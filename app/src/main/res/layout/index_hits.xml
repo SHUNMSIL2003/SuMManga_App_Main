@@ -14,46 +14,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
-        <ScrollView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <RelativeLayout
-                    android:paddingTop="48dp"
-                    android:layout_marginBottom="126dp"
-                    android:paddingEnd="12dp"
-                    android:paddingStart="12dp"
-                    android:id="@+id/SuMWebViewIndex1_HeightSet"
-                    android:layout_width="match_parent"
-                    android:layout_height="855dp">
-                    <View
-                        android:alpha="0.86"
-                        android:background="@drawable/bg_white_c22dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"/>
-                    <RelativeLayout
-                        android:padding="3dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-                        <WebView
-                            android:id="@+id/SuMWebViewIndex1"
-                            style="@android:style/Widget.Material.WebView"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@android:color/transparent"
-                            android:fontFamily="@font/varela_round"
-                            android:visibility="visible"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-                    </RelativeLayout>
-                </RelativeLayout>
-            </LinearLayout>
-        </ScrollView>
+        <WebView
+            android:id="@+id/SuMWebViewIndex1"
+            style="@android:style/Widget.Material.WebView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:fontFamily="@font/varela_round"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

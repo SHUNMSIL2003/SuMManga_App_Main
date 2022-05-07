@@ -11,10 +11,13 @@
         android:paddingLeft="12dp"
         android:paddingRight="12dp"
         android:paddingTop="12dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="14dp"
         android:gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="186dp"
-        tools:ignore="MissingConstraints">
+        android:layout_height="186dp">
 
         <View
             android:id="@+id/SuMExplore_recentsCard_BG"

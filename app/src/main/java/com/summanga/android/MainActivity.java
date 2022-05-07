@@ -1,7 +1,9 @@
 package com.summanga.android;
 
 import android.Manifest;
+import android.animation.Animator;
 import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.app.KeyguardManager;
@@ -46,6 +48,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -59,9 +62,13 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -107,7 +114,6 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int SPLASH_TIME_OUT = 6000;
 
-    boolean FirstLoad = true;
 
     ViewFlipper simpleViewFlipper;
 
@@ -132,16 +138,9 @@ public class MainActivity extends AppCompatActivity {
     boolean MenuonLongClick = false;
     boolean MenuonLongClickIsGoing = false;
 
-    WebView webView0LatestCard;
+    //WebView webView0LatestCard;
     WebView WebView0RecentsCard;
-    WebView webView0ActionCard;
-    WebView WebView0DramaCard;
-    WebView webView0FantasyCard;
-    WebView webView0ComedyCard;
-    WebView webView0SliceofLifeCard;
-    WebView webView0SciFiCard;
-    WebView webView0SupernaturalCard;
-    WebView webView0MysteryCard;
+    WebView webView0FlexibleGenreCard;
     WebView webView1;
     WebView webView2;
     WebView webView3AccountSettingsCard;
@@ -154,6 +153,7 @@ public class MainActivity extends AppCompatActivity {
     int Device_Height=0;
 
 
+    public ScrollView SuMExplore_Home_ScrollView_Main_ELM;
 
     private ValueCallback<Uri> mUploadMessage;
     public ValueCallback<Uri[]> uploadMessage;
@@ -259,12 +259,21 @@ public class MainActivity extends AppCompatActivity {
         contentWebViewSettings.setAppCacheEnabled(true);
         webViewx.setBackgroundColor(Color.TRANSPARENT);
         webViewx.loadUrl("about:blank");
-        webViewx.clearHistory();
-        webViewx.removeAllViews();
-        //webViewx.onPause();
+        SuMPauseXWebViews(new WebView[]{ webViewx });
+        webViewx.stopLoading();
     }
 
+    public static float convertDpToPixel(float dp, Context context) {
+        return dp * ((float) context.getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT);
+    }
 
+    public static float convertPixelsToDp(float px, Context context) {
+        return px / ((float) context.getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT);
+    }
+
+    public Handler SuMExploreScrollViewFunc_Handler = new Handler();
+    public Runnable SuMExploreScrollViewFunc_Runnable;
+    public int SuMExploreScrollViewFunc_scrollY = 0;
 
     @SuppressLint({"SetJavaScriptEnabled", "UseCompatLoadingForDrawables"})
     @Override
@@ -351,36 +360,15 @@ public class MainActivity extends AppCompatActivity {
 
         DarkSBIcons();
 
-        webView0LatestCard = (WebView) findViewById(R.id.SuMWebView_NewestCardSlideView);
+        /*webView0LatestCard = (WebView) findViewById(R.id.SuMWebView_NewestCardSlideView);
         webView0LatestCard.setVisibility(View.VISIBLE);
-        GetThisWenViewReady(webView0LatestCard, false, false, false,false);
+        GetThisWenViewReady(webView0LatestCard, false, false, false,false);*/
         WebView0RecentsCard = (WebView) findViewById(R.id.SuMWebView_ResentsCard);
         WebView0RecentsCard.setVisibility(View.VISIBLE);
         GetThisWenViewReady(WebView0RecentsCard, false, false, false,false);
-        webView0ActionCard = (WebView) findViewById(R.id.SuMWebView_ActionCard);
-        webView0ActionCard.setVisibility(View.VISIBLE);
-        GetThisWenViewReady(webView0ActionCard, false, false, false,false);
-        WebView0DramaCard = (WebView) findViewById(R.id.SuMWebView_DramaCard);
-        WebView0DramaCard.setVisibility(View.VISIBLE);
-        GetThisWenViewReady(WebView0DramaCard, false, false, false,false);
-        webView0FantasyCard = (WebView) findViewById(R.id.SuMWebView_FantasyCard);
-        webView0FantasyCard.setVisibility(View.VISIBLE);
-        GetThisWenViewReady(webView0FantasyCard, false, false, false,false);
-        webView0ComedyCard = (WebView) findViewById(R.id.SuMWebView_ComedyCard);
-        webView0ComedyCard.setVisibility(View.VISIBLE);
-        GetThisWenViewReady(webView0ComedyCard, false, false, false,false);
-        webView0SliceofLifeCard = (WebView) findViewById(R.id.SuMWebView_SliceofLifeCard);
-        webView0SliceofLifeCard.setVisibility(View.VISIBLE);
-        GetThisWenViewReady(webView0SliceofLifeCard, false, false, false,false);
-        webView0SciFiCard = (WebView) findViewById(R.id.SuMWebView_SciFiCard);
-        webView0SciFiCard.setVisibility(View.VISIBLE);
-        GetThisWenViewReady(webView0SciFiCard, false, false, false,false);
-        webView0SupernaturalCard = (WebView) findViewById(R.id.SuMWebView_SupernaturalCard);
-        webView0SupernaturalCard.setVisibility(View.VISIBLE);
-        GetThisWenViewReady(webView0SupernaturalCard, false, false, false,false);
-        webView0MysteryCard = (WebView) findViewById(R.id.SuMWebView_MysteryCard);
-        webView0MysteryCard.setVisibility(View.VISIBLE);
-        GetThisWenViewReady(webView0MysteryCard, false, false, false,false);
+        webView0FlexibleGenreCard = (WebView) findViewById(R.id.SuMWebView_FlexibleGenre);
+        webView0FlexibleGenreCard.setVisibility(View.VISIBLE);
+        GetThisWenViewReady(webView0FlexibleGenreCard, false, false, false,false);
         webView4 = (WebView) findViewById(R.id.SuMWebViewIndex4);
         webView4.setVisibility(View.VISIBLE);
         GetThisWenViewReady(webView4, false, false, false,false);
@@ -434,6 +422,11 @@ public class MainActivity extends AppCompatActivity {
         }
         //createNotificationChannel();
         DarkSBIcons();
+
+        Spinner spinner_SuMExplore_FlexibleGenreCard_GenreChooser=findViewById(R.id.SuMExplore_FlexibleGenreCard_GenreChooser);
+        ArrayAdapter<CharSequence>adapter= ArrayAdapter.createFromResource(this, R.array.sumgenreflexmenu, R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
+        spinner_SuMExplore_FlexibleGenreCard_GenreChooser.setAdapter(adapter);
 
 
         int SBH00 = 0;
@@ -544,6 +537,28 @@ public class MainActivity extends AppCompatActivity {
         final TextView textViewToChange = (TextView) findViewById(R.id.SuMUseNameTXT);
         textViewToChange.setText(UserNameFC);
 
+        /*SuMExplore_Home_ScrollView_Main_ELM = ((ScrollView)findViewById(R.id.SuMExplore_Home_ScrollView_Main));
+        SuMExploreScrollViewFunc_Runnable = new Runnable() {
+            @Override
+            public void run() {
+                SuMExploreScrollViewFunc();
+            }
+        };*/
+
+        /*SuMExplore_Home_ScrollView_Main_ELM.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+            @Override
+            public void onScrollChanged() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        SuMExploreScrollViewFunc_Handler.removeCallbacks(SuMExploreScrollViewFunc_Runnable);
+                        SuMExploreScrollViewFunc_Handler.postDelayed(SuMExploreScrollViewFunc_Runnable, 100);
+                    }
+                });
+            }
+
+        });*/
+
         ((Switch)findViewById(R.id.SuMLockInOnOrOff)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
@@ -592,6 +607,21 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        ((Spinner)findViewById(R.id.SuMExplore_FlexibleGenreCard_GenreChooser)).setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                String G_C = ((String)(((TextView)selectedItemView).getText())).replace(" ","").replace("-","");
+                webView0FlexibleGenreCard.loadUrl("about:blank");
+                webView0FlexibleGenreCard.loadUrl("https://sum-manga.azurewebsites.net/ExploreGetByGarn.aspx?GR="+G_C);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+
+        });
+
         MobileAds.initialize(this, initializationStatus -> {
 
         });
@@ -599,6 +629,47 @@ public class MainActivity extends AppCompatActivity {
         onRequestAd();
 
 
+    }
+
+    public boolean SuMExploreScrollViewFunc_Active = false;
+
+    public void SuMExploreScrollViewFunc() {
+
+        int scrollY = (int) convertPixelsToDp(SuMExplore_Home_ScrollView_Main_ELM.getScrollY(), MainActivity.this);
+        ObjectAnimator xTranslate = ObjectAnimator.ofInt(SuMExplore_Home_ScrollView_Main_ELM, "scrollX", 0);
+        ObjectAnimator yTranslate = ObjectAnimator.ofInt(SuMExplore_Home_ScrollView_Main_ELM, "scrollY", 0);
+        AnimatorSet animators = new AnimatorSet();
+        animators.setDuration(280L);
+        animators.playTogether(xTranslate, yTranslate);
+        animators.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator arg0) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator arg0) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void onAnimationEnd(Animator arg0) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void onAnimationCancel(Animator arg0) {
+                // TODO Auto-generated method stub
+            }
+        });
+        animators.start();
+        new android.os.Handler(Looper.getMainLooper()).postDelayed(
+                new Runnable() {
+                    public void run() {
+                        SuMExploreScrollViewFunc_Active = false;
+                    }
+                },
+                500);
     }
 
     public String SuMUltraCurrLink = "";
@@ -609,6 +680,49 @@ public class MainActivity extends AppCompatActivity {
     public void VoidX(View view) {
         return;
     }
+    public void VoidY(View view){
+
+    }
+    public void SuMPauseXWebViews(WebView[] WebViewsToFinish) {
+        for (int i = 0; i < WebViewsToFinish.length; i++) {
+            WebViewsToFinish[i].clearHistory();
+            //WebViewsToFinish[i].destroyDrawingCache();
+            //WebViewsToFinish[i].clearView();
+            //WebViewsToFinish[i].removeAllViews();
+            WebViewsToFinish[i].freeMemory();
+            //WebViewsToFinish[i].pauseTimers();
+            //WebViewsToFinish[i].stopLoading();
+            WebViewsToFinish[i].onPause();
+            //WebViewsToFinish[i].getSettings().setJavaScriptEnabled(false);
+        }
+    }
+    public void SuMPauseXWebView(WebView WebViewsToFinish) {
+        WebViewsToFinish.clearHistory();
+        //WebViewsToFinish.destroyDrawingCache();
+        //WebViewsToFinish.clearView();
+        //WebViewsToFinish.removeAllViews();
+        WebViewsToFinish.freeMemory();
+        //WebViewsToFinish.pauseTimers();
+        //WebViewsToFinish.stopLoading();
+        WebViewsToFinish.onPause();
+        //WebViewsToFinish.getSettings().setJavaScriptEnabled(false);
+    }
+
+    public void SuMResumeXWebViews(WebView[] WebViewsToFinish) {
+        for (int i = 0; i < WebViewsToFinish.length; i++) {
+            WebViewsToFinish[i].onResume();
+            //WebViewsToFinish[i].reload();
+            //WebViewsToFinish[i].resumeTimers();
+            //WebViewsToFinish[i].getSettings().setJavaScriptEnabled(true);
+        }
+    }
+    public void SuMResumeXWebView(WebView WebViewsToFinish) {
+        //WebViewsToFinish.resumeTimers();
+        WebViewsToFinish.onResume();
+        //WebViewsToFinish.getSettings().setJavaScriptEnabled(true);
+        //WebViewsToFinish.reload();
+    }
+
     public void ShowExploreMangaInfoDisc(View view){
         Animation fadeIn = new AlphaAnimation(0, 1);
         fadeIn.setDuration(320);
@@ -723,7 +837,7 @@ public class MainActivity extends AppCompatActivity {
         //clearCache(MainActivity.this,0);
         //deleteDir(getCacheDir());
         //deleteDir(getExternalCacheDir());
-        WebView[] WebViewsFoCache = new WebView[]{ webView0LatestCard,webView0LatestCard,webView0ActionCard, webView1,webView2,webView3AccountSettingsCard,webView4 };
+        WebView[] WebViewsFoCache = new WebView[]{ webView0FlexibleGenreCard, webView1,webView2,webView3AccountSettingsCard,webView4 };
         for (WebView webView : WebViewsFoCache) {
             webView.clearCache(true);
             webView.clearHistory();
@@ -859,93 +973,18 @@ public class MainActivity extends AppCompatActivity {
 
     @SuppressLint("UseCompatLoadingForDrawables")
     public void LoadExplore(View view) {
+        if(simpleViewFlipper.getDisplayedChild()!=0) ((ScrollView)findViewById(R.id.SuMExplore_Home_ScrollView_Main)).scrollTo(0, 0);
         if(RootStateBit == 1){
-            findViewById(R.id.SuMExplore_LaterstCard_BG).setBackground(getDrawable(R.drawable.gb_dark_c22dp));
             findViewById(R.id.SuMExplore_recentsCard_BG).setBackground(getDrawable(R.drawable.gb_dark_c22dp));
-            findViewById(R.id.SuMExplore_ActionCard_BG).setBackground(getDrawable(R.drawable.gb_dark_c22dp));
-            findViewById(R.id.SuMExplore_DramaCard_BG).setBackground(getDrawable(R.drawable.gb_dark_c22dp));
-            findViewById(R.id.SuMExplore_FantsyCard_BG).setBackground(getDrawable(R.drawable.gb_dark_c22dp));
-            findViewById(R.id.SuMExplore_ComedyCard_BG).setBackground(getDrawable(R.drawable.gb_dark_c22dp));
-            findViewById(R.id.SuMExplore_SliceOfLifeCard_BG).setBackground(getDrawable(R.drawable.gb_dark_c22dp));
-            findViewById(R.id.SuMExplore_SciFiCard_BG).setBackground(getDrawable(R.drawable.gb_dark_c22dp));
-            findViewById(R.id.SuMExplore_SupernaturalCard_BG).setBackground(getDrawable(R.drawable.gb_dark_c22dp));
-            findViewById(R.id.SuMExplore_MysteryCard_BG).setBackground(getDrawable(R.drawable.gb_dark_c22dp));
-            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Action_TXT)).setTextColor(Color.WHITE);
-            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Action_NewestTXT)).setTextColor(Color.WHITE);
-            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Action_MoreTXT)).setTextColor(Color.WHITE);
-            findViewById(R.id.SuMExploreCard_GernCard_Action_MoreIMG).setBackground(setTint(getDrawable(R.drawable.ic_forword_black), Color.WHITE));
-            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Drama_TXT)).setTextColor(Color.WHITE);
-            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Drama_NewestTXT)).setTextColor(Color.WHITE);
-            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Drama_MoreTXT)).setTextColor(Color.WHITE);
-            findViewById(R.id.SuMExploreCard_GernCard_Drama_MoreIMG).setBackground(setTint(getDrawable(R.drawable.ic_forword_black), Color.WHITE));
-            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Fantasy_TXT)).setTextColor(Color.WHITE);
-            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Fantasy_NewestTXT)).setTextColor(Color.WHITE);
-            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Fantasy_MoreTXT)).setTextColor(Color.WHITE);
-            findViewById(R.id.SuMExploreCard_GernCard_Fantasy_MoreIMG).setBackground(setTint(getDrawable(R.drawable.ic_forword_black), Color.WHITE));
-            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Comedy_TXT)).setTextColor(Color.WHITE);
-            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Comedy_NewestTXT)).setTextColor(Color.WHITE);
-            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Comedy_MoreTXT)).setTextColor(Color.WHITE);
-            findViewById(R.id.SuMExploreCard_GernCard_Comedy_MoreIMG).setBackground(setTint(getDrawable(R.drawable.ic_forword_black), Color.WHITE));
-            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_SliceofLife_TXT)).setTextColor(Color.WHITE);
-            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_SliceofLife_NewestTXT)).setTextColor(Color.WHITE);
-            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_SliceofLife_MoreTXT)).setTextColor(Color.WHITE);
-            findViewById(R.id.SuMExploreCard_GernCard_SliceofLife_MoreIMG).setBackground(setTint(getDrawable(R.drawable.ic_forword_black), Color.WHITE));
-            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_SciFi_TXT)).setTextColor(Color.WHITE);
-            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_SciFi_NewestTXT)).setTextColor(Color.WHITE);
-            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_SciFi_MoreTXT)).setTextColor(Color.WHITE);
-            findViewById(R.id.SuMExploreCard_GernCard_SciFi_MoreIMG).setBackground(setTint(getDrawable(R.drawable.ic_forword_black), Color.WHITE));
-            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Supernatural_TXT)).setTextColor(Color.WHITE);
-            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Supernatural_NewestTXT)).setTextColor(Color.WHITE);
-            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Supernatural_MoreTXT)).setTextColor(Color.WHITE);
-            findViewById(R.id.SuMExploreCard_GernCard_Supernatural_MoreIMG).setBackground(setTint(getDrawable(R.drawable.ic_forword_black), Color.WHITE));
-            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Mystery_TXT)).setTextColor(Color.WHITE);
-            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Mystery_NewestTXT)).setTextColor(Color.WHITE);
-            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Mystery_MoreTXT)).setTextColor(Color.WHITE);
-            findViewById(R.id.SuMExploreCard_GernCard_Mystery_MoreIMG).setBackground(setTint(getDrawable(R.drawable.ic_forword_black), Color.WHITE));
+            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_FlexibleGenre_TXT)).setTextColor(Color.WHITE);
+            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_FlexibleGenre_MoreTXT)).setTextColor(Color.WHITE);
+            findViewById(R.id.SuMExploreCard_GernCard_FlexibleGenre_MoreIMG).setBackground(setTint(getDrawable(R.drawable.ic_forword_black), Color.WHITE));
         }
         else {
-            findViewById(R.id.SuMExplore_LaterstCard_BG).setBackground(getDrawable(R.drawable.bg_white_c22dp));
             findViewById(R.id.SuMExplore_recentsCard_BG).setBackground(getDrawable(R.drawable.bg_white_c22dp));
-            findViewById(R.id.SuMExplore_ActionCard_BG).setBackground(getDrawable(R.drawable.bg_white_c22dp));
-            findViewById(R.id.SuMExplore_DramaCard_BG).setBackground(getDrawable(R.drawable.bg_white_c22dp));
-            findViewById(R.id.SuMExplore_FantsyCard_BG).setBackground(getDrawable(R.drawable.bg_white_c22dp));
-            findViewById(R.id.SuMExplore_ComedyCard_BG).setBackground(getDrawable(R.drawable.bg_white_c22dp));
-            findViewById(R.id.SuMExplore_SliceOfLifeCard_BG).setBackground(getDrawable(R.drawable.bg_white_c22dp));
-            findViewById(R.id.SuMExplore_SciFiCard_BG).setBackground(getDrawable(R.drawable.bg_white_c22dp));
-            findViewById(R.id.SuMExplore_SupernaturalCard_BG).setBackground(getDrawable(R.drawable.bg_white_c22dp));
-            findViewById(R.id.SuMExplore_MysteryCard_BG).setBackground(getDrawable(R.drawable.bg_white_c22dp));
-            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Action_TXT)).setTextColor(Color.BLACK);
-            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Action_NewestTXT)).setTextColor(Color.BLACK);
-            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Action_MoreTXT)).setTextColor(Color.BLACK);
-            findViewById(R.id.SuMExploreCard_GernCard_Action_MoreIMG).setBackground(setTint(getDrawable(R.drawable.ic_forword_black), Color.BLACK));
-            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Drama_TXT)).setTextColor(Color.BLACK);
-            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Drama_NewestTXT)).setTextColor(Color.BLACK);
-            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Drama_MoreTXT)).setTextColor(Color.BLACK);
-            findViewById(R.id.SuMExploreCard_GernCard_Drama_MoreIMG).setBackground(setTint(getDrawable(R.drawable.ic_forword_black), Color.BLACK));
-            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Fantasy_TXT)).setTextColor(Color.BLACK);
-            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Fantasy_NewestTXT)).setTextColor(Color.BLACK);
-            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Fantasy_MoreTXT)).setTextColor(Color.BLACK);
-            findViewById(R.id.SuMExploreCard_GernCard_Fantasy_MoreIMG).setBackground(setTint(getDrawable(R.drawable.ic_forword_black), Color.BLACK));
-            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Comedy_TXT)).setTextColor(Color.BLACK);
-            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Comedy_NewestTXT)).setTextColor(Color.BLACK);
-            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Comedy_MoreTXT)).setTextColor(Color.BLACK);
-            findViewById(R.id.SuMExploreCard_GernCard_Comedy_MoreIMG).setBackground(setTint(getDrawable(R.drawable.ic_forword_black), Color.BLACK));
-            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_SliceofLife_TXT)).setTextColor(Color.BLACK);
-            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_SliceofLife_NewestTXT)).setTextColor(Color.BLACK);
-            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_SliceofLife_MoreTXT)).setTextColor(Color.BLACK);
-            findViewById(R.id.SuMExploreCard_GernCard_SliceofLife_MoreIMG).setBackground(setTint(getDrawable(R.drawable.ic_forword_black), Color.BLACK));
-            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_SciFi_TXT)).setTextColor(Color.BLACK);
-            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_SciFi_NewestTXT)).setTextColor(Color.BLACK);
-            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_SciFi_MoreTXT)).setTextColor(Color.BLACK);
-            findViewById(R.id.SuMExploreCard_GernCard_SciFi_MoreIMG).setBackground(setTint(getDrawable(R.drawable.ic_forword_black), Color.BLACK));
-            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Supernatural_TXT)).setTextColor(Color.BLACK);
-            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Supernatural_NewestTXT)).setTextColor(Color.BLACK);
-            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Supernatural_MoreTXT)).setTextColor(Color.BLACK);
-            findViewById(R.id.SuMExploreCard_GernCard_Supernatural_MoreIMG).setBackground(setTint(getDrawable(R.drawable.ic_forword_black), Color.BLACK));
-            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Mystery_TXT)).setTextColor(Color.BLACK);
-            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Mystery_NewestTXT)).setTextColor(Color.BLACK);
-            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_Mystery_MoreTXT)).setTextColor(Color.BLACK);
-            findViewById(R.id.SuMExploreCard_GernCard_Mystery_MoreIMG).setBackground(setTint(getDrawable(R.drawable.ic_forword_black), Color.BLACK));
+            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_FlexibleGenre_TXT)).setTextColor(Color.BLACK);
+            ((TextView)findViewById(R.id.SuMExploreCard_GernCard_FlexibleGenre_MoreTXT)).setTextColor(Color.BLACK);
+            findViewById(R.id.SuMExploreCard_GernCard_FlexibleGenre_MoreIMG).setBackground(setTint(getDrawable(R.drawable.ic_forword_black), Color.BLACK));
         }
         if(findViewById(R.id.SuMExploreInfo_ABS).getVisibility() == View.VISIBLE) {
             CloseSuMExploreInfo(null);
@@ -979,24 +1018,28 @@ public class MainActivity extends AppCompatActivity {
         ((TextView)findViewById(R.id.ExploreBTNTXT)).setTextColor(Color.parseColor(RootHexColor));
         LastBSearchView = simpleViewFlipper.getDisplayedChild();
         ViewFlipper ViewFilpperCHelper = (ViewFlipper)findViewById(R.id.simpleViewFlipper);
-        if(ViewFilpperCHelper.getDisplayedChild() == 0 && !(webView0LatestCard.getUrl()).contains("about:")) { return; }
+        if(ViewFilpperCHelper.getDisplayedChild() == 0 && !(webView0FlexibleGenreCard.getUrl()).contains("about:")) { return; }
         if(ViewFilpperCHelper.getDisplayedChild() == 5){
             ViewFilpperCHelper.setDisplayedChild(0);
             return;
         } else {
             LoadXView(
-                    new String[]{"https://sum-manga.azurewebsites.net/ExploreMainCard.aspx",
-                            "https://sum-manga.azurewebsites.net/ExploreRecentlyCard.aspx",
-                            "https://sum-manga.azurewebsites.net/ExploreGetByGarn.aspx?GR=Action",
-                            "https://sum-manga.azurewebsites.net/ExploreGetByGarn.aspx?GR=Drama",
-                            "https://sum-manga.azurewebsites.net/ExploreGetByGarn.aspx?GR=Fantasy",
-                            "https://sum-manga.azurewebsites.net/ExploreGetByGarn.aspx?GR=Comedy",
-                            "https://sum-manga.azurewebsites.net/ExploreGetByGarn.aspx?GR=SliceofLife",
-                            "https://sum-manga.azurewebsites.net/ExploreGetByGarn.aspx?GR=SciFi",
-                            "https://sum-manga.azurewebsites.net/ExploreGetByGarn.aspx?GR=Supernatural",
-                            "https://sum-manga.azurewebsites.net/ExploreGetByGarn.aspx?GR=Mystery"}
+                    new String[]{"https://sum-manga.azurewebsites.net/ExploreRecentlyCard.aspx",
+                            "https://sum-manga.azurewebsites.net/ExploreGetByGarn.aspx?GR=Action"}
             );
         }
+        //SuMPauseXWebView(webView0FlexibleGenreCard);
+        RelativeLayout SuMExplore_FlexibleGenreCard_CardHeightElm = findViewById(R.id.SuMExplore_FlexibleGenreCard_CardHeightElm);
+        double SuMExplore_FlexibleGenreCard_CardHeightElm_ReqNum = Math.floor((((double)convertPixelsToDp(Device_Width,MainActivity.this) - 24 -6) / (118+6)));
+        SuMExplore_FlexibleGenreCard_CardHeightElm_ReqNum = Math.ceil(12/SuMExplore_FlexibleGenreCard_CardHeightElm_ReqNum);
+        int HRS_FG = (int) convertDpToPixel((186+(int)(SuMExplore_FlexibleGenreCard_CardHeightElm_ReqNum*177)),MainActivity.this);
+        ViewGroup.LayoutParams params = SuMExplore_FlexibleGenreCard_CardHeightElm.getLayoutParams();
+        params.height = HRS_FG;
+        SuMExplore_FlexibleGenreCard_CardHeightElm.setLayoutParams(params);
+        SuMResumeXWebViews(new WebView[]{
+                WebView0RecentsCard,
+                webView0FlexibleGenreCard
+        });
         //((ScrollView)findViewById(R.id.SuMExplore_Home_ScrollView_Main)).setVerticalScrollbarThumbDrawable(setTint(getDrawable(R.drawable.scrollbar_thum), Color.parseColor(RootHexColor)));
     }
     @SuppressLint("UseCompatLoadingForDrawables")
@@ -1011,7 +1054,7 @@ public class MainActivity extends AppCompatActivity {
         ViewFlipper ViewFilpperCHelper = (ViewFlipper)findViewById(R.id.simpleViewFlipper);
         if(ViewFilpperCHelper.getDisplayedChild() == 1) { return; }
         //LoadXView(new String[]{"https://sum-manga.azurewebsites.net/Hits.aspx"});
-        LoadXView(new String[]{"about:blank"});
+        LoadXView(new String[]{"https://sum-manga.azurewebsites.net/Library.aspx"});
     }
     @SuppressLint({"UseCompatLoadingForDrawables", "SetTextI18n"})
     public void LoadLibrary(View view) {
@@ -1076,6 +1119,7 @@ public class MainActivity extends AppCompatActivity {
     }
     @SuppressLint({"UseCompatLoadingForDrawables", "DefaultLocale"})
     public void LoadSettings(View view) {
+        if(simpleViewFlipper.getDisplayedChild()!=3) ((ScrollView)findViewById(R.id.SuMSettings_ScrollView_Main)).scrollTo(0, 0);
         if(RootStateBit == 1) {
             findViewById(R.id.SuMWebViewIndex3AccountSettingsCardBG).setBackground(getDrawable(R.drawable.gb_dark_c22dp));
             findViewById(R.id.SuMCoinnsABDCard_BG).setBackground(getDrawable(R.drawable.gb_dark_c22dp));
@@ -1474,20 +1518,17 @@ public class MainActivity extends AppCompatActivity {
             WebViewsToFinish[i].onResume();
         }
     }
+    public boolean SuMSettingsLoadded = false;
+    public boolean SuMLibraryLoadded = false;
+    public boolean SuMHitLoadded = false;
+    public boolean SuMExploreLoadded = false;
+    public boolean SuMSearchLoadded = false;
     @SuppressLint("UseCompatLoadingForDrawables")
     public void LoadXView(String[] xurl) {
         int CurrIndexPTM = ((ViewFlipper)findViewById(R.id.simpleViewFlipper)).getDisplayedChild();
         WebView[] WebViewToDistroy = new WebView[]{
-                webView0LatestCard,
                 WebView0RecentsCard,
-                webView0ActionCard,
-                WebView0DramaCard,
-                webView0FantasyCard,
-                webView0ComedyCard,
-                webView0SliceofLifeCard,
-                webView0SciFiCard,
-                webView0SupernaturalCard,
-                webView0MysteryCard};
+                webView0FlexibleGenreCard};
         if(CurrIndexPTM == 1){
             WebViewToDistroy = new WebView[]{webView1};
         }
@@ -1500,30 +1541,19 @@ public class MainActivity extends AppCompatActivity {
         if(CurrIndexPTM == 4){
             WebViewToDistroy = new WebView[]{webView4};
         }
-        if(!FirstLoad) {
-            destroyWebViews(WebViewToDistroy);
-        }
         WebView[] webViewX = new WebView[]{
-                webView0LatestCard,
                 WebView0RecentsCard,
-                webView0ActionCard,
-                WebView0DramaCard,
-                webView0FantasyCard,
-                webView0ComedyCard,
-                webView0SliceofLifeCard,
-                webView0SciFiCard,
-                webView0SupernaturalCard,
-                webView0MysteryCard};
+                webView0FlexibleGenreCard};
         int IndexX = 0;
         if(xurl[0].contains("/Explore")){
-            //GetThisWenViewReady(webView,false,false,false);
+
         }
         if(xurl[0].contains("/MangaExplorer")) {
             SuMBTActTopNBottomVoid();
         } else {
             SuMBTActNormalVoid();
         }
-        if(xurl[0].contains("/Hits")||xurl[0].contains("about:blank")) {
+        if(xurl[0].contains("/Library")||xurl[0].contains("/Library.aspx")) {
             IndexX = 1;
             webViewX = new WebView[]{ webView1 };
         }
@@ -1540,17 +1570,15 @@ public class MainActivity extends AppCompatActivity {
             webViewX = new WebView[]{ webView4 };;
             SuMBTActTopNBottomVoid();
         }
-        //LoadColors(xurl[0]);
-        for(int i = 0; i < xurl.length; i++) {
-            if(!FirstLoad) {
-                webViewX[i].onResume();
-            }
-            if(!webViewX[i].getUrl().equals(xurl[i])) {
+        SuMPauseXWebViews(WebViewToDistroy);
+        SuMResumeXWebViews(webViewX);
+
+        for (int i = 0; i < xurl.length; i++) {
+            if (!webViewX[i].getUrl().equals(xurl[i])) {
                 webViewX[i].loadUrl(xurl[i]);
-                //webViewX[i].loadUrl("about:blank");
             }
         }
-        if(FirstLoad){ FirstLoad = false;}
+
         simpleViewFlipper.setDisplayedChild(IndexX);
 
         if(xurl[0].contains("/MangaExplorer.aspx")) {
@@ -1558,7 +1586,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             findViewById(R.id.SuMUseNameTXT).setVisibility(View.VISIBLE);
         }
-        if(xurl[0].contains("/Hits.aspx")) {
+        if(xurl[0].contains("/Library.aspx")) {
         }
         if(xurl[0].contains("/UserLibrary.aspx")) {
         }
@@ -1921,8 +1949,7 @@ public class MainActivity extends AppCompatActivity {
     {
         super.onSaveInstanceState(outState);
         WebView0RecentsCard.saveState(outState);
-        webView0ActionCard.saveState(outState);
-        webView0LatestCard.saveState(outState);
+        webView0FlexibleGenreCard.saveState(outState);
         webView2.saveState(outState);
         webView1.saveState(outState);
         webView4.saveState(outState);
@@ -1938,8 +1965,7 @@ public class MainActivity extends AppCompatActivity {
     {
         super.onRestoreInstanceState(savedInstanceState);
         WebView0RecentsCard.restoreState(savedInstanceState);
-        webView0ActionCard.restoreState(savedInstanceState);
-        webView0LatestCard.restoreState(savedInstanceState);
+        webView0FlexibleGenreCard.restoreState(savedInstanceState);
         webView2.restoreState(savedInstanceState);
         webView1.restoreState(savedInstanceState);
         webView4.restoreState(savedInstanceState);
@@ -2030,7 +2056,7 @@ public class MainActivity extends AppCompatActivity {
                 if(LastBSearchView==1) LoadHit(null);
                 if(LastBSearchView==2) LoadLibrary(null);
                 if(LastBSearchView==3) LoadSettings(null);
-                if(LastBSearchView>3) LoadExplore(null);
+                //if(LastBSearchView>3) LoadExplore(null);
                 simpleViewFlipper.setDisplayedChild(LastBSearchView);
                 return false;
             }
@@ -3329,16 +3355,8 @@ public class MainActivity extends AppCompatActivity {
                 public void run() {
                     int CurrIndexPTM = ((ViewFlipper)findViewById(R.id.simpleViewFlipper)).getDisplayedChild();
                     WebViewToDistroyABS = new WebView[]{
-                            webView0LatestCard,
                             WebView0RecentsCard,
-                            webView0ActionCard,
-                            WebView0DramaCard,
-                            webView0FantasyCard,
-                            webView0ComedyCard,
-                            webView0SliceofLifeCard,
-                            webView0SciFiCard,
-                            webView0SupernaturalCard,
-                            webView0MysteryCard};
+                            webView0FlexibleGenreCard};
                     if(CurrIndexPTM == 1){
                         WebViewToDistroyABS = new WebView[]{webView1};
                     }
@@ -3465,7 +3483,10 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
                 if(GlobalCurrCoinsCount > CoinsRequred){
+                    SuMResumeXWebView(webView6_SECURE);
+                    webView6_SECURE.loadUrl("about:blank");
                     webView6_SECURE.loadUrl("https://sum-manga.azurewebsites.net"+ReadingURL.replace("MangaExplorer.aspx","MangaExplorerCard.aspx"));
+                    //webView6_SECURE.setVisibility(View.VISIBLE);
                     Animation fadeIn = new AlphaAnimation(0, 1);
                     fadeIn.setDuration(320);
                     getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
@@ -3497,6 +3518,7 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(MainActivity.this, CoinsRequred+" coins are required you can get some in SETTINGS", Toast.LENGTH_SHORT).show();
                 }
+                webView6_SECURE.setVisibility(View.VISIBLE);
             }
         });
     }
@@ -3505,19 +3527,10 @@ public class MainActivity extends AppCompatActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                //LoadXView(null);
                 int CurrIndexPTM = ((ViewFlipper)findViewById(R.id.simpleViewFlipper)).getDisplayedChild();
                 WebViewToDistroyABS = new WebView[]{
-                        webView0LatestCard,
                         WebView0RecentsCard,
-                        webView0ActionCard,
-                        WebView0DramaCard,
-                        webView0FantasyCard,
-                        webView0ComedyCard,
-                        webView0SliceofLifeCard,
-                        webView0SciFiCard,
-                        webView0SupernaturalCard,
-                        webView0MysteryCard};
+                        webView0FlexibleGenreCard};
                 if(CurrIndexPTM == 1){
                     WebViewToDistroyABS = new WebView[]{webView1};
                 }
@@ -3531,7 +3544,8 @@ public class MainActivity extends AppCompatActivity {
                     WebViewToDistroyABS = new WebView[]{webView4};
                 }
                 destroyWebViews(WebViewToDistroyABS);
-                webView6_SECURE.loadUrl("https://sum-manga.azurewebsites.net/storeitems"+ReadingURL.replace("MangaExplorer.aspx","MangaExplorerCard.aspx"));
+                webView6_SECURE.setVisibility(View.VISIBLE);
+                webView6_SECURE.loadUrl("https://sum-manga.azurewebsites.net/"+ReadingURL.replace("MangaExplorer.aspx","MangaExplorerCard.aspx"));
                 Animation fadeIn = new AlphaAnimation(0, 1);
                 fadeIn.setDuration(320);
                 getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
@@ -3552,7 +3566,6 @@ public class MainActivity extends AppCompatActivity {
 
                 );
                 getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
                 Toast.makeText(MainActivity.this, "Reading mode is activated", Toast.LENGTH_SHORT).show();
             }
         });
@@ -3563,6 +3576,7 @@ public class MainActivity extends AppCompatActivity {
             @SuppressLint("UseCompatLoadingForDrawables")
             @Override
             public void run() {
+                SuMPauseXWebView(webView6_SECURE);
                 if(WebViewToDistroyABS!=null){
                     for(int i =0;i<WebViewToDistroyABS.length;i++){
                         WebViewToDistroyABS[i].onResume();
@@ -3604,61 +3618,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-
-
-
-
-
-    @JavascriptInterface
-    public void ResizewebView1HitsCard(final int HDFSJSFromCardIsHeight){
-
-        runOnUiThread(new Runnable() {
-            @SuppressLint("CutPasteId")
-            @Override
-            public void run() {
-                double b = HDFSJSFromCardIsHeight;
-                if(b<855){
-                    b=855;
-                }
-                @SuppressLint("CutPasteId") ValueAnimator slideAnimator = ValueAnimator
-                        .ofInt(findViewById(R.id.SuMWebViewIndex1_HeightSet).getMeasuredHeight(), (int) (b * (getResources().getDisplayMetrics().density)))
-                        .setDuration(180);
-                slideAnimator.addUpdateListener(animation1 -> {
-                    Integer value = (Integer) animation1.getAnimatedValue();
-                    findViewById(R.id.SuMWebViewIndex1_HeightSet).getLayoutParams().height = value;
-                    findViewById(R.id.SuMWebViewIndex1_HeightSet).requestLayout();
-                });
-                AnimatorSet animationSet = new AnimatorSet();
-                animationSet.setInterpolator(new AccelerateDecelerateInterpolator());
-                animationSet.play(slideAnimator);
-                animationSet.start();
-                final double c = b;
-                new android.os.Handler(Looper.getMainLooper()).postDelayed(
-                        new Runnable() {
-                            public void run() {
-                                View layout = findViewById(R.id.SuMWebViewIndex1_HeightSet);
-                                ViewGroup.LayoutParams params = layout.getLayoutParams();
-                                params.height = (int) (c * (getResources().getDisplayMetrics().density));
-                                layout.setLayoutParams(params);
-                                layout = findViewById(R.id.SuMWebViewIndex1);
-                                params = layout.getLayoutParams();
-                                params.height = (int) (c * (getResources().getDisplayMetrics().density));
-                                layout.setLayoutParams(params);
-                            }
-                        },
-                        180);
-
-            }
-        });
-
-    }
-
-
-
-
-
-
 
 
 }

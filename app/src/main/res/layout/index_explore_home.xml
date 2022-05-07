@@ -7,6 +7,11 @@
     tools:context=".MainActivity">
 
     <LinearLayout
+        android:id="@+id/SuMExplore_Home_ScrollView_Main_HeightHelper"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:ignore="UselessParent">
@@ -22,7 +27,7 @@
             android:scrollbarTrackVertical="@drawable/scrollbar_track"
             android:scrollbarThumbVertical="@drawable/scrollbar_thum"
         -->
-        <androidx.core.widget.NestedScrollView
+        <ScrollView
             android:id="@+id/SuMExplore_Home_ScrollView_Main"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -38,11 +43,13 @@
                 android:orientation="vertical"
                 tools:ignore="ScrollViewSize">
 
-                <include layout="@layout/explore_laytest_card_layout" />
+                <!-- <include layout="@layout/explore_laytest_card_layout" /> -->
 
                 <include layout="@layout/explore_recents_layout" />
 
-                <include layout="@layout/explore_action_layout" />
+                <include layout="@layout/explore_flexiblegenres_layout" />
+
+                <!-- <include layout="@layout/explore_action_layout" />
 
                 <include layout="@layout/explore_drama_layout" />
 
@@ -56,12 +63,12 @@
 
                 <include layout="@layout/explore_supernatural_layout" />
 
-                <include layout="@layout/explore_mystery_layout" />
+                <include layout="@layout/explore_mystery_layout" /> -->
 
 
             </LinearLayout>
 
-        </androidx.core.widget.NestedScrollView>
+        </ScrollView>
 
     </LinearLayout>
 

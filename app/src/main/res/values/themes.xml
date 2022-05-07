@@ -95,4 +95,10 @@
         <item name="android:windowSplashScreenAnimatedIcon" tools:targetApi="31">@drawable/splash_animate</item>
     </style>
 
+    <style name="spinnerItemStyle" parent="android:Widget.TextView.SpinnerItem">
+    </style>
+
+    <style name="spinnerDropDownItemStyle" parent="android:TextAppearance.Widget.TextView.SpinnerItem">
+    </style>
+
 </resources>
