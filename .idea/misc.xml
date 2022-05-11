@@ -94,6 +94,7 @@
         <entry key="..\:/SuM-Manga-V3_Android_APP_Cards/SuM-Manga-V3-Android-APP-Cards/app/src/main/res/drawable/bg_black_nb_c0dp.xml" value="0.1855" />
         <entry key="..\:/SuM-Manga-V3_Android_APP_Cards/SuM-Manga-V3-Android-APP-Cards/app/src/main/res/drawable/bg_black_nb_c0dp_info.xml" value="0.1855" />
         <entry key="..\:/SuM-Manga-V3_Android_APP_Cards/SuM-Manga-V3-Android-APP-Cards/app/src/main/res/drawable/bg_black_nb_c22dp_info.xml" value="0.1855" />
+        <entry key="..\:/SuM-Manga-V3_Android_APP_Cards/SuM-Manga-V3-Android-APP-Cards/app/src/main/res/drawable/bg_carditem.xml" value="0.191" />
         <entry key="..\:/SuM-Manga-V3_Android_APP_Cards/SuM-Manga-V3-Android-APP-Cards/app/src/main/res/drawable/bg_dark_c25dp.xml" value="0.184" />
         <entry key="..\:/SuM-Manga-V3_Android_APP_Cards/SuM-Manga-V3-Android-APP-Cards/app/src/main/res/drawable/bg_gern_tr_bor_w_c_fixer.xml" value="0.1805" />
         <entry key="..\:/SuM-Manga-V3_Android_APP_Cards/SuM-Manga-V3-Android-APP-Cards/app/src/main/res/drawable/bg_info_disc_btn.xml" value="0.185" />
@@ -122,6 +123,7 @@
         <entry key="..\:/SuM-Manga-V3_Android_APP_Cards/SuM-Manga-V3-Android-APP-Cards/app/src/main/res/drawable/splash_animate.xml" value="0.1805" />
         <entry key="..\:/SuM-Manga-V3_Android_APP_Cards/SuM-Manga-V3-Android-APP-Cards/app/src/main/res/drawable/splash_brand_layer.xml" value="0.1815" />
         <entry key="..\:/SuM-Manga-V3_Android_APP_Cards/SuM-Manga-V3-Android-APP-Cards/app/src/main/res/layout/activity_main.xml" value="0.2444078947368421" />
+        <entry key="..\:/SuM-Manga-V3_Android_APP_Cards/SuM-Manga-V3-Android-APP-Cards/app/src/main/res/layout/card_item.xml" value="0.1394736842105263" />
         <entry key="..\:/SuM-Manga-V3_Android_APP_Cards/SuM-Manga-V3-Android-APP-Cards/app/src/main/res/layout/explore_action_layout.xml" value="0.24193548387096775" />
         <entry key="..\:/SuM-Manga-V3_Android_APP_Cards/SuM-Manga-V3-Android-APP-Cards/app/src/main/res/layout/explore_comedy_layout.xml" value="0.2444078947368421" />
         <entry key="..\:/SuM-Manga-V3_Android_APP_Cards/SuM-Manga-V3-Android-APP-Cards/app/src/main/res/layout/explore_drama_layout.xml" value="0.2444078947368421" />

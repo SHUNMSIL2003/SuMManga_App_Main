@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--XML implementation of Card Layout-->
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_margin="0dp"
+    android:background="@android:color/transparent"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="0dp">
+
+    <RelativeLayout
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:background="@android:color/transparent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:gravity="bottom"
+            android:layout_width="match_parent"
+            android:layout_height="177dp">
+
+            <ImageView
+                android:id="@+id/idMangaCover"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_arrow_back_white_36dp" />
+
+
+            <RelativeLayout
+                android:id="@+id/idMangaTitle_Co"
+                android:alpha="0.96"
+                android:layout_alignParentBottom="true"
+                android:gravity="center"
+                android:background="@android:color/holo_red_light"
+                android:minHeight="54dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/idMangaTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="17.6sp"
+                    android:paddingStart="6dp"
+                    android:paddingEnd="6dp"
+                    android:paddingBottom="8dp"
+                    android:paddingTop="4dp"
+                    android:textColor="@android:color/white"
+                    android:fontFamily="@font/varela_round"
+                    android:text="MangaName"
+                    android:textAlignment="center" />
+            </RelativeLayout>
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

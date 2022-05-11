@@ -33,6 +33,8 @@
                 android:scrollbarSize="4dp"
                 android:scrollbarThumbVertical="@drawable/scrollbar_thum"
                 android:scrollbarTrackVertical="@drawable/scrollbar_track"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 tools:ignore="UselessParent">
 
                 <LinearLayout

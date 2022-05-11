@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:background="@android:color/transparent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="964dp"
     tools:context=".MainActivity">
 
     <RelativeLayout
@@ -17,27 +18,28 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_width="match_parent"
-        android:layout_height="464dp">
+        android:layout_height="match_parent">
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
             <RelativeLayout
-                android:layout_marginTop="6dp"
                 android:layout_width="match_parent"
                 android:layout_height="74dp"
+                android:layout_marginTop="6dp"
                 android:paddingStart="24dp"
                 android:paddingTop="12dp"
                 android:paddingEnd="28dp"
                 android:paddingBottom="6dp">
 
                 <LinearLayout
-                    android:layout_marginTop="0dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
+                    android:layout_marginTop="0dp"
                     android:orientation="vertical">
 
                     <TextView
@@ -60,43 +62,44 @@
                         android:layout_marginStart="2dp"
                         android:layout_marginTop="-9dp"
                         android:alpha="0.86">
+
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="28dp"
                             android:layout_alignParentStart="true"
-                            android:paddingTop="2dp"
+                            android:background="@android:color/transparent"
                             android:gravity="center"
                             android:onClick="More_Action"
-                            android:background="@android:color/transparent"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:paddingTop="2dp">
 
                             <Spinner
                                 android:id="@+id/SuMExplore_FlexibleGenreCard_GenreChooser"
-                                android:spinnerMode="dropdown"
-                                android:layout_gravity="center"
-                                android:gravity="center"
-                                android:background="@android:color/transparent"
                                 android:layout_width="68dp"
-                                android:layout_height="38dp"/>
+                                android:layout_height="38dp"
+                                android:layout_gravity="center"
+                                android:background="@android:color/transparent"
+                                android:gravity="center"
+                                android:spinnerMode="dropdown" />
 
                             <TextView
                                 android:id="@+id/SuMExploreCard_GernCard_FlexibleGenre_MoreTXT"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:alpha="0.74"
-                                android:visibility="gone"
                                 android:fontFamily="@font/varela_round"
                                 android:text="More"
                                 android:textColor="@android:color/black"
                                 android:textSize="18sp"
                                 android:textStyle="normal"
+                                android:visibility="gone"
                                 tools:ignore="HardcodedText" />
 
                             <View
                                 android:id="@+id/SuMExploreCard_GernCard_FlexibleGenre_MoreIMG"
-                                android:layout_marginStart="-3dp"
                                 android:layout_width="18dp"
                                 android:layout_height="18dp"
+                                android:layout_marginStart="-3dp"
                                 android:layout_marginTop="1dp"
                                 android:alpha="0.74"
                                 android:background="@drawable/ic_forword_black" />
@@ -130,15 +133,24 @@
 
 
             </RelativeLayout>
-            <RelativeLayout
-                android:paddingStart="0dp"
-                android:paddingEnd="6dp"
-                android:layout_marginTop="-8dp"
-                android:layout_marginBottom="12dp"
-                android:layout_width="match_parent"
-                android:layout_height="fill_parent">
 
-                <WebView
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:paddingStart="12dp"
+                android:paddingTop="12dp"
+                android:paddingBottom="0dp"
+                android:paddingEnd="12dp">
+
+                <GridView
+                    android:id="@+id/SuMFlex_GridView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:horizontalSpacing="4dp"
+                    android:numColumns="3"
+                    android:verticalSpacing="4dp" />
+
+                <!-- <WebView
                     android:id="@+id/SuMWebView_FlexibleGenre"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -148,7 +160,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent" /> -->
             </RelativeLayout>
         </LinearLayout>
 

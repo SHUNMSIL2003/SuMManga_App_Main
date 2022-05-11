@@ -30,11 +30,13 @@ import android.hardware.biometrics.BiometricPrompt;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CancellationSignal;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.StrictMode;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.renderscript.Allocation;
@@ -43,6 +45,7 @@ import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
 import android.text.format.DateUtils;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -65,6 +68,7 @@ import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -93,11 +97,15 @@ import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.rewarded.RewardedAdCallback;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.widget.TextView;
 import android.widget.ViewFlipper;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.xml.sax.InputSource;
+import org.xml.sax.XMLReader;
 
 import java.io.File;
 import java.io.IOException;
@@ -108,6 +116,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
+import java.io.IOException;
+
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
 
 
 public class MainActivity extends AppCompatActivity {
@@ -140,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
 
     //WebView webView0LatestCard;
     WebView WebView0RecentsCard;
-    WebView webView0FlexibleGenreCard;
+    //WebView webView0FlexibleGenreCard;
     WebView webView1;
     WebView webView2;
     WebView webView3AccountSettingsCard;
@@ -275,6 +293,7 @@ public class MainActivity extends AppCompatActivity {
     public Runnable SuMExploreScrollViewFunc_Runnable;
     public int SuMExploreScrollViewFunc_scrollY = 0;
 
+
     @SuppressLint({"SetJavaScriptEnabled", "UseCompatLoadingForDrawables"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -285,12 +304,15 @@ public class MainActivity extends AppCompatActivity {
             MainActivity.this.finish();
             return;
         }
+        //StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        //StrictMode.setThreadPolicy(policy);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         Device_Height = displayMetrics.heightPixels;
         Device_Width = displayMetrics.widthPixels;
         setContentView(R.layout.activity_main);
+
 
         SharedPreferences mPrefs = getSharedPreferences("summanga", 0);
         String mSuMlOCKBit = mPrefs.getString("sumlockbit", "0");
@@ -366,9 +388,9 @@ public class MainActivity extends AppCompatActivity {
         WebView0RecentsCard = (WebView) findViewById(R.id.SuMWebView_ResentsCard);
         WebView0RecentsCard.setVisibility(View.VISIBLE);
         GetThisWenViewReady(WebView0RecentsCard, false, false, false,false);
-        webView0FlexibleGenreCard = (WebView) findViewById(R.id.SuMWebView_FlexibleGenre);
-        webView0FlexibleGenreCard.setVisibility(View.VISIBLE);
-        GetThisWenViewReady(webView0FlexibleGenreCard, false, false, false,false);
+        //webView0FlexibleGenreCard = (WebView) findViewById(R.id.SuMWebView_FlexibleGenre);
+        //webView0FlexibleGenreCard.setVisibility(View.VISIBLE);
+        //GetThisWenViewReady(webView0FlexibleGenreCard, false, false, false,false);
         webView4 = (WebView) findViewById(R.id.SuMWebViewIndex4);
         webView4.setVisibility(View.VISIBLE);
         GetThisWenViewReady(webView4, false, false, false,false);
@@ -611,8 +633,142 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 String G_C = ((String)(((TextView)selectedItemView).getText())).replace(" ","").replace("-","");
-                webView0FlexibleGenreCard.loadUrl("about:blank");
-                webView0FlexibleGenreCard.loadUrl("https://sum-manga.azurewebsites.net/ExploreGetByGarn.aspx?GR="+G_C);
+                //webView0FlexibleGenreCard.loadUrl("about:blank");
+                //webView0FlexibleGenreCard.loadUrl("https://sum-manga.azurewebsites.net/ExploreGetByGarn.aspx?GR="+G_C);
+                String CURL = "http://sum-manga.azurewebsites.net/ExploreGetByGarnAPI.aspx?GR="+G_C;
+                new Thread(new Runnable() {
+                    public void run() {
+
+                        try {
+                            OkHttpClient client = new OkHttpClient();
+                            Request request = new Request.Builder()
+                                    .url(CURL)
+                                    .build();
+                            Response responses = null;
+                            try {
+                                responses = client.newCall(request).execute();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            String resStr = responses.body().string();
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    //String[] web = new String[]{"Jujutsu Kaisen","Blue Period"};
+                                    //String[] imageurl = new String[]{"/storeitems/Jujutsu-Kaisen-Gege-Akutami120220222/Jujutsu-Kaisen.png","/storeitems/blue-period/blue-period.jpg"};
+
+                                    final int data_ItemsNum = resStr.split("\"CardBG\":").length -1;
+                                    String[] MangaCoverLink_Native = new String[data_ItemsNum];
+                                    String[] SuMExploreTitle_Native = new String[data_ItemsNum];
+                                    String[] ThemeColor_Native = new String[data_ItemsNum];
+                                    String[] SuMExploreURL_Native = new String[data_ItemsNum];
+                                    String[] SuMExploreAuthor_Native = new String[data_ItemsNum];
+                                    String[] SuMExploreGerns_Native = new String[data_ItemsNum];
+                                    String[] MangaAgeRating_Native = new String[data_ItemsNum];
+
+                                    JSONArray jsonArr = null;
+                                    try {
+                                        jsonArr = new JSONArray(resStr);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                    for (int i = 0; i < jsonArr.length(); i++)
+                                    {
+                                        JSONObject jsonObj = null;
+                                        try {
+                                            jsonObj = jsonArr.getJSONObject(i);
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                        System.out.println(jsonObj);
+                                    }
+
+                                    for (int i = 0; i < jsonArr.length(); ++i) {
+                                        JSONObject rec = null;
+                                        try {
+                                            rec = jsonArr.getJSONObject(i);
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                        try {
+                                            MangaCoverLink_Native[i] = rec.getString("CardBG");
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                        try {
+                                            SuMExploreTitle_Native[i] = rec.getString("cardtitle");
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                        try {
+                                            ThemeColor_Native[i] = rec.getString("theme").replace("(","").replace(")","").replace("rgb","").replace("a","".replace(",0.74",""));
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                        try {
+                                            SuMExploreURL_Native[i] = rec.getString("Link");
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                        try {
+                                            SuMExploreAuthor_Native[i] = rec.getString("Auther");
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                        try {
+                                            SuMExploreGerns_Native[i] = rec.getString("GernsString");
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                        try {
+                                            MangaAgeRating_Native[i] = rec.getString("AgeRating");
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                        // ...
+                                    }
+                                    /*String Links=" ";
+                                    for(int i =0;i<MangaCoverLink_Native.length;i++) Links+=ThemeColor_Native[i]+"    ,    ";
+                                    AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+                                    alertDialog.setTitle("Alert");
+                                    alertDialog.setMessage(" "+Links);
+                                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                                            new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    dialog.dismiss();
+                                                }
+                                            });
+                                    alertDialog.show();*/
+                                    CustomGrid adapter = new CustomGrid(MainActivity.this, SuMExploreTitle_Native , MangaCoverLink_Native, ThemeColor_Native);
+                                    GridView grid=(GridView)findViewById(R.id.SuMFlex_GridView);
+                                    grid.setAdapter(adapter);
+
+                                    grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                                        @Override
+                                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                            try {
+                                                try {
+                                                    SuMExploreInfoStart_Native(SuMExploreURL_Native[+ position], ThemeColor_Native[+ position], SuMExploreTitle_Native[+ position], SuMExploreAuthor_Native[+ position], SuMExploreGerns_Native[+ position], MangaAgeRating_Native[+ position], MangaCoverLink_Native[+ position]);
+                                                } catch (InterruptedException e) {
+                                                    e.printStackTrace();
+                                                }
+                                            } catch (IOException e) {
+                                                e.printStackTrace();
+                                                Toast.makeText(MainActivity.this, SuMExploreTitle_Native[+ position]+" is unavailable!", Toast.LENGTH_SHORT).show();
+                                            }
+                                            //Toast.makeText(MainActivity.this, "You Clicked at " +SuMExploreTitle_Native[+ position], Toast.LENGTH_SHORT).show();
+
+                                        }
+                                    });
+                                }
+                            });
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                }).start();
             }
 
             @Override
@@ -837,7 +993,7 @@ public class MainActivity extends AppCompatActivity {
         //clearCache(MainActivity.this,0);
         //deleteDir(getCacheDir());
         //deleteDir(getExternalCacheDir());
-        WebView[] WebViewsFoCache = new WebView[]{ webView0FlexibleGenreCard, webView1,webView2,webView3AccountSettingsCard,webView4 };
+        WebView[] WebViewsFoCache = new WebView[]{ /*webView0FlexibleGenreCard,*/ webView1,webView2,webView3AccountSettingsCard,webView4 };
         for (WebView webView : WebViewsFoCache) {
             webView.clearCache(true);
             webView.clearHistory();
@@ -1018,14 +1174,14 @@ public class MainActivity extends AppCompatActivity {
         ((TextView)findViewById(R.id.ExploreBTNTXT)).setTextColor(Color.parseColor(RootHexColor));
         LastBSearchView = simpleViewFlipper.getDisplayedChild();
         ViewFlipper ViewFilpperCHelper = (ViewFlipper)findViewById(R.id.simpleViewFlipper);
-        if(ViewFilpperCHelper.getDisplayedChild() == 0 && !(webView0FlexibleGenreCard.getUrl()).contains("about:")) { return; }
+        //if(ViewFilpperCHelper.getDisplayedChild() == 0 && !(webView0FlexibleGenreCard.getUrl()).contains("about:")) { return; }
         if(ViewFilpperCHelper.getDisplayedChild() == 5){
             ViewFilpperCHelper.setDisplayedChild(0);
             return;
         } else {
             LoadXView(
-                    new String[]{"https://sum-manga.azurewebsites.net/ExploreRecentlyCard.aspx",
-                            "https://sum-manga.azurewebsites.net/ExploreGetByGarn.aspx?GR=Action"}
+                    new String[]{"https://sum-manga.azurewebsites.net/ExploreRecentlyCard.aspx"/*,
+                            "https://sum-manga.azurewebsites.net/ExploreGetByGarn.aspx?GR=Action"*/}
             );
         }
         //SuMPauseXWebView(webView0FlexibleGenreCard);
@@ -1037,8 +1193,8 @@ public class MainActivity extends AppCompatActivity {
         params.height = HRS_FG;
         SuMExplore_FlexibleGenreCard_CardHeightElm.setLayoutParams(params);
         SuMResumeXWebViews(new WebView[]{
-                WebView0RecentsCard,
-                webView0FlexibleGenreCard
+                WebView0RecentsCard/*,
+                webView0FlexibleGenreCard*/
         });
         //((ScrollView)findViewById(R.id.SuMExplore_Home_ScrollView_Main)).setVerticalScrollbarThumbDrawable(setTint(getDrawable(R.drawable.scrollbar_thum), Color.parseColor(RootHexColor)));
     }
@@ -1527,8 +1683,8 @@ public class MainActivity extends AppCompatActivity {
     public void LoadXView(String[] xurl) {
         int CurrIndexPTM = ((ViewFlipper)findViewById(R.id.simpleViewFlipper)).getDisplayedChild();
         WebView[] WebViewToDistroy = new WebView[]{
-                WebView0RecentsCard,
-                webView0FlexibleGenreCard};
+                WebView0RecentsCard/*,
+                webView0FlexibleGenreCard*/};
         if(CurrIndexPTM == 1){
             WebViewToDistroy = new WebView[]{webView1};
         }
@@ -1542,8 +1698,8 @@ public class MainActivity extends AppCompatActivity {
             WebViewToDistroy = new WebView[]{webView4};
         }
         WebView[] webViewX = new WebView[]{
-                WebView0RecentsCard,
-                webView0FlexibleGenreCard};
+                WebView0RecentsCard/*,
+                webView0FlexibleGenreCard*/};
         int IndexX = 0;
         if(xurl[0].contains("/Explore")){
 
@@ -1949,7 +2105,7 @@ public class MainActivity extends AppCompatActivity {
     {
         super.onSaveInstanceState(outState);
         WebView0RecentsCard.saveState(outState);
-        webView0FlexibleGenreCard.saveState(outState);
+        //webView0FlexibleGenreCard.saveState(outState);
         webView2.saveState(outState);
         webView1.saveState(outState);
         webView4.saveState(outState);
@@ -1965,7 +2121,7 @@ public class MainActivity extends AppCompatActivity {
     {
         super.onRestoreInstanceState(savedInstanceState);
         WebView0RecentsCard.restoreState(savedInstanceState);
-        webView0FlexibleGenreCard.restoreState(savedInstanceState);
+        //webView0FlexibleGenreCard.restoreState(savedInstanceState);
         webView2.restoreState(savedInstanceState);
         webView1.restoreState(savedInstanceState);
         webView4.restoreState(savedInstanceState);
@@ -3355,8 +3511,106 @@ public class MainActivity extends AppCompatActivity {
                 public void run() {
                     int CurrIndexPTM = ((ViewFlipper)findViewById(R.id.simpleViewFlipper)).getDisplayedChild();
                     WebViewToDistroyABS = new WebView[]{
-                            WebView0RecentsCard,
-                            webView0FlexibleGenreCard};
+                            WebView0RecentsCard/*,
+                            webView0FlexibleGenreCard*/};
+                    if(CurrIndexPTM == 1){
+                        WebViewToDistroyABS = new WebView[]{webView1};
+                    }
+                    if(CurrIndexPTM == 2){
+                        WebViewToDistroyABS = new WebView[]{webView2};
+                    }
+                    if(CurrIndexPTM == 3){
+                        WebViewToDistroyABS = new WebView[]{webView3AccountSettingsCard};
+                    }
+                    if(CurrIndexPTM == 4){
+                        WebViewToDistroyABS = new WebView[]{webView4};
+                    }
+                    if(CurrIndexPTM>4){
+                        WebViewToDistroyABS = null;
+                    }
+                    if(WebViewToDistroyABS != null) {
+                        destroyWebViews(WebViewToDistroyABS);
+                    }
+                    if (!isConnectedToInternet()) {
+                        final WallpaperManager wallpaperManager = WallpaperManager.getInstance(MainActivity.this);
+                        @SuppressLint("MissingPermission") final Drawable wallpaperDrawable = wallpaperManager.getDrawable();
+                        final Bitmap image = Bitmap.createScaledBitmap(((BitmapDrawable) wallpaperDrawable).getBitmap(), 260, 390, false);
+                    } else {
+                        SuMExploreInfoBG(aabc);
+                    }
+                    LoadColors();
+                    String[] rgbrootpross = ThemeColor.replace(" ", "").replace("rgb", "").replace("a", "").replace("(", "").replace(")", "").split(",");
+                    String hex = String.format("#%02x%02x%02x", Integer.parseInt(rgbrootpross[0]), Integer.parseInt(rgbrootpross[1]), Integer.parseInt(rgbrootpross[2]));
+                    findViewById(R.id.SuMEXPLOREiNFO_MangaDiscBG).setBackground(setTint(getResources().getDrawable(R.drawable.bg_xcolor_c22dp), Color.parseColor(hex)));
+                    findViewById(R.id.ExploreBTN).setBackground(setTint(getResources().getDrawable(R.drawable.ic_dashboard_black_48dp), Color.parseColor(hex)));
+                    ((TextView) findViewById(R.id.ExploreBTNTXT)).setTextColor(Color.parseColor(hex));
+                    findViewById(R.id.SuMNavBarExtendor).setBackground(setTint(getResources().getDrawable(R.drawable.bg_xcolor_nb_c0dp), Color.parseColor(hex)));
+                    findViewById(R.id.SuMNavBarExtendor).setAlpha((float) 0.0);
+                    findViewById(R.id.SuMNavBar).setAlpha((float) 0.0);
+                    findViewById(R.id.SuMNavBar).setBackground(setTint(getResources().getDrawable(R.drawable.bg_xcolor_nb_c0dp), Color.parseColor(hex)));
+                    TextView textvivesubt = (TextView) findViewById(R.id.SuMMangaTXT);
+                    textvivesubt.setTextColor(Color.parseColor(hex));
+                    textvivesubt = (TextView) findViewById(R.id.NavBackTXT);
+                    textvivesubt.setTextColor(Color.parseColor(hex));
+                    ((TextView) findViewById(R.id.SuMExploreInfo_MangaAgeRating)).setText(MangaAgeRating);
+                    webView5.onResume();
+                    webView5.loadUrl("https://sum-manga.azurewebsites.net" + SuMExploreURL.replace("ContantExplorer.aspx", "ContantExplorerCard.aspx"));
+                    //findViewById(R.id.SuMExploreInfo_MangaBGColor).setClipToOutline(true);
+                    findViewById(R.id.SuMExploreInfo_MangaIMG_CornerFix).setClipToOutline(true);
+                    Animation fadeIn = new AlphaAnimation(0, 1);
+                    fadeIn.setDuration(320);
+                    findViewById(R.id.SuMExploreInfo_ABS).setVisibility(View.VISIBLE);
+                    findViewById(R.id.SuMExploreInfo_ABS).startAnimation(fadeIn);
+                }
+            });
+        } else {
+            Toast.makeText(MainActivity.this, "Login in SETTINGS to start reading now!", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void SuMExploreInfoStart_Native(String SuMExploreURL,String ThemeColor,String SuMExploreTitle,String SuMExploreAuthor,String SuMExploreGerns,String MangaAgeRating,String MangaCoverLink) throws IOException, InterruptedException {
+        int UID = 0;
+        Object cookies = CookieManager.getInstance().getCookie("https://sum-manga.azurewebsites.net/");
+        if (cookies != null) {
+            if (cookies.toString().contains("SuMCurrentUser")) {
+                String[] AA = cookies.toString().replace(" ", "").split(";");
+                for (int i = 0; i < AA.length; i++) {
+                    if (AA[i].contains("ID=")) {
+                        String[] BBA = AA[i].split("&");
+                        for(int ii = 0; ii<BBA.length;ii++) {
+                            if (BBA[ii].contains("ID=")&& !BBA[ii].contains("SID")) {
+                                UID = Integer.parseInt(BBA[ii].replace(" ", "").replace("ID=", "").replace("SuMCurrentUser=", "").replace("&","").replace("C",""));
+                                ii = BBA.length;
+                            }
+                        }
+                        i = AA.length;
+                    }
+                }
+            }
+        }
+        if(UID>0) {
+            URL MangaCoverLinkURL = new URL("https://sum-manga.azurewebsites.net" + MangaCoverLink);
+            final Bitmap[] image = {null};
+            Thread secondThread = new Thread(() -> {
+                try {
+                    image[0] = BitmapFactory.decodeStream(MangaCoverLinkURL.openConnection().getInputStream());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+            secondThread.start();
+            secondThread.join();
+            SuMExploreInfoTitle(SuMExploreTitle);
+            SuMExploreInfoAuthor(SuMExploreAuthor);
+            SuMExploreInfoGerns(SuMExploreGerns);
+            final Bitmap aabc = image[0];
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    int CurrIndexPTM = ((ViewFlipper)findViewById(R.id.simpleViewFlipper)).getDisplayedChild();
+                    WebViewToDistroyABS = new WebView[]{
+                            WebView0RecentsCard/*,
+                            webView0FlexibleGenreCard*/};
                     if(CurrIndexPTM == 1){
                         WebViewToDistroyABS = new WebView[]{webView1};
                     }
@@ -3452,6 +3706,8 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         findViewById(R.id.SuMExploreInfo_ABS).setVisibility(View.GONE);
+                        webView5.loadUrl("about:blank");
+                        SuMPauseXWebView(webView5);
                     }
                 }, 320);
             }
@@ -3529,8 +3785,8 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 int CurrIndexPTM = ((ViewFlipper)findViewById(R.id.simpleViewFlipper)).getDisplayedChild();
                 WebViewToDistroyABS = new WebView[]{
-                        WebView0RecentsCard,
-                        webView0FlexibleGenreCard};
+                        WebView0RecentsCard/*,
+                        webView0FlexibleGenreCard*/};
                 if(CurrIndexPTM == 1){
                     WebViewToDistroyABS = new WebView[]{webView1};
                 }
@@ -3620,6 +3876,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+}
+class GetExample {
+    final OkHttpClient client = new OkHttpClient();
+
+    String run(String url) throws IOException {
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        try (Response response = client.newCall(request).execute()) {
+            return response.body().string();
+        }
+    }
+
+    public static void main(String[] args) throws IOException {
+        GetExample example = new GetExample();
+        String response = example.run("https://raw.github.com/square/okhttp/master/README.md");
+        System.out.println(response);
+    }
 }
 
 
