@@ -258,6 +258,7 @@
                                                 android:onClick="ClaimOneTokenByADS">
 
                                                 <View
+                                                    android:foreground="?attr/selectableItemBackground"
                                                     android:id="@+id/SuMCoinsCardBTN_ClaimOneByADBG"
                                                     android:layout_width="match_parent"
                                                     android:layout_height="28dp"
@@ -354,6 +355,7 @@
                                                 android:onClick="Claim8TokenByDolars">
 
                                                 <View
+                                                    android:foreground="?attr/selectableItemBackground"
                                                     android:id="@+id/SuMCoinsCardBTN_Claim8DolarByMony"
                                                     android:layout_width="match_parent"
                                                     android:layout_height="match_parent"
@@ -450,6 +452,7 @@
                                                 android:onClick="Claim18TokenByDolars">
 
                                                 <View
+                                                    android:foreground="?attr/selectableItemBackground"
                                                     android:id="@+id/SuMCoinsCardBTN_Claim18DolarByMony"
                                                     android:layout_width="match_parent"
                                                     android:layout_height="match_parent"
@@ -546,6 +549,7 @@
                                                 android:onClick="Claim124TokenByDolars">
 
                                                 <View
+                                                    android:foreground="?attr/selectableItemBackground"
                                                     android:id="@+id/SuMCoinsCardBTN_Claim124DolarByMony"
                                                     android:layout_width="match_parent"
                                                     android:layout_height="match_parent"
@@ -642,6 +646,7 @@
                                                 android:onClick="Claim1132TokenByDolars">
 
                                                 <View
+                                                    android:foreground="?attr/selectableItemBackground"
                                                     android:id="@+id/SuMCoinsCardBTN_Claim1132DolarByMony"
                                                     android:layout_width="match_parent"
                                                     android:layout_height="match_parent"
@@ -1126,6 +1131,7 @@
                                         android:onClick="ClearCacheX">
 
                                         <View
+                                            android:foreground="?attr/selectableItemBackground"
                                             android:id="@+id/SuMClearCacheBTNBG"
                                             android:layout_width="46dp"
                                             android:layout_height="28dp"

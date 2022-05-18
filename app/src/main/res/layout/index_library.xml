@@ -50,8 +50,10 @@
 
 
                 <LinearLayout
+                    android:foreground="?attr/selectableItemBackground"
                     android:id="@+id/LoadLibraryCurrBTN"
                     android:onClick="LoadLibraryCurr"
+                    android:clipToOutline="true"
                     android:background="@drawable/gb_dark_c22dp"
                     android:layout_width="80dp"
                     android:padding="0dp"
@@ -82,6 +84,8 @@
                     android:layout_weight="3" />
 
                 <LinearLayout
+                    android:foreground="?attr/selectableItemBackground"
+                    android:clipToOutline="true"
                     android:id="@+id/LoadLibraryFavBTN"
                     android:onClick="LoadLibraryFav"
                     android:background="@android:color/transparent"
@@ -114,6 +118,8 @@
                     android:layout_weight="3" />
 
                 <LinearLayout
+                    android:foreground="?attr/selectableItemBackground"
+                    android:clipToOutline="true"
                     android:id="@+id/LoadLibraryWannaBTN"
                     android:onClick="LoadLibraryWanna"
                     android:background="@android:color/transparent"
@@ -191,6 +197,8 @@
                 android:orientation="horizontal">
 
                 <View
+                    android:foreground="?attr/selectableItemBackground"
+                    android:clipToOutline="true"
                     android:id="@+id/SuMLibraryInfoViewIMG"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="parent"

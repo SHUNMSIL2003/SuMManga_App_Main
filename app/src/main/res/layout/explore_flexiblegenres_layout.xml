@@ -5,12 +5,12 @@
     android:layout_width="match_parent"
     android:background="@android:color/transparent"
     android:layout_height="wrap_content"
-    android:minHeight="964dp"
+    app:layout_constraintHeight_default="wrap"
     tools:context=".MainActivity">
 
     <RelativeLayout
         android:id="@+id/SuMExplore_FlexibleGenreCard_CardHeightElm"
-        android:paddingTop="12dp"
+        android:paddingTop="0dp"
         android:paddingBottom="0dp"
         android:paddingEnd="0dp"
         android:paddingStart="0dp"
@@ -18,149 +18,77 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <RelativeLayout
+                android:layout_marginBottom="12dp"
+                android:gravity="center"
                 android:layout_width="match_parent"
-                android:layout_height="74dp"
-                android:layout_marginTop="6dp"
-                android:paddingStart="24dp"
-                android:paddingTop="12dp"
-                android:paddingEnd="28dp"
-                android:paddingBottom="6dp">
+                android:layout_height="164dp">
+
+                <View
+                    android:alpha="0.86"
+                    android:background="@drawable/bg_white_c22dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+                <RelativeLayout
+                    android:padding="3dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <View
+                        android:background="@android:color/darker_gray"
+                        android:alpha="0.86"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+                </RelativeLayout>
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginTop="0dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/SuMExploreCard_GernCard_FlexibleGenre_TXT"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="0dp"
-                        android:alpha="0.96"
-                        android:fontFamily="@font/varela_round"
-                        android:text="SuM-Flex genre"
-                        android:textColor="@android:color/black"
-                        android:textSize="28sp"
-                        android:textStyle="normal"
-                        tools:ignore="HardcodedText" />
-
-
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="2dp"
-                        android:layout_marginTop="-9dp"
-                        android:alpha="0.86">
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="28dp"
-                            android:layout_alignParentStart="true"
-                            android:background="@android:color/transparent"
-                            android:gravity="center"
-                            android:onClick="More_Action"
-                            android:orientation="horizontal"
-                            android:paddingTop="2dp">
-
-                            <Spinner
-                                android:id="@+id/SuMExplore_FlexibleGenreCard_GenreChooser"
-                                android:layout_width="68dp"
-                                android:layout_height="38dp"
-                                android:layout_gravity="center"
-                                android:background="@android:color/transparent"
-                                android:gravity="center"
-                                android:spinnerMode="dropdown" />
-
-                            <TextView
-                                android:id="@+id/SuMExploreCard_GernCard_FlexibleGenre_MoreTXT"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:alpha="0.74"
-                                android:fontFamily="@font/varela_round"
-                                android:text="More"
-                                android:textColor="@android:color/black"
-                                android:textSize="18sp"
-                                android:textStyle="normal"
-                                android:visibility="gone"
-                                tools:ignore="HardcodedText" />
-
-                            <View
-                                android:id="@+id/SuMExploreCard_GernCard_FlexibleGenre_MoreIMG"
-                                android:layout_width="18dp"
-                                android:layout_height="18dp"
-                                android:layout_marginStart="-3dp"
-                                android:layout_marginTop="1dp"
-                                android:alpha="0.74"
-                                android:background="@drawable/ic_forword_black" />
-
-                        </LinearLayout>
-                    </RelativeLayout>
-
-                    <!-- <TextView
-                        android:id="@+id/SuMExploreCard_GernCard_FlexibleGenre_NewestTXT"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="2dp"
-                        android:layout_marginTop="-9dp"
-                        android:alpha="0.32"
-                        android:fontFamily="@font/varela_round"
-                        android:text="latest 12"
-                        android:textColor="@android:color/black"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        tools:ignore="HardcodedText" /> -->
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <View
+                            android:background="@drawable/ic_filter_alt_fill1_wght400_grad0_opsz48"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"/>
+                    </LinearLayout>
                 </LinearLayout>
-
-                <ImageView
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:alpha="0.86"
-                    android:src="@drawable/ic_dashboard_black_48dp"
-                    app:tint="@color/black" />
-
 
             </RelativeLayout>
 
             <RelativeLayout
+                android:layout_gravity="center"
+                android:gravity="center"
                 android:layout_width="match_parent"
-                android:layout_height="fill_parent"
-                android:paddingStart="12dp"
-                android:paddingTop="12dp"
-                android:paddingBottom="0dp"
-                android:paddingEnd="12dp">
-
-                <GridView
-                    android:id="@+id/SuMFlex_GridView"
+                android:layout_height="wrap_content">
+                <RelativeLayout
+                    android:id="@+id/scout_recycler_view_Width"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:horizontalSpacing="4dp"
-                    android:numColumns="3"
-                    android:verticalSpacing="4dp" />
+                    android:layout_height="wrap_content"
+                    android:paddingStart="-8dp"
+                    android:paddingTop="0dp"
+                    android:paddingBottom="0dp"
+                    android:paddingEnd="4dp">
 
-                <!-- <WebView
-                    android:id="@+id/SuMWebView_FlexibleGenre"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@android:color/transparent"
-                    android:fontFamily="@font/varela_round"
-                    android:visibility="visible"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" /> -->
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/scout_recycler_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false"
+                        android:orientation="vertical"
+                        android:scrollbars="none"
+                        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                        app:spanCount="2" />
+                </RelativeLayout>
             </RelativeLayout>
         </LinearLayout>
 

@@ -18,7 +18,7 @@ public class SuMSettings extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         SuMStaticVs.RedirectFromSuMNotiURL = "Settings";
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, SplashScreen.class);
         this.startActivity(intent);
         this.finishAffinity();
     }

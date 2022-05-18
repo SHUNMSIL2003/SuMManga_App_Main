@@ -1,5 +1,6 @@
 package com.summanga.android;
 
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -17,6 +18,7 @@ import androidx.core.app.NotificationCompat;
 
 //Created By Prabhat Dwivedi
 public class Notification_receiver extends BroadcastReceiver {
+    @SuppressLint("UnspecifiedImmutableFlag")
     @Override
     public void onReceive(Context context, Intent intent) {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);

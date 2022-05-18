@@ -18,7 +18,7 @@ public class SuMSearch extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         SuMStaticVs.RedirectFromSuMNotiURL = "Search";
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, SplashScreen.class);
         this.startActivity(intent);
         this.finishAffinity();
     }

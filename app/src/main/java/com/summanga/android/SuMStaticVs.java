@@ -15,5 +15,7 @@ public class SuMStaticVs {
     public static Boolean ADRewaredEarned = false;
     public static Boolean ADProssEnded = false;
 
+    public static Context MainC;
+
 }
 

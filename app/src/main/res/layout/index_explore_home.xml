@@ -37,9 +37,10 @@
             android:scrollbarStyle="outsideOverlay">
 
             <LinearLayout
+                android:background="@android:color/transparent"
                 android:layout_marginBottom="174dp"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
                 tools:ignore="ScrollViewSize">
 
@@ -47,11 +48,18 @@
 
                 <include layout="@layout/explore_recents_layout" />
 
-                <include layout="@layout/explore_flexiblegenres_layout" />
+                <RelativeLayout
+                    android:padding="12dp"
+                    android:background="@android:color/transparent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <include layout="@layout/explore_flexiblegenres_layout" />
+                </RelativeLayout>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
+                    android:layout_height="112dp"
                     tools:ignore="UselessLeaf" />
 
                 <!-- <include layout="@layout/explore_action_layout" />

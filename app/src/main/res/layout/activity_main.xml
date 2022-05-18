@@ -13,11 +13,17 @@
     android:windowSoftInputMode="adjustResize"
     tools:context=".MainActivity">
     <!-- The "fitsSystemWindows" attribute needs to be set to "true" if you want the "windowSoftInputMode" attribute to take effect! -->
+    <ImageView
+        android:id="@+id/SuMBackIMG"
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:scaleType="centerCrop"
+        android:layout_height="match_parent"/>
     <View
         android:id="@+id/SuMBackCWA"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:alpha="1.0"
+        android:alpha="0.64"
         android:background="#e3e3e3"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -30,7 +36,7 @@
         android:layout_height="match_parent"
         android:alpha="0.02"
         android:background="#e3e3e3"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -68,13 +74,37 @@
             <include layout="@layout/index_settings" />
             <include layout="@layout/index_search" />
         </ViewFlipper>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:paddingStart="64dp"
+        android:paddingEnd="64dp"
+        android:gravity="center"
+        android:background="#52000000"
+        android:visibility="gone"
+        android:onClick="VoidX"
+        android:id="@+id/SuMViewFilpperClickBlocker"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:alpha="0.86"
+            android:indeterminate="true"
+            android:indeterminateBehavior="repeat"
+            android:indeterminateOnly="true"
+            app:indicatorColor="@android:color/white"
+            app:trackColor="@android:color/transparent"
+            app:trackCornerRadius="2dp"
+            app:trackThickness="4dp" />
     </RelativeLayout>
 
     <TextView
         android:id="@+id/SuMUseNameTXT"
         android:layout_width="match_parent"
         android:layout_height="26dp"
-        android:alpha="0.86"
+        android:alpha="1.0"
         android:fontFamily="@font/varela_round"
         android:gravity="center"
         android:text=""
@@ -154,6 +184,7 @@
             android:orientation="horizontal"
             android:layout_height="wrap_content">
             <LinearLayout
+                android:foreground="?attr/selectableItemBackgroundBorderless"
                 android:onClick="GoBack"
                 android:layout_width="wrap_content"
                 android:padding="0dp"
@@ -199,6 +230,7 @@
                 android:layout_height="28dp"
                 android:layout_marginTop="-2dp"
                 android:background="@drawable/ic_search_black_36dp"
+                android:foreground="?attr/selectableItemBackgroundBorderless"
                 android:onClick="LoadSearch" />
             <!-- app:layout_constraintBottom_toBottomOf="@id/SuMMenuLayout"-->
         </LinearLayout>
@@ -224,6 +256,7 @@
                 android:gravity="center"
                 android:layout_height="wrap_content">
                 <ImageButton
+                    android:foreground="?attr/selectableItemBackgroundBorderless"
                     android:id="@+id/ExploreBTN"
                     android:onClick="LoadExplore"
                     android:background="@android:color/transparent"
@@ -255,6 +288,7 @@
                 android:gravity="center"
                 android:layout_height="wrap_content">
                 <ImageButton
+                    android:foreground="?attr/selectableItemBackgroundBorderless"
                     android:id="@+id/HitsBTN"
                     android:onClick="LoadHit"
                     android:background="@android:color/transparent"
@@ -286,6 +320,7 @@
                 android:gravity="center"
                 android:layout_height="wrap_content">
                 <ImageButton
+                    android:foreground="?attr/selectableItemBackgroundBorderless"
                     android:id="@+id/LibraryBTN"
                     android:onClick="LoadLibrary"
                     android:background="@android:color/transparent"
@@ -317,6 +352,7 @@
                 android:gravity="center"
                 android:layout_height="wrap_content">
                 <ImageButton
+                    android:foreground="?attr/selectableItemBackgroundBorderless"
                     android:id="@+id/SettingsBTN"
                     android:onClick="LoadSettings"
                     android:background="@android:color/transparent"
@@ -374,6 +410,7 @@
     <RelativeLayout
         android:id="@+id/SuMMangaExploreInfo_MangaDiscABS"
         android:onClick="HideMangaDisc"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
         android:visibility="gone"
         android:padding="24dp"
         android:gravity="center"
