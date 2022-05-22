@@ -33,33 +33,76 @@
                                android:layout_width="wrap_content"
                                android:layout_height="wrap_content">
                                <RelativeLayout
+                                   android:gravity="bottom"
+                                   android:paddingTop="38dp"
+                                   android:background="#52000000"
                                    android:layout_width="match_parent"
                                    android:layout_height="wrap_content">
 
                                    <View
-                                       android:layout_width="match_parent"
-                                       android:layout_height="68dp"
-                                       android:alpha="0.32"
-                                       android:background="@android:color/black" />
-
-                                   <View
+                                       android:layout_width="32dp"
+                                       android:layout_height="32dp"
+                                       android:layout_alignParentStart="true"
+                                       android:layout_marginStart="18dp"
+                                       android:layout_marginTop="3.5dp"
+                                       android:alpha="0.74"
+                                       android:background="@drawable/ic_arrow_back_ios_fill1_wght600_grad0_opsz48"
                                        android:foreground="?attr/selectableItemBackgroundBorderless"
-                                       android:layout_width="36dp"
-                                       android:layout_height="36dp"
-                                       android:layout_marginStart="12dp"
-                                       android:layout_marginTop="32dp"
-                                       android:background="@drawable/ic_arrow_back_white_36dp"
                                        android:onClick="CloseSuMExploreInfo" />
+
+                                   <LinearLayout
+                                       android:layout_alignParentEnd="true"
+                                       android:layout_width="wrap_content"
+                                       android:layout_height="wrap_content"
+                                       android:gravity="center"
+                                       android:orientation="horizontal"
+                                       android:paddingStart="0dp"
+                                       android:paddingEnd="12dp">
+
+                                       <LinearLayout
+                                           android:layout_width="wrap_content"
+                                           android:layout_height="40dp"
+                                           android:gravity="center"
+                                           android:layout_marginEnd="-3dp"
+                                           android:orientation="horizontal">
+
+                                           <TextView
+                                               android:layout_width="wrap_content"
+                                               android:layout_height="wrap_content"
+                                               android:layout_marginTop="8dp"
+                                               android:layout_marginEnd="-20dp"
+                                               android:alpha="0.60"
+                                               android:fontFamily="@font/varela_round"
+                                               android:text="Wanna"
+                                               android:textColor="@android:color/white"
+                                               android:textSize="12sp" />
+
+                                           <View
+                                               android:layout_width="38dp"
+                                               android:layout_height="38dp"
+                                               android:layout_marginStart="8dp"
+                                               android:alpha="0.74"
+                                               android:background="@drawable/ic_add_fill1_wght600_grad0_opsz48" />
+                                       </LinearLayout>
+
+                                       <View
+                                           android:layout_width="39dp"
+                                           android:layout_height="39dp"
+                                           android:layout_marginStart="2dp"
+                                           android:alpha="0.74"
+                                           android:background="@drawable/ic_bookmark_fill0_wght500_grad0_opsz48" />
+
+                                   </LinearLayout>
                                </RelativeLayout>
                                <RelativeLayout
                                    android:id="@+id/SuMExploreInfo_MangaBluredBG"
                                    android:layout_width="match_parent"
-                                   android:layout_height="224dp"
+                                   android:layout_height="232dp"
                                    android:gravity="top">
 
                                    <View
                                        android:layout_width="match_parent"
-                                       android:layout_height="224dp"
+                                       android:layout_height="match_parent"
                                        android:alpha="0.32"
                                        android:background="@android:color/black" />
 
@@ -74,6 +117,79 @@
 
                                        <include layout="@layout/explore_info_toppart" />
 
+                                   </RelativeLayout>
+                               </RelativeLayout>
+                               <RelativeLayout
+                                   android:layout_width="match_parent"
+                                   android:layout_height="68dp" >
+
+                                   <View
+                                       android:layout_width="match_parent"
+                                       android:layout_height="match_parent"
+                                       android:alpha="0.32"
+                                       android:background="@android:color/black" />
+
+                                   <RelativeLayout
+                                       android:layout_width="match_parent"
+                                       android:layout_height="wrap_content"
+                                       android:gravity="center"
+                                       android:paddingStart="12dp"
+                                       android:paddingEnd="12dp"
+                                       android:paddingBottom="6dp">
+
+                                       <LinearLayout
+                                           android:layout_width="wrap_content"
+                                           android:layout_height="58dp"
+                                           android:background="@drawable/bg_w_tr_mangainfo_currbtn"
+                                           android:clipToOutline="true"
+                                           android:foreground="?attr/selectableItemBackground"
+                                           android:gravity="start"
+                                           android:orientation="horizontal"
+                                           android:paddingStart="0dp"
+                                           android:paddingEnd="24dp"
+                                           tools:ignore="UnusedAttribute">
+
+                                           <ImageView
+                                               android:layout_width="62dp"
+                                               android:layout_height="match_parent"
+                                               android:layout_marginEnd="16dp"
+                                               android:alpha="0.64"
+                                               android:background="@drawable/bg_w_tr_mangainfo_currbtn"
+                                               android:clipToOutline="true"
+                                               tools:ignore="UnusedAttribute" />
+
+                                           <LinearLayout
+                                               android:layout_width="wrap_content"
+                                               android:layout_height="64dp"
+                                               android:gravity="center"
+                                               android:orientation="vertical"
+                                               android:paddingTop="12dp">
+
+                                               <TextView
+                                                   android:layout_width="wrap_content"
+                                                   android:layout_height="wrap_content"
+                                                   android:layout_marginTop="-12dp"
+                                                   android:alpha="0.64"
+                                                   android:fontFamily="@font/varela_round"
+                                                   android:text="Chapter"
+                                                   android:textColor="@android:color/white"
+                                                   android:textSize="11.6sp"
+                                                   tools:ignore="HardcodedText,RtlSymmetry" />
+
+                                               <TextView
+                                                   android:id="@+id/SuMMangaExploreInfo_CURR_CN"
+                                                   android:layout_width="wrap_content"
+                                                   android:layout_height="wrap_content"
+                                                   android:alpha="0.86"
+                                                   android:layout_marginTop="-3dp"
+                                                   android:fontFamily="@font/varela_round"
+                                                   android:text="0"
+                                                   android:textColor="@android:color/white"
+                                                   android:textSize="23sp"
+                                                   tools:ignore="HardcodedText,RtlSymmetry" />
+                                           </LinearLayout>
+
+                                       </LinearLayout>
                                    </RelativeLayout>
                                </RelativeLayout>
                            </LinearLayout>

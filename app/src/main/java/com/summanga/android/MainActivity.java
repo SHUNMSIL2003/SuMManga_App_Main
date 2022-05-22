@@ -33,13 +33,11 @@ import android.hardware.biometrics.BiometricPrompt;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CancellationSignal;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.StrictMode;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.renderscript.Allocation;
@@ -49,36 +47,26 @@ import android.renderscript.ScriptIntrinsicBlur;
 import android.text.format.DateUtils;
 import android.util.Base64;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.webkit.ConsoleMessage;
 import android.webkit.CookieManager;
-import android.webkit.CookieSyncManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
-import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -112,8 +100,6 @@ import android.widget.ViewFlipper;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.xml.sax.InputSource;
-import org.xml.sax.XMLReader;
 
 import java.io.File;
 import java.io.IOException;
@@ -125,10 +111,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import java.io.IOException;
-
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
 
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
@@ -139,7 +121,6 @@ import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final int SPLASH_TIME_OUT = 6000;
 
     //Declare Recyclerview , Adapter and ArrayList
     private RecyclerView recyclerView;
@@ -150,7 +131,6 @@ public class MainActivity extends AppCompatActivity {
 
     public int LastBSearchView = 0;
 
-    public int IndexBeforeSearch = 0;
 
 
     int GlobalCurrCoinsCount = 0;
@@ -166,18 +146,12 @@ public class MainActivity extends AppCompatActivity {
 
     private RewardedAd rewardedAd;
 
-    boolean MenuonLongClick = false;
-    boolean MenuonLongClickIsGoing = false;
 
-    //WebView webView0LatestCard;
     WebView WebView0RecentsCard;
-    //WebView webView0FlexibleGenreCard;
-    WebView webView1;
     WebView webView2;
     WebView webView3AccountSettingsCard;
     WebView webView4;
     WebView webView5;
-    WebView webView6_SECURE;
     WebView webViewX_SECURE;
 
     int Device_Width=0;
@@ -204,11 +178,6 @@ public class MainActivity extends AppCompatActivity {
     public void GetThisWenViewReady(WebView webViewx, boolean ReqPer, boolean ReqFileUpload,boolean CanLoadMoreLinks,boolean ZoomEnabled) {
 
 
-        /*if (!CanLoadMoreLinks) {
-            webViewx.setWebViewClient(new xWebViewClient());
-        } else {
-            webViewx.setWebViewClient(new yWebViewClient());
-        }*/
         webViewx.setWebViewClient(new WebViewClient() {
             public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
                 //Users will be notified in case there's an error (i.e. no internet connection)
@@ -216,7 +185,8 @@ public class MainActivity extends AppCompatActivity {
             }
 
             public void onPageFinished(WebView view, String url) {
-                CookieSyncManager.getInstance().sync();
+                //CookieSyncManager.getInstance().sync();
+                CookieManager.getInstance().flush();
             }
         });
         if (ReqFileUpload) {
@@ -331,9 +301,9 @@ public class MainActivity extends AppCompatActivity {
             MainActivity.this.finish();
             return;
         }
-        CookieSyncManager.createInstance(MainActivity.this);
-        CookieManager.getInstance().setAcceptCookie(true);
-        CookieSyncManager.getInstance().startSync();
+        //CookieSyncManager.createInstance(MainActivity.this);
+        //CookieManager.getInstance().setAcceptCookie(true);
+        //CookieSyncManager.getInstance().startSync();
         String LOADING_MESSAGE;
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
@@ -405,15 +375,9 @@ public class MainActivity extends AppCompatActivity {
         webView3AccountSettingsCard = (WebView) findViewById(R.id.SuMWebViewIndex3AccountSettingsCard);
         webView3AccountSettingsCard.setVisibility(View.VISIBLE);
         GetThisWenViewReady(webView3AccountSettingsCard, false, true, true,false);
-        webView1 = (WebView) findViewById(R.id.SuMWebViewIndex1);
-        webView1.setVisibility(View.VISIBLE);
-        GetThisWenViewReady(webView1, false, false, false,false);
         webView5 = (WebView) findViewById(R.id.SuMWebViewIndex5);
         webView5.setVisibility(View.VISIBLE);
         GetThisWenViewReady(webView5, false, false, false,false);
-        webView6_SECURE = (WebView) findViewById(R.id.SuMWebViewIndex6_MangaReader);
-        webView6_SECURE.setVisibility(View.VISIBLE);
-        GetThisWenViewReady(webView6_SECURE, false, false, false,true);
         webViewX_SECURE = (WebView) findViewById(R.id.webViewX_SECURE_JS);
         webViewX_SECURE.setVisibility(View.GONE);
         GetThisWenViewReady(webViewX_SECURE, false, false, false,false);
@@ -710,7 +674,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
     public void SuMPauseXWebViews(WebView[] WebViewsToFinish) {
-        CookieSyncManager.getInstance().stopSync();
+        //CookieSyncManager.getInstance().stopSync();
+        CookieManager.getInstance().flush();
         for (int i = 0; i < WebViewsToFinish.length; i++) {
             WebViewsToFinish[i].clearHistory();
             //WebViewsToFinish[i].destroyDrawingCache();
@@ -724,7 +689,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     public void SuMPauseXWebView(WebView WebViewsToFinish) {
-        CookieSyncManager.getInstance().stopSync();
+        //CookieSyncManager.getInstance().stopSync();
+        CookieManager.getInstance().flush();
         WebViewsToFinish.clearHistory();
         //WebViewsToFinish.destroyDrawingCache();
         //WebViewsToFinish.clearView();
@@ -743,14 +709,14 @@ public class MainActivity extends AppCompatActivity {
             //WebViewsToFinish[i].resumeTimers();
             //WebViewsToFinish[i].getSettings().setJavaScriptEnabled(true);
         }
-        CookieSyncManager.getInstance().startSync();
+        //CookieSyncManager.getInstance().startSync();
     }
     public void SuMResumeXWebView(WebView WebViewsToFinish) {
         //WebViewsToFinish.resumeTimers();
         WebViewsToFinish.onResume();
         //WebViewsToFinish.getSettings().setJavaScriptEnabled(true);
         //WebViewsToFinish.reload();
-        CookieSyncManager.getInstance().startSync();
+        //CookieSyncManager.getInstance().startSync();
     }
 
     public void ShowExploreMangaInfoDisc(View view){
@@ -867,7 +833,7 @@ public class MainActivity extends AppCompatActivity {
         //clearCache(MainActivity.this,0);
         //deleteDir(getCacheDir());
         //deleteDir(getExternalCacheDir());
-        WebView[] WebViewsFoCache = new WebView[]{ /*webView0FlexibleGenreCard,*/ webView1,webView2,webView3AccountSettingsCard,webView4 };
+        WebView[] WebViewsFoCache = new WebView[]{webView2,webView3AccountSettingsCard,webView4 };
         for (WebView webView : WebViewsFoCache) {
             webView.clearCache(true);
             webView.clearHistory();
@@ -1087,8 +1053,6 @@ public class MainActivity extends AppCompatActivity {
         LastBSearchView = simpleViewFlipper.getDisplayedChild();
         ViewFlipper ViewFilpperCHelper = (ViewFlipper)findViewById(R.id.simpleViewFlipper);
         if(ViewFilpperCHelper.getDisplayedChild() == 1) { return; }
-        //LoadXView(new String[]{"https://sum-manga.azurewebsites.net/Hits.aspx"});
-        LoadXView(new String[]{"https://sum-manga.azurewebsites.net/Library.aspx"});
     }
     @SuppressLint({"UseCompatLoadingForDrawables", "SetTextI18n"})
     public void LoadLibrary(View view) {
@@ -1570,14 +1534,9 @@ public class MainActivity extends AppCompatActivity {
     public boolean SuMSearchLoadded = false;
     @SuppressLint("UseCompatLoadingForDrawables")
     public void LoadXView(String[] xurl) {
-        CookieSyncManager.getInstance().sync();
         int CurrIndexPTM = ((ViewFlipper)findViewById(R.id.simpleViewFlipper)).getDisplayedChild();
         WebView[] WebViewToDistroy = new WebView[]{
-                WebView0RecentsCard/*,
-                webView0FlexibleGenreCard*/};
-        if(CurrIndexPTM == 1){
-            WebViewToDistroy = new WebView[]{webView1};
-        }
+                WebView0RecentsCard};
         if(CurrIndexPTM == 2){
             WebViewToDistroy = new WebView[]{webView2};
         }
@@ -1588,8 +1547,7 @@ public class MainActivity extends AppCompatActivity {
             WebViewToDistroy = new WebView[]{webView4};
         }
         WebView[] webViewX = new WebView[]{
-                WebView0RecentsCard/*,
-                webView0FlexibleGenreCard*/};
+                WebView0RecentsCard};
         int IndexX = 0;
         if(xurl[0].contains("/Explore")){
 
@@ -1598,10 +1556,6 @@ public class MainActivity extends AppCompatActivity {
             SuMBTActTopNBottomVoid();
         } else {
             SuMBTActNormalVoid();
-        }
-        if(xurl[0].contains("/Library")||xurl[0].contains("/Library.aspx")) {
-            IndexX = 1;
-            webViewX = new WebView[]{ webView1 };
         }
         if(xurl[0].contains("/UserLibrary.aspx")) {
             IndexX = 2;
@@ -1632,16 +1586,9 @@ public class MainActivity extends AppCompatActivity {
         } else {
             findViewById(R.id.SuMUseNameTXT).setVisibility(View.VISIBLE);
         }
-        if(xurl[0].contains("/Library.aspx")) {
-        }
-        if(xurl[0].contains("/UserLibrary.aspx")) {
-        }
-        if(xurl[0].contains("/AccountETC/")) {
-        }
         if(xurl[0].contains("/Search.aspx")) {
             findViewById(R.id.SuMUseNameTXT).setVisibility(View.INVISIBLE);
         }
-        //findViewById(R.id.SuMStatusBarExtendor).setBackground(setTint(getResources().getDrawable(R.drawable.bg_xcolor_nb_c0dp), Color.parseColor(RootHexColor)));
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
@@ -2019,16 +1966,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState )
     {
         super.onSaveInstanceState(outState);
-        CookieSyncManager.getInstance().sync();
+        //CookieSyncManager.getInstance().sync();
+        CookieManager.getInstance().flush();
         WebView0RecentsCard.saveState(outState);
         //webView0FlexibleGenreCard.saveState(outState);
         webView2.saveState(outState);
-        webView1.saveState(outState);
         webView4.saveState(outState);
         webView5.saveState(outState);
-        if(findViewById(R.id.SuMExploreInfo_ABS).getVisibility()==View.VISIBLE) {
-            webView6_SECURE.saveState(outState);
-        }
         webView3AccountSettingsCard.saveState(outState);
     }
 
@@ -2039,12 +1983,8 @@ public class MainActivity extends AppCompatActivity {
         WebView0RecentsCard.restoreState(savedInstanceState);
         //webView0FlexibleGenreCard.restoreState(savedInstanceState);
         webView2.restoreState(savedInstanceState);
-        webView1.restoreState(savedInstanceState);
         webView4.restoreState(savedInstanceState);
         webView5.restoreState(savedInstanceState);
-        if(findViewById(R.id.SuMExploreInfo_ABS).getVisibility()==View.VISIBLE) {
-            webView6_SECURE.restoreState(savedInstanceState);
-        }
         webView3AccountSettingsCard.restoreState(savedInstanceState);
     }
 
@@ -2113,16 +2053,6 @@ public class MainActivity extends AppCompatActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (findViewById(R.id.SuMMangaReader).getVisibility() == View.VISIBLE) {
-
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(MainActivity.this, "To exit reading mode PRESS ON THE BOOK ICON", Toast.LENGTH_LONG).show();
-                    }
-                });
-                return false;
-            }
             if(simpleViewFlipper.getDisplayedChild() == 4){
                 //if(LastBSearchView==0) LoadExplore(null);
                 //if(LastBSearchView==1) LoadHit(null);
@@ -2398,6 +2328,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
     //To vibrate
+    @SuppressLint("ObsoleteSdkInt")
     @JavascriptInterface
     public void VIBRATEPhone(){
 
@@ -2406,10 +2337,10 @@ public class MainActivity extends AppCompatActivity {
         Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         // Vibrate for 500 milliseconds
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            v.vibrate(VibrationEffect.createOneShot(180, VibrationEffect.DEFAULT_AMPLITUDE));
+            v.vibrate(VibrationEffect.createOneShot(90, VibrationEffect.DEFAULT_AMPLITUDE));
         } else {
             //deprecated in API 26
-            v.vibrate(180);
+            v.vibrate(90);
         }
 
     }
@@ -3406,7 +3337,6 @@ public class MainActivity extends AppCompatActivity {
                 new Runnable() {
                     public void run() {
                         findViewById(R.id.SuMViewFilpperClickBlocker).setVisibility(View.VISIBLE);
-
                     }
                 },
                 32);
@@ -3571,156 +3501,17 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    @JavascriptInterface
-    public void SuMExploreLoadReader(String ReadingURL,int CoinsRequred){
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                int UID = 0;
-                Object cookies = CookieManager.getInstance().getCookie("https://sum-manga.azurewebsites.net/");
-                if (cookies != null) {
-                    if (cookies.toString().contains("SuMCurrentUser")) {
-                        String[] AA = cookies.toString().replace(" ", "").split(";");
-                        for (int i = 0; i < AA.length; i++) {
-                            if (AA[i].contains("ID=")) {
-                                String[] BBA = AA[i].split("&");
-                                for(int ii = 0; ii<BBA.length;ii++) {
-                                    if (BBA[ii].contains("ID=")&& !BBA[ii].contains("SID")) {
-                                        UID = Integer.parseInt(BBA[ii].replaceAll("[^\\d.]", "").replace(" ", "").replace("ID=", "").replace("SuMCurrentUser=", "").replace("&","").replace("C",""));
-                                        ii = BBA.length;
-                                    }
-                                }
-                                i = AA.length;
-                            }
-                        }
-                    }
-                }
-                if(GlobalCurrCoinsCount > CoinsRequred){
-                    SuMResumeXWebView(webView6_SECURE);
-                    webView6_SECURE.loadUrl("about:blank");
-                    webView6_SECURE.loadUrl("https://sum-manga.azurewebsites.net"+ReadingURL.replace("MangaExplorer.aspx","MangaExplorerCard.aspx"));
-                    //webView6_SECURE.setVisibility(View.VISIBLE);
-                    Animation fadeIn = new AlphaAnimation(0, 1);
-                    fadeIn.setDuration(320);
-                    getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
-                    findViewById(R.id.SuMMangaReader).setVisibility(View.VISIBLE);
-                    findViewById(R.id.SuMMangaReader).startAnimation(fadeIn);
-                    getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-                    getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
-                    getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-                    getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-                    getWindow().getDecorView().setSystemUiVisibility(
-                            View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                                    |View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                                    |View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                                    |View.SYSTEM_UI_FLAG_FULLSCREEN
-                                    |View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-
-                    );
-                    final int UIDFinalVar = UID;
-                    new android.os.Handler(Looper.getMainLooper()).postDelayed(
-                            new Runnable() {
-                                public void run() {
-                                    webViewX_SECURE.loadUrl("javascript:SuMUpdateCoinsCount(" + UIDFinalVar + "," + ((-1)*CoinsRequred) + ");");
-                                }
-                            },
-                            3200);
-                    Toast.makeText(MainActivity.this, CoinsRequred+" coins are consumed"+" & Reading mode is activated", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(MainActivity.this, CoinsRequred+" coins are required you can get some in SETTINGS", Toast.LENGTH_SHORT).show();
-                }
-                webView6_SECURE.setVisibility(View.VISIBLE);
-            }
-        });
+    private void SuMExploreLoadReader_Native(String ReadingURL){
+        Intent i = new Intent(MainActivity.this, SuMReader.class);
+        i.putExtra("THEME_RBG", RootHexColor);
+        i.putExtra("FILES_LINK", ReadingURL);
+        startActivity(i);
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);//Improves Perf
     }
-    @JavascriptInterface
-    public void SuMExploreLoadReaderForSucInJS(String ReadingURL){
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                int CurrIndexPTM = ((ViewFlipper)findViewById(R.id.simpleViewFlipper)).getDisplayedChild();
-                WebViewToDistroyABS = new WebView[]{
-                        WebView0RecentsCard/*,
-                        webView0FlexibleGenreCard*/};
-                if(CurrIndexPTM == 1){
-                    WebViewToDistroyABS = new WebView[]{webView1};
-                }
-                if(CurrIndexPTM == 2){
-                    WebViewToDistroyABS = new WebView[]{webView2};
-                }
-                if(CurrIndexPTM == 3){
-                    WebViewToDistroyABS = new WebView[]{webView3AccountSettingsCard};
-                }
-                if(CurrIndexPTM == 4){
-                    WebViewToDistroyABS = new WebView[]{webView4};
-                }
-                destroyWebViews(WebViewToDistroyABS);
-                webView6_SECURE.setVisibility(View.VISIBLE);
-                webView6_SECURE.loadUrl("https://sum-manga.azurewebsites.net/"+ReadingURL.replace("MangaExplorer.aspx","MangaExplorerCard.aspx"));
-                Animation fadeIn = new AlphaAnimation(0, 1);
-                fadeIn.setDuration(320);
-                getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
-                findViewById(R.id.SuMMangaReader).setVisibility(View.VISIBLE);
-                findViewById(R.id.SuMMangaReader).startAnimation(fadeIn);
-                getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-                getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-                getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-                getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-                getWindow().getDecorView().setSystemUiVisibility(
-                        View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                                | View.SYSTEM_UI_FLAG_FULLSCREEN
-                                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
 
-                );
-                getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-                Toast.makeText(MainActivity.this, "Reading mode is activated", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
     @JavascriptInterface
-    public void CloseSuMReaderMode(){
-        runOnUiThread(new Runnable() {
-            @SuppressLint("UseCompatLoadingForDrawables")
-            @Override
-            public void run() {
-                SuMPauseXWebView(webView6_SECURE);
-                if(WebViewToDistroyABS!=null){
-                    for(int i =0;i<WebViewToDistroyABS.length;i++){
-                        WebViewToDistroyABS[i].onResume();
-                    }
-                }
-                getWindow().addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-                getWindow().getDecorView().setSystemUiVisibility(View.VISIBLE);
-                getWindow().getDecorView().setSystemUiVisibility(0);
-                getWindow().setStatusBarColor(Color.BLACK);
-                getWindow().setNavigationBarColor(Color.BLACK);
-                getWindow().setNavigationBarDividerColor(Color.BLACK);
-                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-                Animation fadeOut = new AlphaAnimation(1, 0);
-                fadeOut.setStartOffset(0);
-                fadeOut.setDuration(320);
-                findViewById(R.id.SuMMangaReader).startAnimation(fadeOut);
-                final Handler handlerBlur = new Handler();
-                handlerBlur.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        findViewById(R.id.SuMMangaReader).setVisibility(View.GONE);
-                        webView6_SECURE.loadUrl("about:blank");
-                        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_SECURE);
-                        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_SECURE);
-                        Toast.makeText(MainActivity.this, "Reading mode is deactivated", Toast.LENGTH_SHORT).show();
-                    }
-                }, 320);
-            }
-        });
+    public void SuMExploreLoadReader(String ReadingURL) {
+        SuMExploreLoadReader_Native(ReadingURL);
     }
     @JavascriptInterface
     public void GoToSettingsSuMExplore(){
@@ -3731,7 +3522,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
 
     public interface RecyclerViewClickListener {
         public void recyclerViewListClicked(View v, int position);

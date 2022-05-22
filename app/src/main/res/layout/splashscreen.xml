@@ -65,12 +65,11 @@
                 android:paddingEnd="64dp">
 
                 <com.google.android.material.progressindicator.LinearProgressIndicator
+                    android:id="@+id/SuMSplashProssBar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:alpha="0.86"
-                    android:indeterminate="true"
-                    android:indeterminateBehavior="repeat"
-                    android:indeterminateOnly="true"
+                    android:alpha="0.32"
+                    android:progress="0"
                     app:indicatorColor="@android:color/darker_gray"
                     app:trackColor="@android:color/transparent"
                     app:trackCornerRadius="2dp"

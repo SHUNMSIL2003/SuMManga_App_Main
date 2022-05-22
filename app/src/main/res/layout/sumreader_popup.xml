@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ReaderLayout_POPUP"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    android:fitsSystemWindows="false"
+    android:orientation="vertical"
+    android:theme="@style/Theme.RealTransparentActivity"
+    android:windowSoftInputMode="adjustResize"
+    tools:context=".SuMReader">
+
+    <View
+        android:background="@android:color/black"
+        android:alpha="0.74"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <RelativeLayout
+        android:id="@+id/SuMReadeInfinateLoading_anim"
+        android:gravity="center"
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:paddingStart="64dp"
+        android:paddingEnd="64dp">
+
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:alpha="0.86"
+            android:indeterminate="true"
+            android:indeterminateBehavior="repeat"
+            android:indeterminateOnly="true"
+            app:indicatorColor="@android:color/white"
+            app:trackColor="@android:color/transparent"
+            app:trackCornerRadius="2dp"
+            app:trackThickness="4dp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/SuMAgreementPOPUP"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:gravity="center"
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:alpha="0.92"
+                        android:fontFamily="@font/varela_round"
+                        android:gravity="center"
+                        android:text="Consume"
+                        android:textSize="24.5sp"
+                        android:background="@android:color/transparent"
+                        android:textColor="@android:color/white"
+                        tools:ignore="HardcodedText" />
+
+                    <TextView
+                        android:id="@+id/SuMReader_ReqCoinsNum"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:alpha="1.0"
+                        android:fontFamily="@font/varela_round"
+                        android:gravity="center"
+                        android:text="0"
+                        android:textSize="26sp"
+                        android:textStyle="bold"
+                        android:background="@android:color/transparent"
+                        android:textColor="@android:color/white"
+                        tools:ignore="HardcodedText" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:alpha="0.92"
+                        android:fontFamily="@font/varela_round"
+                        android:gravity="center"
+                        android:text="Coins to read?"
+                        android:textSize="24sp"
+                        android:background="@android:color/transparent"
+                        android:textColor="@android:color/white"
+                        tools:ignore="HardcodedText" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_marginTop="0dp"
+                    android:layout_marginBottom="0dp"
+                    android:paddingStart="24dp"
+                    android:paddingEnd="24dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:alpha="0.86"
+                    android:fontFamily="@font/varela_round"
+                    android:gravity="center"
+                    android:text="consuming these coins will unlock this chapter for one time use!, so make sure you read it all"
+                    android:textSize="13sp"
+                    android:background="@android:color/transparent"
+                    android:textColor="@android:color/white"
+                    tools:ignore="HardcodedText" />
+
+
+                <LinearLayout
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:id="@+id/LoadChapter_BTN_Cancel"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:clipToOutline="true"
+                        android:alpha="0.92"
+                        android:layout_margin="12dp"
+                        android:textColor="@android:color/white"
+                        android:textSize="15sp"
+                        android:gravity="center"
+                        android:paddingStart="12dp"
+                        android:fontFamily="@font/varela_round"
+                        android:paddingEnd="12dp"
+                        android:text="Cancel"
+                        android:onClick="Cancel"
+                        android:background="@drawable/bg_btn_c18dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+                        tools:ignore="HardcodedText,UnusedAttribute" />
+
+                    <Button
+                        android:foreground="?attr/selectableItemBackground"
+                        android:clipToOutline="true"
+                        android:layout_margin="12dp"
+                        android:textColor="@android:color/white"
+                        android:textSize="16sp"
+                        android:gravity="center"
+                        android:paddingStart="12dp"
+                        android:fontFamily="@font/varela_round"
+                        android:paddingEnd="12dp"
+                        android:text="Okay"
+                        android:id="@+id/LoadChapter_BTN"
+                        android:onClick="LoadChapter"
+                        android:background="@drawable/bg_btn_c18dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+                        tools:ignore="HardcodedText,UnusedAttribute" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:background="@android:color/transparent"
+        android:id="@+id/SuMMangaIMGs_C"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <androidx.recyclerview.widget.RecyclerView
+            android:background="@android:color/transparent"
+            android:id="@+id/scout_IMG_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"
+            android:orientation="vertical"
+            android:scrollbars="none"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:spanCount="1" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/SuMReaderToolBar"
+        android:layout_marginTop="100dp"
+        android:alpha="0.32"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:gravity="right"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:ignore="RtlHardcoded">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:paddingEnd="8dp"
+            android:paddingStart="6dp"
+            android:alpha="0.92"
+            android:background="@drawable/bg_slider_reader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:ignore="UselessParent">
+
+            <RelativeLayout
+                android:id="@+id/ExpandSuMReadToolBar_BTN"
+                android:onClick="ExpandSuMReadToolBar"
+                android:paddingStart="2dp"
+                android:paddingEnd="-2dp"
+                android:gravity="center"
+                android:rotation="0"
+                android:layout_width="32dp"
+                android:layout_height="48dp">
+
+                <View
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:background="@drawable/ic_keyboard_double_arrow_left_fill1_wght600_grad0_opsz48" />
+            </RelativeLayout>
+
+            <View
+                android:visibility="gone"
+                android:id="@+id/SuMCloseReader"
+                android:onClick="ExitFullScreen"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="2dp"
+                android:background="@drawable/ic_fullscreen_exit_fill1_wght700_grad0_opsz48"
+                android:layout_width="30dp"
+                android:layout_height="30dp"/>
+
+            <Button
+                android:visibility="gone"
+                android:id="@+id/SuMNextInReader"
+                android:clipToOutline="true"
+                android:alpha="1.0"
+                android:layout_margin="10dp"
+                android:textColor="@android:color/white"
+                android:textSize="17sp"
+                android:gravity="center"
+                android:paddingTop="1.5dp"
+                android:fontFamily="@font/varela_round"
+                android:text="Next"
+                android:onClick="Next"
+                android:background="@android:color/transparent"
+                android:layout_width="wrap_content"
+                android:layout_height="38dp"
+                tools:ignore="HardcodedText,UnusedAttribute" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

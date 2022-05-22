@@ -242,14 +242,14 @@
                         android:layout_height="wrap_content">
 
                         <TextView
-                            android:foreground="?attr/selectableItemBackground"
-                            android:clipToOutline="true"
                             android:layout_width="wrap_content"
                             android:layout_height="26dp"
                             android:layout_centerInParent="true"
                             android:alpha="0.86"
                             android:background="@drawable/bg_info_disc_btn"
+                            android:clipToOutline="true"
                             android:fontFamily="@font/varela_round"
+                            android:foreground="?attr/selectableItemBackground"
                             android:gravity="center"
                             android:onClick="ShowExploreMangaInfoDisc"
                             android:paddingStart="16dp"

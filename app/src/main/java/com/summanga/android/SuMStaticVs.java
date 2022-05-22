@@ -17,5 +17,7 @@ public class SuMStaticVs {
 
     public static Context MainC;
 
+    public static int SUMREADER_MOVEON_MBIT = 0;
+
 }
 

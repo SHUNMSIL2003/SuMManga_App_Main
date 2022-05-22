@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.summanga.android">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -87,6 +86,24 @@
                     android:host="sum-manga.azurewebsites.net"/>
             </intent-filter>
             <!-- <meta-data android:name="android.app.shortcuts" android:resource="@xml/shortcuts" /> -->
+        </activity>
+        <activity
+            android:extractNativeLibs="true"
+            android:theme="@style/Theme.AppCompat.RealTranslucent"
+            android:name=".SuMReader"
+            android:label="@string/app_name"
+            android:hardwareAccelerated="true"
+            android:alwaysRetainTaskState="true"
+            android:resizeableActivity="false"
+            android:exported="true"
+            android:largeHeap="true"
+            android:icon="@mipmap/ic_launcher"
+            android:roundIcon="@mipmap/ic_launcher_round"
+            android:excludeFromRecents="false"
+            tools:ignore="NonResizeableActivity">
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW"/>
+            </intent-filter>
         </activity>
         <activity
             android:theme="@style/Theme.AppCompat.Translucent"

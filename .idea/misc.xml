@@ -94,12 +94,18 @@
         <entry key="..\:/SuM-Manga-V3_Android_APP_Cards/SuM-Manga-V3-Android-APP-Cards/app/src/main/res/drawable/bg_black_nb_c0dp.xml" value="0.1855" />
         <entry key="..\:/SuM-Manga-V3_Android_APP_Cards/SuM-Manga-V3-Android-APP-Cards/app/src/main/res/drawable/bg_black_nb_c0dp_info.xml" value="0.1855" />
         <entry key="..\:/SuM-Manga-V3_Android_APP_Cards/SuM-Manga-V3-Android-APP-Cards/app/src/main/res/drawable/bg_black_nb_c22dp_info.xml" value="0.1855" />
+        <entry key="..\:/SuM-Manga-V3_Android_APP_Cards/SuM-Manga-V3-Android-APP-Cards/app/src/main/res/drawable/bg_btn_c14dp.xml" value="0.204" />
+        <entry key="..\:/SuM-Manga-V3_Android_APP_Cards/SuM-Manga-V3-Android-APP-Cards/app/src/main/res/drawable/bg_btn_c18dp.xml" value="0.204" />
         <entry key="..\:/SuM-Manga-V3_Android_APP_Cards/SuM-Manga-V3-Android-APP-Cards/app/src/main/res/drawable/bg_carditem.xml" value="0.191" />
         <entry key="..\:/SuM-Manga-V3_Android_APP_Cards/SuM-Manga-V3-Android-APP-Cards/app/src/main/res/drawable/bg_dark_c25dp.xml" value="0.184" />
         <entry key="..\:/SuM-Manga-V3_Android_APP_Cards/SuM-Manga-V3-Android-APP-Cards/app/src/main/res/drawable/bg_explorecard.xml" value="0.196" />
         <entry key="..\:/SuM-Manga-V3_Android_APP_Cards/SuM-Manga-V3-Android-APP-Cards/app/src/main/res/drawable/bg_gern_tr_bor_w_c_fixer.xml" value="0.1805" />
+        <entry key="..\:/SuM-Manga-V3_Android_APP_Cards/SuM-Manga-V3-Android-APP-Cards/app/src/main/res/drawable/bg_info_btmp.xml" value="0.2045" />
         <entry key="..\:/SuM-Manga-V3_Android_APP_Cards/SuM-Manga-V3-Android-APP-Cards/app/src/main/res/drawable/bg_info_disc_btn.xml" value="0.185" />
+        <entry key="..\:/SuM-Manga-V3_Android_APP_Cards/SuM-Manga-V3-Android-APP-Cards/app/src/main/res/drawable/bg_slider_reader.xml" value="0.204" />
         <entry key="..\:/SuM-Manga-V3_Android_APP_Cards/SuM-Manga-V3-Android-APP-Cards/app/src/main/res/drawable/bg_tr_br0dp_c22dp_.xml" value="0.1815" />
+        <entry key="..\:/SuM-Manga-V3_Android_APP_Cards/SuM-Manga-V3-Android-APP-Cards/app/src/main/res/drawable/bg_w_2o5dp_nb.xml" value="0.2045" />
+        <entry key="..\:/SuM-Manga-V3_Android_APP_Cards/SuM-Manga-V3-Android-APP-Cards/app/src/main/res/drawable/bg_w_tr_mangainfo_currbtn.xml" value="0.2045" />
         <entry key="..\:/SuM-Manga-V3_Android_APP_Cards/SuM-Manga-V3-Android-APP-Cards/app/src/main/res/drawable/bg_white_c22dp.xml" value="0.1805" />
         <entry key="..\:/SuM-Manga-V3_Android_APP_Cards/SuM-Manga-V3-Android-APP-Cards/app/src/main/res/drawable/bg_white_c22dp_nb.xml" value="0.1805" />
         <entry key="..\:/SuM-Manga-V3_Android_APP_Cards/SuM-Manga-V3-Android-APP-Cards/app/src/main/res/drawable/bg_white_c25dp.xml" value="0.1805" />
@@ -107,8 +113,20 @@
         <entry key="..\:/SuM-Manga-V3_Android_APP_Cards/SuM-Manga-V3-Android-APP-Cards/app/src/main/res/drawable/bg_xcolor_nb_c0dp.xml" value="0.185" />
         <entry key="..\:/SuM-Manga-V3_Android_APP_Cards/SuM-Manga-V3-Android-APP-Cards/app/src/main/res/drawable/dark_gb.xml" value="0.1805" />
         <entry key="..\:/SuM-Manga-V3_Android_APP_Cards/SuM-Manga-V3-Android-APP-Cards/app/src/main/res/drawable/gb_dark_c22dp.xml" value="0.184" />
+        <entry key="..\:/SuM-Manga-V3_Android_APP_Cards/SuM-Manga-V3-Android-APP-Cards/app/src/main/res/drawable/ic_add_black_48dp.xml" value="0.2045" />
+        <entry key="..\:/SuM-Manga-V3_Android_APP_Cards/SuM-Manga-V3-Android-APP-Cards/app/src/main/res/drawable/ic_add_fill1_wght600_grad0_opsz48.xml" value="0.2045" />
+        <entry key="..\:/SuM-Manga-V3_Android_APP_Cards/SuM-Manga-V3-Android-APP-Cards/app/src/main/res/drawable/ic_arrow_back_ios_fill1_wght600_grad0_opsz48.xml" value="0.2045" />
         <entry key="..\:/SuM-Manga-V3_Android_APP_Cards/SuM-Manga-V3-Android-APP-Cards/app/src/main/res/drawable/ic_arrow_back_white_36dp.xml" value="0.196" />
+        <entry key="..\:/SuM-Manga-V3_Android_APP_Cards/SuM-Manga-V3-Android-APP-Cards/app/src/main/res/drawable/ic_arrow_forward_ios_white_24dp.xml" value="0.204" />
+        <entry key="..\:/SuM-Manga-V3_Android_APP_Cards/SuM-Manga-V3-Android-APP-Cards/app/src/main/res/drawable/ic_bookmark_fill0_wght500_grad0_opsz48.xml" value="0.2045" />
+        <entry key="..\:/SuM-Manga-V3_Android_APP_Cards/SuM-Manga-V3-Android-APP-Cards/app/src/main/res/drawable/ic_bookmark_fill1_wght500_grad0_opsz48.xml" value="0.2045" />
+        <entry key="..\:/SuM-Manga-V3_Android_APP_Cards/SuM-Manga-V3-Android-APP-Cards/app/src/main/res/drawable/ic_bookmarks_black_48dp.xml" value="0.2045" />
+        <entry key="..\:/SuM-Manga-V3_Android_APP_Cards/SuM-Manga-V3-Android-APP-Cards/app/src/main/res/drawable/ic_check_fill1_wght600_grad0_opsz48.xml" value="0.2045" />
+        <entry key="..\:/SuM-Manga-V3_Android_APP_Cards/SuM-Manga-V3-Android-APP-Cards/app/src/main/res/drawable/ic_favorite_fill0_wght500_grad0_opsz48.xml" value="0.2045" />
+        <entry key="..\:/SuM-Manga-V3_Android_APP_Cards/SuM-Manga-V3-Android-APP-Cards/app/src/main/res/drawable/ic_favorite_fill1_wght500_grad0_opsz48.xml" value="0.2045" />
         <entry key="..\:/SuM-Manga-V3_Android_APP_Cards/SuM-Manga-V3-Android-APP-Cards/app/src/main/res/drawable/ic_filter_alt_fill1_wght400_grad0_opsz48.xml" value="0.2045" />
+        <entry key="..\:/SuM-Manga-V3_Android_APP_Cards/SuM-Manga-V3-Android-APP-Cards/app/src/main/res/drawable/ic_fullscreen_exit_fill1_wght700_grad0_opsz48.xml" value="0.204" />
+        <entry key="..\:/SuM-Manga-V3_Android_APP_Cards/SuM-Manga-V3-Android-APP-Cards/app/src/main/res/drawable/ic_keyboard_double_arrow_left_fill1_wght600_grad0_opsz48.xml" value="0.204" />
         <entry key="..\:/SuM-Manga-V3_Android_APP_Cards/SuM-Manga-V3-Android-APP-Cards/app/src/main/res/drawable/ic_settings_black_48dp.xml" value="0.1945" />
         <entry key="..\:/SuM-Manga-V3_Android_APP_Cards/SuM-Manga-V3-Android-APP-Cards/app/src/main/res/drawable/ic_sumicon740x740.xml" value="0.184" />
         <entry key="..\:/SuM-Manga-V3_Android_APP_Cards/SuM-Manga-V3-Android-APP-Cards/app/src/main/res/drawable/ic_sumiconv4_0.xml" value="0.184" />
@@ -127,6 +145,7 @@
         <entry key="..\:/SuM-Manga-V3_Android_APP_Cards/SuM-Manga-V3-Android-APP-Cards/app/src/main/res/drawable/splash_brand_layer.xml" value="0.1815" />
         <entry key="..\:/SuM-Manga-V3_Android_APP_Cards/SuM-Manga-V3-Android-APP-Cards/app/src/main/res/layout/activity_main.xml" value="0.2444078947368421" />
         <entry key="..\:/SuM-Manga-V3_Android_APP_Cards/SuM-Manga-V3-Android-APP-Cards/app/src/main/res/layout/card_item.xml" value="0.1394736842105263" />
+        <entry key="..\:/SuM-Manga-V3_Android_APP_Cards/SuM-Manga-V3-Android-APP-Cards/app/src/main/res/layout/card_item_img.xml" value="0.2376068376068376" />
         <entry key="..\:/SuM-Manga-V3_Android_APP_Cards/SuM-Manga-V3-Android-APP-Cards/app/src/main/res/layout/explore_action_layout.xml" value="0.24193548387096775" />
         <entry key="..\:/SuM-Manga-V3_Android_APP_Cards/SuM-Manga-V3-Android-APP-Cards/app/src/main/res/layout/explore_comedy_layout.xml" value="0.2444078947368421" />
         <entry key="..\:/SuM-Manga-V3_Android_APP_Cards/SuM-Manga-V3-Android-APP-Cards/app/src/main/res/layout/explore_drama_layout.xml" value="0.2444078947368421" />
@@ -151,6 +170,7 @@
         <entry key="..\:/SuM-Manga-V3_Android_APP_Cards/SuM-Manga-V3-Android-APP-Cards/app/src/main/res/layout/simple_spinner_dropdown_item.xml" value="0.2444078947368421" />
         <entry key="..\:/SuM-Manga-V3_Android_APP_Cards/SuM-Manga-V3-Android-APP-Cards/app/src/main/res/layout/simple_spinner_item.xml" value="0.2444078947368421" />
         <entry key="..\:/SuM-Manga-V3_Android_APP_Cards/SuM-Manga-V3-Android-APP-Cards/app/src/main/res/layout/splashscreen.xml" value="0.2444078947368421" />
+        <entry key="..\:/SuM-Manga-V3_Android_APP_Cards/SuM-Manga-V3-Android-APP-Cards/app/src/main/res/layout/sumreader_popup.xml" value="0.23076923076923078" />
         <entry key="..\:/SuM-Manga-V3_Android_APP_Cards/SuM-Manga-V3-Android-APP-Cards/app/src/main/res/layout/thesplash_layout.xml" value="0.2444078947368421" />
         <entry key="..\:/SuM-Manga-V3_Android_APP_Cards/SuM-Manga-V3-Android-APP-Cards/app/src/main/res/mipmap-xhdpi/ic_launcher.xml" value="0.184" />
         <entry key="..\:/SuM-Manga-V3_Android_APP_Cards/SuM-Manga-V3-Android-APP-Cards/app/src/main/res/mipmap-xhdpi/ic_launcher_round.xml" value="0.184" />

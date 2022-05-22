@@ -55,6 +55,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.transition.Transition;
+import com.google.android.material.progressindicator.LinearProgressIndicator;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -129,18 +130,21 @@ public class SplashScreen extends AppCompatActivity {
             return;
         }
 
-        CookieSyncManager.createInstance(SplashScreen.this);
-        CookieManager.getInstance().setAcceptCookie(true);
-        CookieSyncManager.getInstance().startSync();
+        //CookieSyncManager.createInstance(SplashScreen.this);
+        //CookieManager.getInstance().setAcceptCookie(true);
+        //CookieSyncManager.getInstance().startSync();
 
         setContentView(R.layout.splashscreen);
+        ((LinearProgressIndicator)findViewById(R.id.SuMSplashProssBar)).setProgress(0);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+
 
         Bitmap AppBG_Bitmap = getBitmapFromAsset(SplashScreen.this,"SuM-Reader.jpg");//SuM-ReadingStart.jpg
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int Device_Height = displayMetrics.heightPixels;
         int Device_Width = displayMetrics.widthPixels;
+        ((LinearProgressIndicator)findViewById(R.id.SuMSplashProssBar)).setProgress(5);
         AppBG_Bitmap = Bitmap.createScaledBitmap(AppBG_Bitmap, 180, (180*(Device_Height/Device_Width)), false);
         //AppBG_Bitmap = Bitmap.createBitmap(AppBG_Bitmap, 0, 0, 320, (320*(Device_Height/Device_Width)));
         /*Matrix matrix = new Matrix();
@@ -148,6 +152,7 @@ public class SplashScreen extends AppCompatActivity {
         AppBG_Bitmap = Bitmap.createBitmap(AppBG_Bitmap, 60, 60*(Device_Height/Device_Width),260, 260*(Device_Height/Device_Width), matrix, true);*/
         AppBG_Bitmap = blur(SplashScreen.this,AppBG_Bitmap);
         findViewById(R.id.SplashScreenLayout).setBackground(new BitmapDrawable(getResources(), AppBG_Bitmap));
+        ((LinearProgressIndicator)findViewById(R.id.SuMSplashProssBar)).setProgress(10);
         Object cookies = CookieManager.getInstance().getCookie("https://sum-manga.azurewebsites.net/");
         int UID = 0;
         if (cookies != null) {
@@ -167,6 +172,7 @@ public class SplashScreen extends AppCompatActivity {
                 }
             }
         }
+        ((LinearProgressIndicator)findViewById(R.id.SuMSplashProssBar)).setProgress(15);
 
         /*SharedPreferences mPrefs = getSharedPreferences("summanga", 0);
         final int UID = Integer.parseInt(mPrefs.getString("sumid", "0"));*/
@@ -188,9 +194,11 @@ public class SplashScreen extends AppCompatActivity {
                     }
                 }
             } else return;
+            ((LinearProgressIndicator)findViewById(R.id.SuMSplashProssBar)).setProgress(20);
             SuMSecureLoading();
         } else {
-            try {
+            ((LinearProgressIndicator)findViewById(R.id.SuMSplashProssBar)).setProgress(100);
+            /*try {
                 deleteRecursive(SplashScreen.this.getDataDir());
             } catch (IOException e) {
                 e.printStackTrace();
@@ -206,7 +214,7 @@ public class SplashScreen extends AppCompatActivity {
                 SplashScreen.this.deleteDirectory(SplashScreen.this.getDataDir().getPath());
             } catch (IOException e) {
                 e.printStackTrace();
-            }
+            }*/
             //((ActivityManager)getSystemService(ACTIVITY_SERVICE)).clearApplicationUserData();
             WebView WebView0RecentsCard = (WebView) findViewById(R.id.SuMLogInWebView);
             WebView0RecentsCard.setVisibility(View.VISIBLE);
@@ -215,10 +223,10 @@ public class SplashScreen extends AppCompatActivity {
         }
 
     }
-    void deleteDirectory(String path) throws IOException {
+    /*void deleteDirectory(String path) throws IOException {
         Runtime.getRuntime().exec(String.format("rm -rf %s", path));
-    }
-    public void deleteRecursive(File fileOrDirectory) throws IOException {
+    }*/
+    /*public void deleteRecursive(File fileOrDirectory) throws IOException {
 
         deleteDirectory(fileOrDirectory.getPath());
         if (fileOrDirectory.isDirectory()) {
@@ -227,7 +235,7 @@ public class SplashScreen extends AppCompatActivity {
             }
         }
         fileOrDirectory.delete();
-    }
+    }*/
     private void SuMSecureLoading() {
         Object cookies = CookieManager.getInstance().getCookie("https://sum-manga.azurewebsites.net/");
         String RS = "";
@@ -252,9 +260,10 @@ public class SplashScreen extends AppCompatActivity {
         b = Integer.parseInt(RS.split(",")[2]);
         String RootHexColor0 = String.format("#%02X%02X%02X", r, g, b);
         findViewById(R.id.SplashScreenLayout).setBackgroundColor(Color.parseColor(RootHexColor0));
-        CookieSyncManager.getInstance().sync();
+        //CookieSyncManager.getInstance().sync();
 
 
+        ((LinearProgressIndicator)findViewById(R.id.SuMSplashProssBar)).setProgress(10);
 
 
         SharedPreferences mPrefs = getSharedPreferences("summanga", 0);
@@ -273,6 +282,7 @@ public class SplashScreen extends AppCompatActivity {
                         int errorCode, CharSequence errString) {
                     super.onAuthenticationError(errorCode, errString);
                     notifyUser("Authentication Error : " + errString);
+                    ((LinearProgressIndicator)findViewById(R.id.SuMSplashProssBar)).setProgress(0);
                     SplashScreen.this.finish();
                 }
 
@@ -286,6 +296,7 @@ public class SplashScreen extends AppCompatActivity {
                 public void onAuthenticationSucceeded(BiometricPrompt.AuthenticationResult result) {
                     super.onAuthenticationSucceeded(result);
                     notifyUser("Authentication Succeeded");
+                    ((LinearProgressIndicator)findViewById(R.id.SuMSplashProssBar)).setProgress(15);
                     StartLoading();
                 }
             };
@@ -302,6 +313,7 @@ public class SplashScreen extends AppCompatActivity {
                         public void
                         onClick(DialogInterface dialogInterface, int i) {
                             notifyUser("Authentication Cancelled");
+                            ((LinearProgressIndicator)findViewById(R.id.SuMSplashProssBar)).setProgress(0);
                             SplashScreen.this.finish();
                         }
                     }).build();
@@ -311,10 +323,11 @@ public class SplashScreen extends AppCompatActivity {
                     authenticationCallback);
 
         } else {
+            ((LinearProgressIndicator)findViewById(R.id.SuMSplashProssBar)).setProgress(15);
             StartLoading();
         }
     }
-    static int clearCacheFolder(final File dir, final int numDays) {
+    /*static int clearCacheFolder(final File dir, final int numDays) {
 
         int deletedFiles = 0;
         if (dir!= null && dir.isDirectory()) {
@@ -340,7 +353,7 @@ public class SplashScreen extends AppCompatActivity {
             }
         }
         return deletedFiles;
-    }
+    }*/
     private void notifyUser(String message)
     {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
@@ -391,6 +404,7 @@ public class SplashScreen extends AppCompatActivity {
                         for(int ii = 0; ii<BBA.length;ii++) {
                             if (BBA[ii].contains("UB=")) {
                                 CURL.append(BBA[ii].replace(" ", "").replace("UB=", "").replace("SuMCurrentUser=", "").replace("&", ""));
+                                ((LinearProgressIndicator)findViewById(R.id.SuMSplashProssBar)).setProgress(20);
                                 ii = BBA.length;
                             }
                         }
@@ -412,6 +426,7 @@ public class SplashScreen extends AppCompatActivity {
 
                         if(resource==null) SplashScreen.this.finish();
 
+                        ((LinearProgressIndicator)findViewById(R.id.SuMSplashProssBar)).setProgress(30);
                         Bitmap bb = Bitmap.createScaledBitmap(resource, resource.getWidth()/8, resource.getHeight()/8, false);
                         bb=blurDark(SplashScreen.this,bb,20.0f,r,g,b);
 
@@ -422,6 +437,7 @@ public class SplashScreen extends AppCompatActivity {
                             bb.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
                         }
                         byte[] byteArray = byteArrayOutputStream .toByteArray();
+                        ((LinearProgressIndicator)findViewById(R.id.SuMSplashProssBar)).setProgress(60);
                         String encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
                         ABSStart(encoded);
                     }
@@ -458,6 +474,7 @@ public class SplashScreen extends AppCompatActivity {
     }
 
     private void ABSStart(String bm){
+        ((LinearProgressIndicator)findViewById(R.id.SuMSplashProssBar)).setProgress(75);
         if (bm != null) {
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -469,8 +486,10 @@ public class SplashScreen extends AppCompatActivity {
                             Intent i = new Intent(SplashScreen.this, MainActivity.class);
                             i.putExtra("LOADING_MESSAGE", "LOADED");
                             i.putExtra("BANNER_BITMAP_STRING64", bm);
+                            ((LinearProgressIndicator)findViewById(R.id.SuMSplashProssBar)).setProgress(80);
                             startActivity(i);
                             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);//Improves Perf
+                            ((LinearProgressIndicator)findViewById(R.id.SuMSplashProssBar)).setProgress(100);
                             finish();
                         }
                     }, 380);
@@ -501,6 +520,7 @@ public class SplashScreen extends AppCompatActivity {
 
         @Override
         public void onPageFinished(WebView view, String url) {
+            CookieManager.getInstance().flush();
             if(url.contains("/SettingsAccountCard.aspx")||url.contains("SuMMangaInstallAPP.aspx")){
                 Object cookies = CookieManager.getInstance().getCookie("https://sum-manga.azurewebsites.net/");
                 int UID = 0;
@@ -524,7 +544,7 @@ public class SplashScreen extends AppCompatActivity {
                 SharedPreferences mPrefs = getSharedPreferences("summanga", 0);
                 SharedPreferences.Editor mEditor = mPrefs.edit();
                 mEditor.putString("sumid", (UID+"").replaceAll("[^\\d.]", "").replace(" ","")).apply();
-                CookieSyncManager.getInstance().sync();
+                //CookieSyncManager.getInstance().sync();
                 view.setVisibility(View.GONE);
                 view.destroy();
                 findViewById(R.id.SuMSplashIMG).setVisibility(View.VISIBLE);
@@ -556,7 +576,7 @@ public class SplashScreen extends AppCompatActivity {
         webViewx.loadUrl("https://sum-manga.azurewebsites.net/AccountETC/LoginETC.aspx");
         webViewx.setVisibility(View.VISIBLE);
     }
-    private void clearAppData() {
+    /*private void clearAppData() {
         try {
             // clearing app data
             if (Build.VERSION_CODES.KITKAT <= Build.VERSION.SDK_INT) {
@@ -570,7 +590,7 @@ public class SplashScreen extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
 
 }
