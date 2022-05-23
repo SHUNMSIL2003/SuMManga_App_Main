@@ -72,6 +72,7 @@ import android.widget.Toast;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -79,6 +80,13 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
 import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.LoadAdError;
@@ -100,6 +108,7 @@ import android.widget.ViewFlipper;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.riversun.okhttp3.OkHttp3CookieHelper;
 
 import java.io.File;
 import java.io.IOException;
@@ -113,6 +122,8 @@ import java.util.Map;
 
 
 import okhttp3.Cache;
+import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -138,10 +149,10 @@ public class MainActivity extends AppCompatActivity {
     private static final float BITMAP_SCALE = 0.4f;
     private static final float BLUR_RADIUS = 20.0f;
 
-    public String UserNameFC = "";
+    public String UserNameFC = null;
 
 
-    public String RootHexColor = "";
+    public String RootHexColor = null;
     public int RootStateBit = 0;
 
     private RewardedAd rewardedAd;
@@ -152,7 +163,6 @@ public class MainActivity extends AppCompatActivity {
     WebView webView3AccountSettingsCard;
     WebView webView4;
     WebView webView5;
-    WebView webViewX_SECURE;
 
     int Device_Width=0;
     int Device_Height=0;
@@ -179,10 +189,10 @@ public class MainActivity extends AppCompatActivity {
 
 
         webViewx.setWebViewClient(new WebViewClient() {
-            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+            /*public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
                 //Users will be notified in case there's an error (i.e. no internet connection)
                 Toast.makeText(MainActivity.this, "Oh no! " + description, Toast.LENGTH_SHORT).show();
-            }
+            }*/
 
             public void onPageFinished(WebView view, String url) {
                 //CookieSyncManager.getInstance().sync();
@@ -191,7 +201,6 @@ public class MainActivity extends AppCompatActivity {
         });
         if (ReqFileUpload) {
             webViewx.setWebChromeClient(new WebChromeClient() {
-
 
                 // For 3.0+ Devices (Start)
                 // onActivityResult attached before constructor
@@ -286,9 +295,12 @@ public class MainActivity extends AppCompatActivity {
         return px / ((float) context.getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT);
     }
 
-    public Handler SuMExploreScrollViewFunc_Handler = new Handler();
-    public Runnable SuMExploreScrollViewFunc_Runnable;
-    public int SuMExploreScrollViewFunc_scrollY = 0;
+    //public Handler SuMExploreScrollViewFunc_Handler = new Handler();
+    //public Runnable SuMExploreScrollViewFunc_Runnable;
+    //public int SuMExploreScrollViewFunc_scrollY = 0;
+
+    private int USERCOINS_COUNT = 0;
+    private boolean SUMFIRSTLOAD = true;
 
 
     @SuppressLint({"SetJavaScriptEnabled", "UseCompatLoadingForDrawables"})
@@ -326,6 +338,7 @@ public class MainActivity extends AppCompatActivity {
         Device_Height = displayMetrics.heightPixels;
         Device_Width = displayMetrics.widthPixels;
         setContentView(R.layout.activity_main);
+        DarkSBIcons();
         String BANNER_STRING64;
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
@@ -355,17 +368,9 @@ public class MainActivity extends AppCompatActivity {
         out.setDuration(320);
         simpleViewFlipper.setOutAnimation(out);
 
-        DarkSBIcons();
-
-        /*webView0LatestCard = (WebView) findViewById(R.id.SuMWebView_NewestCardSlideView);
-        webView0LatestCard.setVisibility(View.VISIBLE);
-        GetThisWenViewReady(webView0LatestCard, false, false, false,false);*/
         WebView0RecentsCard = (WebView) findViewById(R.id.SuMWebView_ResentsCard);
         WebView0RecentsCard.setVisibility(View.VISIBLE);
         GetThisWenViewReady(WebView0RecentsCard, false, false, false,false);
-        //webView0FlexibleGenreCard = (WebView) findViewById(R.id.SuMWebView_FlexibleGenre);
-        //webView0FlexibleGenreCard.setVisibility(View.VISIBLE);
-        //GetThisWenViewReady(webView0FlexibleGenreCard, false, false, false,false);
         webView4 = (WebView) findViewById(R.id.SuMWebViewIndex4);
         webView4.setVisibility(View.VISIBLE);
         GetThisWenViewReady(webView4, false, false, false,false);
@@ -378,17 +383,13 @@ public class MainActivity extends AppCompatActivity {
         webView5 = (WebView) findViewById(R.id.SuMWebViewIndex5);
         webView5.setVisibility(View.VISIBLE);
         GetThisWenViewReady(webView5, false, false, false,false);
-        webViewX_SECURE = (WebView) findViewById(R.id.webViewX_SECURE_JS);
-        webViewX_SECURE.setVisibility(View.GONE);
-        GetThisWenViewReady(webViewX_SECURE, false, false, false,false);
-        webViewX_SECURE.loadUrl("https://sum-manga.azurewebsites.net/storeitems/MangaExplorerCardHolder.aspx");
 
 
         Boolean FoundAnIndex = false;
         if (SuMStaticVs.RedirectFromSuMNotiURL == null) {
             LoadExplore(null);
         } else {
-            if (SuMStaticVs.RedirectFromSuMNotiURL.toString() == "Hits") {
+            if (SuMStaticVs.RedirectFromSuMNotiURL == "Hits") {
                 LoadHit(null);
                 FoundAnIndex = true;
             }
@@ -404,20 +405,9 @@ public class MainActivity extends AppCompatActivity {
                 LoadSettings(null);
                 FoundAnIndex = true;
             }
-            if (!FoundAnIndex && SuMStaticVs.RedirectFromSuMNotiURL != null) {
-
-            }
-            if(!FoundAnIndex && SuMStaticVs.RedirectFromSuMNotiURL == null){
-                LoadExplore(null);
-            }
         }
-        //createNotificationChannel();
-        DarkSBIcons();
 
-        /*Spinner spinner_SuMExplore_FlexibleGenreCard_GenreChooser=findViewById(R.id.SuMExplore_FlexibleGenreCard_GenreChooser);
-        ArrayAdapter<CharSequence>adapter= ArrayAdapter.createFromResource(this, R.array.sumgenreflexmenu, R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item);
-        spinner_SuMExplore_FlexibleGenreCard_GenreChooser.setAdapter(adapter);*/
+        SUMFIRSTLOAD = false;
 
 
         int SBH00 = 0;
@@ -449,6 +439,7 @@ public class MainActivity extends AppCompatActivity {
         } else RS = "104,64,217";
 
         RootHexColor = String.format("#%02X%02X%02X", Integer.parseInt(RS.split(",")[0]), Integer.parseInt(RS.split(",")[1]), Integer.parseInt(RS.split(",")[2]));
+        findViewById(R.id.SuMExplore_Gern_ALL_Toggle).setBackground(setTint(ContextCompat.getDrawable(MainActivity.this, R.drawable.bg_gern_tr_bor_w_c_fixer_home),Color.parseColor(RootHexColor)));
 
         String RSBit = "";
         if (cookies != null) {
@@ -528,27 +519,6 @@ public class MainActivity extends AppCompatActivity {
         final TextView textViewToChange = (TextView) findViewById(R.id.SuMUseNameTXT);
         textViewToChange.setText(UserNameFC);
 
-        /*SuMExplore_Home_ScrollView_Main_ELM = ((ScrollView)findViewById(R.id.SuMExplore_Home_ScrollView_Main));
-        SuMExploreScrollViewFunc_Runnable = new Runnable() {
-            @Override
-            public void run() {
-                SuMExploreScrollViewFunc();
-            }
-        };*/
-
-        /*SuMExplore_Home_ScrollView_Main_ELM.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
-            @Override
-            public void onScrollChanged() {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        SuMExploreScrollViewFunc_Handler.removeCallbacks(SuMExploreScrollViewFunc_Runnable);
-                        SuMExploreScrollViewFunc_Handler.postDelayed(SuMExploreScrollViewFunc_Runnable, 100);
-                    }
-                });
-            }
-
-        });*/
 
         ((Switch)findViewById(R.id.SuMLockInOnOrOff)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -597,20 +567,10 @@ public class MainActivity extends AppCompatActivity {
                 LoadSettings(null);
             }
         });
-        initView();
-        /*((Spinner)findViewById(R.id.SuMExplore_FlexibleGenreCard_GenreChooser)).setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                String G_C = ((String)(((TextView)selectedItemView).getText())).replace(" ","").replace("-","");
-                initView(G_C);
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parentView) {
-                // your code here
-            }
+        initView("All");
 
-        });*/
+        SUMCOINS_COUNT_UPDATE();
 
         MobileAds.initialize(this, initializationStatus -> {
 
@@ -724,9 +684,12 @@ public class MainActivity extends AppCompatActivity {
         fadeIn.setDuration(320);
         findViewById(R.id.SuMMangaExploreInfo_MangaDiscABS).setVisibility(View.VISIBLE);
         findViewById(R.id.SuMMangaExploreInfo_MangaDiscABS).startAnimation(fadeIn);
+        GetMangaDis_MangaInfo(SUMINFO_ID);
 
     }
+    @SuppressLint("SetTextI18n")
     public void HideMangaDisc(View view){
+        ((TextView)findViewById(R.id.SuMMangaExploreInfo_MangaDisc)).setText("loading...");
         Animation fadeOut = new AlphaAnimation(1, 0);
         fadeOut.setStartOffset(0);
         fadeOut.setDuration(320);
@@ -971,6 +934,7 @@ public class MainActivity extends AppCompatActivity {
     public void LoadExplore(View view) {
         findViewById(R.id.SuMViewFilpperClickBlocker).setVisibility(View.GONE);
         if(simpleViewFlipper.getDisplayedChild()!=0) ((ScrollView)findViewById(R.id.SuMExplore_Home_ScrollView_Main)).scrollTo(0, 0);
+        if(simpleViewFlipper.getDisplayedChild()==0&&!SUMFIRSTLOAD) return;
         if(RootStateBit == 1){
             findViewById(R.id.SuMExplore_recentsCard_BG).setBackground(getDrawable(R.drawable.gb_dark_c22dp));
             //((TextView)findViewById(R.id.SuMExploreCard_GernCard_FlexibleGenre_TXT)).setTextColor(Color.WHITE);
@@ -1299,6 +1263,9 @@ public class MainActivity extends AppCompatActivity {
         SuMDarkModeToggle.setThumbTintList(thumbStates);
         SuMDarkModeToggle.setTrackTintList(trackStates);
         SuMDarkModeToggle.setTrackTintMode(PorterDuff.Mode.OVERLAY);
+
+        SUMCOINS_COUNT_UPDATE();
+
         long size = 0;
         size += getDirSize(this.getCacheDir());
         size += getDirSize(this.getExternalCacheDir());
@@ -1830,6 +1797,372 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void LoadCurr_SuMCurr(View view) {
+        if(SUMCURR_URL==null){
+            notifyUser("404");
+            return;
+        }
+        SuMExploreLoadReader_Native(SUMCURR_URL);
+    }
+
+    public void SuMInfo_AddRemoreFromFav(View view) {
+        if(SUMINFO_ID==null){
+            notifyUser("SuM-Fav is not loaded!");
+            return;
+        }
+        String prfinalbit = "1";
+        if (SUMINFO_FavBit == 1) prfinalbit = "0";
+        final String finalbit = prfinalbit;
+
+        Object cookies = CookieManager.getInstance().getCookie("https://sum-manga.azurewebsites.net/");
+        String[] cp = cookies.toString().split(";");
+        String SuMCurrentUser_Value = null;
+        for (int i = 0; i < cp.length; i++) {
+            if (cp[i].contains("SuMCurrentUser=") && cp[i].contains("SID=")) {
+                SuMCurrentUser_Value = cp[i].replace("SuMCurrentUser=", "");
+                i = cp.length;
+            }
+        }
+        OkHttp3CookieHelper cookieHelper = new OkHttp3CookieHelper();
+        cookieHelper.setCookie("https://sum-manga.azurewebsites.net/", "SuMCurrentUser", SuMCurrentUser_Value);
+        Handler mHandler = new Handler(Looper.getMainLooper());
+        OkHttpClient client = new OkHttpClient.Builder()
+                .cookieJar(cookieHelper.cookieJar())
+                .build();
+        Request request = new Request.Builder()
+                .url("https://sum-manga.azurewebsites.net/APIs/SetMangaLibState.aspx?MID=" + SUMINFO_ID + "&LIB=Fav"+"&CN="+finalbit)
+                .build();
+        String finalSuMCurrentUser_Value = SuMCurrentUser_Value;
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                final String ResBody = response.body().string().replace(" ", "");
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if(ResBody.equals("1")) {
+                                    SUMINFO_FavBit = 1;
+                                    notifyUser("Added to Fav!");
+                                    findViewById(R.id.SuMInfo_Fav_VIEWIMG).setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.ic_bookmark_fill1_wght500_grad0_opsz48));
+                                }
+                                if(ResBody.equals("0")){
+                                    SUMINFO_FavBit = 0;
+                                    notifyUser("Removed from Fav");
+                                    findViewById(R.id.SuMInfo_Fav_VIEWIMG).setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.ic_bookmark_fill0_wght500_grad0_opsz48));
+                                }
+                                if(!ResBody.equals("1")&&!ResBody.equals("0")) notifyUser("Server Error:"+ResBody);
+                                //SuMInfo_LoadFav(SUMINFO_ID);
+                            }
+                        });
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(SUMINFO_FavBit==0) notifyUser("Failed to ADD!");
+                        else notifyUser("Failed to Remove");
+                        SuMInfo_LoadFav(SUMINFO_ID);
+                    }
+                });
+            }
+
+        });
+
+    }
+
+    private void GetMangaDis_MangaInfo(String MID){
+
+        if(MID==null) return;
+
+        Object cookies = CookieManager.getInstance().getCookie("https://sum-manga.azurewebsites.net/");
+        String[] cp = cookies.toString().split(";");
+        String SuMCurrentUser_Value = null;
+        for (int i = 0; i < cp.length; i++) {
+            if (cp[i].contains("SuMCurrentUser=") && cp[i].contains("SID=")) {
+                SuMCurrentUser_Value = cp[i].replace("SuMCurrentUser=", "");
+                i = cp.length;
+            }
+        }
+        OkHttp3CookieHelper cookieHelper = new OkHttp3CookieHelper();
+        cookieHelper.setCookie("https://sum-manga.azurewebsites.net/", "SuMCurrentUser", SuMCurrentUser_Value);
+        File httpCacheDirectory = new File(MainActivity.this.getCacheDir(), "http-cache");
+        int cacheSize = 10 * 1024 * 1024; // 10 MiB
+        Cache cache = new Cache(httpCacheDirectory, cacheSize);
+        Handler mHandler = new Handler(Looper.getMainLooper());
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addNetworkInterceptor(new CacheInterceptor())
+                .cache(cache)
+                .cookieJar(cookieHelper.cookieJar())
+                .build();
+        Request request = new Request.Builder()
+                .url("https://sum-manga.azurewebsites.net/APIs/MangaDiscParser.aspx?MID="+MID)
+                .build();
+        String finalSuMCurrentUser_Value = SuMCurrentUser_Value;
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                final String ResBody = response.body().string();
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                ((TextView)findViewById(R.id.SuMMangaExploreInfo_MangaDisc)).setText(ResBody);
+
+                            }
+                        });
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        notifyUser("SuM-Disc: Failed to load!");
+                    }
+                });
+            }
+
+        });
+
+    }
+
+    private void SUMCOINS_ADS_CALIMONE_APICALL() {
+
+        final String API_URL = "https://sum-manga.azurewebsites.net/APIs/ClaimOneDailyCoinByADs.aspx";
+        Object cookies = CookieManager.getInstance().getCookie("https://sum-manga.azurewebsites.net/");
+        String[] cp = cookies.toString().split(";");
+        String SuMCurrentUser_Value = null;
+        for (int i = 0; i < cp.length; i++) {
+            if (cp[i].contains("SuMCurrentUser=") && cp[i].contains("SID=")) {
+                SuMCurrentUser_Value = cp[i].replace("SuMCurrentUser=", "");
+                i = cp.length;
+            }
+        }
+        if(SuMCurrentUser_Value==null){
+            notifyUser("Login plz!");
+            return;
+        }
+        if(!isConnectedToInternet()){
+            notifyUser("No internet connection!");
+            return;
+        }
+        OkHttp3CookieHelper cookieHelper = new OkHttp3CookieHelper();
+        cookieHelper.setCookie("https://sum-manga.azurewebsites.net/", "SuMCurrentUser", SuMCurrentUser_Value);
+        Handler mHandler = new Handler(Looper.getMainLooper());
+        OkHttpClient client = new OkHttpClient.Builder()
+                .cookieJar(cookieHelper.cookieJar())
+                .build();
+        Request request = new Request.Builder()
+                .url(API_URL)
+                .build();
+        String finalSuMCurrentUser_Value = SuMCurrentUser_Value;
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                final String ResBody = response.body().string();
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                notifyUser("SuM-Coins: "+ResBody);
+                                SUMCOINS_COUNT_UPDATE();
+
+                            }
+                        });
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        notifyUser("SuM-Coins: Failed to load!");
+                    }
+                });
+            }
+
+        });
+
+    }
+
+    private void SUMCOINS_COUNT_UPDATE(){
+
+        final String API_URL ="https://sum-manga.azurewebsites.net/APIs/SuMCoinsCount.aspx";
+        Object cookies = CookieManager.getInstance().getCookie("https://sum-manga.azurewebsites.net/");
+        String[] cp = cookies.toString().split(";");
+        String SuMCurrentUser_Value = null;
+        for (int i = 0; i < cp.length; i++) {
+            if (cp[i].contains("SuMCurrentUser=") && cp[i].contains("SID=")) {
+                SuMCurrentUser_Value = cp[i].replace("SuMCurrentUser=", "");
+                i = cp.length;
+            }
+        }
+        if(SuMCurrentUser_Value==null){
+            notifyUser("Login plz!");
+            return;
+        }
+        if(!isConnectedToInternet()){
+            notifyUser("No internet connection!");
+            return;
+        }
+        OkHttp3CookieHelper cookieHelper = new OkHttp3CookieHelper();
+        cookieHelper.setCookie("https://sum-manga.azurewebsites.net/", "SuMCurrentUser", SuMCurrentUser_Value);
+        Handler mHandler = new Handler(Looper.getMainLooper());
+        OkHttpClient client = new OkHttpClient.Builder()
+                .cookieJar(cookieHelper.cookieJar())
+                .build();
+        Request request = new Request.Builder()
+                .url(API_URL)
+                .build();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                String anbxc = response.body().string().replace(" ","");
+                if(anbxc.contains("<")||anbxc.contains(">")||anbxc.contains('"'+"")) anbxc = "[SERVER_IS_DOWN]";
+                final String ResBody = anbxc.replace(" ","");
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                String HelperX = ResBody + " Coins";
+                                String HelperAABC = UserNameFC+ " · " + HelperX;
+                                final TextView textViewToChange = (TextView) findViewById(R.id.SuMUseNameTXT);
+                                textViewToChange.setText(HelperAABC);
+                                ((TextView)findViewById(R.id.SuMCoinCard_CountTXT)).setText(ResBody);
+
+                                if(ResBody.contains("[") || ResBody.contains("_")) USERCOINS_COUNT = 0;
+                                else USERCOINS_COUNT = Integer.parseInt(ResBody);
+
+                            }
+                        });
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        notifyUser("SuM-Coins: Failed to load!");
+                    }
+                });
+            }
+
+        });
+
+    }
+
+    public void SuMInfo_AddRemoreFromWanna(View view) {
+        if(SUMINFO_ID==null){
+            notifyUser("SuM-Wanna is not loaded!");
+            return;
+        }
+        String prfinalbit = "1";
+        if (SUMINFO_WannaBit == 1) prfinalbit = "0";
+        final String finalbit = prfinalbit;
+
+        Object cookies = CookieManager.getInstance().getCookie("https://sum-manga.azurewebsites.net/");
+        String[] cp = cookies.toString().split(";");
+        String SuMCurrentUser_Value = null;
+        for (int i = 0; i < cp.length; i++) {
+            if (cp[i].contains("SuMCurrentUser=") && cp[i].contains("SID=")) {
+                SuMCurrentUser_Value = cp[i].replace("SuMCurrentUser=", "");
+                i = cp.length;
+            }
+        }
+        OkHttp3CookieHelper cookieHelper = new OkHttp3CookieHelper();
+        cookieHelper.setCookie("https://sum-manga.azurewebsites.net/", "SuMCurrentUser", SuMCurrentUser_Value);
+        Handler mHandler = new Handler(Looper.getMainLooper());
+        OkHttpClient client = new OkHttpClient.Builder()
+                .cookieJar(cookieHelper.cookieJar())
+                .build();
+        Request request = new Request.Builder()
+                .url("https://sum-manga.azurewebsites.net/APIs/SetMangaLibState.aspx?MID=" + SUMINFO_ID + "&LIB=Wanna"+"&CN="+finalbit)
+                .build();
+        String finalSuMCurrentUser_Value = SuMCurrentUser_Value;
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                final String ResBody = response.body().string().replace(" ", "");
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if(ResBody.equals("1")) {
+                                    SUMINFO_WannaBit = 1;
+                                    notifyUser("Added to Wanna!");
+                                    findViewById(R.id.SuMInfo_Wanna_VIEWIMG).setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.ic_check_fill1_wght600_grad0_opsz48));
+                                }
+                                if(ResBody.equals("0")){
+                                    SUMINFO_WannaBit = 0;
+                                    notifyUser("Removed from Wanna");
+                                    findViewById(R.id.SuMInfo_Wanna_VIEWIMG).setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.ic_add_fill1_wght600_grad0_opsz48));
+                                }
+                                if(!ResBody.equals("1")&&!ResBody.equals("0")) notifyUser("Server Error:"+ResBody);
+                                //SuMInfo_LoadFav(SUMINFO_ID);
+                            }
+                        });
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(SUMINFO_WannaBit==0) notifyUser("Failed to ADD!");
+                        else notifyUser("Failed to Remove");
+                        SuMInfo_LoadFav(SUMINFO_ID);
+                    }
+                });
+            }
+
+        });
+
+    }
+
+    private View LoadGernXInHome_LastView;
+    public void LoadGernXInHome(View view) {
+        if(LoadGernXInHome_LastView==view) return;
+        if(LoadGernXInHome_LastView==null) LoadGernXInHome_LastView = findViewById(R.id.SuMExplore_Gern_ALL_Toggle);
+        LoadGernXInHome_LastView.setAlpha((float) 0.64);
+        LoadGernXInHome_LastView.setBackground(setTint(ContextCompat.getDrawable(MainActivity.this, R.drawable.bg_gern_tr_bor_w_c_fixer_home),Color.parseColor("#ffffff")));
+        ((TextView)LoadGernXInHome_LastView).setTextColor(Color.BLACK);
+        view.setBackground(setTint(ContextCompat.getDrawable(MainActivity.this, R.drawable.bg_gern_tr_bor_w_c_fixer_home),Color.parseColor(RootHexColor)));
+        ((TextView)view).setTextColor(Color.WHITE);
+        view.setAlpha((float) 0.86);
+        LoadGernXInHome_LastView = view;
+
+        //adapter.clearData();
+
+        initView(((TextView)view).getText().toString());
+
+        //createList(((TextView)view).getText().toString());
+    }
 
 
     private class yWebViewClient extends WebViewClient {
@@ -1876,45 +2209,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
 
-                /*AdRequest adRequest = new AdRequest.Builder().build();
-
-
-                RewardedAd.load(MainActivity.this, "ca-app-pub-3940256099942544/5224354917", adRequest, new RewardedAdLoadCallback() {
-                            @Override
-                            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                                // Handle the error.
-                                Log.d(TAG, loadAdError.getMessage());
-                                mRewardedAd = null;
-
-                            }
-
-                            @Override
-                            public void onAdLoaded(@NonNull RewardedAd rewardedAd) {
-                                mRewardedAd = rewardedAd;
-
-
-                                mRewardedAd.setFullScreenContentCallback(new FullScreenContentCallback() {
-                                    @Override
-                                    public void onAdShowedFullScreenContent() {
-                                        // Called when ad is shown.
-                                    }
-
-                                    @Override
-                                    public void onAdFailedToShowFullScreenContent(AdError adError) {
-                                        // Called when ad fails to show.
-                                    }
-
-                                    @Override
-                                    public void onAdDismissedFullScreenContent() {
-                                        // Called when ad is dismissed.
-                                        // Set the ad reference to null so you don't show the ad a second time.
-                                        //mRewardedAd = null;
-                                    }
-                                });
-
-
-                            }
-                        });*/
 
             }
 
@@ -2783,14 +3077,15 @@ public class MainActivity extends AppCompatActivity {
             public void onRewardedAdLoaded()
             {
                 super.onRewardedAdLoaded();
-                Toast.makeText(MainActivity.this, "new AD loaded!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "New AD loaded!", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onRewardedAdFailedToLoad(LoadAdError loadAdError)
             {
                 super.onRewardedAdFailedToLoad(loadAdError);
-                onRequestAd();
+                notifyUser("Failed to load an AD! , Tap again to try...");
+                //onRequestAd();
             }
         };
         rewardedAd.loadAd(new AdRequest.Builder().build(), adLoadCallback);
@@ -2823,7 +3118,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         if(UID == 0){
-            Toast.makeText(MainActivity.this, "Login is required", Toast.LENGTH_LONG).show();
+            Toast.makeText(MainActivity.this, "Login plz", Toast.LENGTH_LONG).show();
             return;
         }
         final int UIDFinal = UID;
@@ -2832,15 +3127,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onUserEarnedReward(@NonNull RewardItem rewardItem)
             {
-                Toast.makeText(MainActivity.this, "Earned it", Toast.LENGTH_SHORT).show();
-                webView3AccountSettingsCard.loadUrl("javascript:SuMUpdateCoinsCount("+UIDFinal+",1);");
-                new android.os.Handler(Looper.getMainLooper()).postDelayed(
-                        new Runnable() {
-                            public void run() {
-                                webView3AccountSettingsCard.loadUrl("javascript:SuMCoinsCountUltMoving("+UIDFinal+");");
-                            }
-                        },
-                        540);
+
+                SUMCOINS_ADS_CALIMONE_APICALL();
                 SuMStaticVs.ADRewaredEarned = true;
                 SuMStaticVs.ADProssEnded = true;
 
@@ -2863,11 +3151,13 @@ public class MainActivity extends AppCompatActivity {
             public void onRewardedAdFailedToShow(AdError adError)
             {
                 super.onRewardedAdFailedToShow(adError);
+                notifyUser("No reward will be claimed!");
                 SuMStaticVs.ADRewaredEarned = false;
                 SuMStaticVs.ADProssEnded = true;
             }
         };
         rewardedAd.show(MainActivity.this, adCallback);
+
     }
 
     @JavascriptInterface
@@ -2997,6 +3287,7 @@ public class MainActivity extends AppCompatActivity {
 
         GlobalCurrCoinsCount = Integer.parseInt(CoinsC);
         runOnUiThread(new Runnable() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void run() {
 
@@ -3380,7 +3671,7 @@ public class MainActivity extends AppCompatActivity {
                 @SuppressLint("UseCompatLoadingForDrawables")
                 @Override
                 public void run() {
-                    int CurrIndexPTM = ((ViewFlipper)findViewById(R.id.simpleViewFlipper)).getDisplayedChild();
+                    //int CurrIndexPTM = ((ViewFlipper)findViewById(R.id.simpleViewFlipper)).getDisplayedChild();
                     /*WebViewToDistroyABS = new WebView[]{
                             WebView0RecentsCard};
                     if(CurrIndexPTM == 1){
@@ -3421,35 +3712,297 @@ public class MainActivity extends AppCompatActivity {
                     ((TextView) findViewById(R.id.SuMExploreInfo_MangaAgeRating)).setText(MangaAgeRating);
                     webView5.onResume();
                     webView5.loadUrl("https://sum-manga.azurewebsites.net" + SuMExploreURL.replace("ContantExplorer.aspx", "ContantExplorerCard.aspx"));
-                    //findViewById(R.id.SuMExploreInfo_MangaBGColor).setClipToOutline(true);
+                    //findViewById(R.id.SuMExploreInfo_MangaBGColor).setClipToOutline(true); --imp 0
+                    String MangaRootName = SuMExploreURL.split("Manga=")[1].split("&")[0];
+                    String MID = SuMExploreURL.split("&VC=")[1].split("&")[0];
                     findViewById(R.id.SuMExploreInfo_MangaIMG_CornerFix).setClipToOutline(true);
-                    Animation fadeIn = new AlphaAnimation(0, 1);
-                    fadeIn.setDuration(320);
-                    new android.os.Handler(Looper.getMainLooper()).postDelayed(
-                            new Runnable() {
-                                public void run() {
-                                    //findViewById(R.id.SuMNavBarExtendor).setBackground(setTint(getResources().getDrawable(R.drawable.bg_xcolor_nb_c0dp), Color.parseColor(hex)));
-                                    //findViewById(R.id.SuMNavBar).setBackground(setTint(getResources().getDrawable(R.drawable.bg_xcolor_nb_c0dp), Color.parseColor(hex)));
-                                    findViewById(R.id.SuMNavBarExtendor).setAlpha((float) 0.0);
-                                    findViewById(R.id.SuMNavBar).setAlpha((float) 0.0);
-                                    findViewById(R.id.SuMExploreInfo_ABS).setVisibility(View.VISIBLE);
-                                    findViewById(R.id.SuMExploreInfo_ABS).startAnimation(fadeIn);
-                                    new android.os.Handler(Looper.getMainLooper()).postDelayed(
-                                            new Runnable() {
-                                                public void run() {
-                                                    findViewById(R.id.SuMViewFilpperClickBlocker).setVisibility(View.GONE);
-                                                }
-                                            },
-                                            320);
-
-                                }
-                            },
-                            320);
+                    SuMInfo_LoadSuMCurr(MID,MangaRootName);
                 }
             });
         } else {
             Toast.makeText(MainActivity.this, "Login in SETTINGS to start reading now!", Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void SuMExploreInfoStart_Native_ReadyQ(){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Animation fadeIn = new AlphaAnimation(0, 1);
+                fadeIn.setDuration(320);
+                new android.os.Handler(Looper.getMainLooper()).postDelayed(
+                        new Runnable() {
+                            public void run() {
+                                //findViewById(R.id.SuMNavBarExtendor).setBackground(setTint(getResources().getDrawable(R.drawable.bg_xcolor_nb_c0dp), Color.parseColor(hex)));
+                                //findViewById(R.id.SuMNavBar).setBackground(setTint(getResources().getDrawable(R.drawable.bg_xcolor_nb_c0dp), Color.parseColor(hex)));
+                                findViewById(R.id.SuMNavBarExtendor).setAlpha((float) 0.0);
+                                findViewById(R.id.SuMNavBar).setAlpha((float) 0.0);
+                                findViewById(R.id.SuMExploreInfo_ABS).setVisibility(View.VISIBLE);
+                                findViewById(R.id.SuMExploreInfo_ABS).startAnimation(fadeIn);
+                                new android.os.Handler(Looper.getMainLooper()).postDelayed(
+                                        new Runnable() {
+                                            public void run() {
+                                                findViewById(R.id.SuMViewFilpperClickBlocker).setVisibility(View.GONE);
+                                            }
+                                        },
+                                        320);
+
+                            }
+                        },
+                        320);
+            }
+        });
+    }
+
+    private String SUMCURR_URL = null;
+
+    private void SuMInfo_LoadViews(String MID) {
+        ((TextView)findViewById(R.id.SuMExploreInfo_MangaViewsTXT)).setText("...");
+        Object cookies = CookieManager.getInstance().getCookie("https://sum-manga.azurewebsites.net/");
+        String[] cp = cookies.toString().split(";");
+        String SuMCurrentUser_Value = null;
+        for (int i = 0;i<cp.length;i++){
+            if(cp[i].contains("SuMCurrentUser=")&&cp[i].contains("SID=")) {
+                SuMCurrentUser_Value = cp[i].replace("SuMCurrentUser=", "");
+                i=cp.length;
+            }
+        }
+        OkHttp3CookieHelper cookieHelper = new OkHttp3CookieHelper();
+        cookieHelper.setCookie("https://sum-manga.azurewebsites.net/", "SuMCurrentUser", SuMCurrentUser_Value);
+        Handler mHandler = new Handler(Looper.getMainLooper());
+        OkHttpClient client = new OkHttpClient.Builder()
+                .cookieJar(cookieHelper.cookieJar())
+                .build();
+        Request request = new Request.Builder()
+                .url("https://sum-manga.azurewebsites.net/APIs/MangaViewsParser.aspx?MID=0"+MID)
+                .build();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                final String ResBody =  response.body().string().replace(" ","");
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        runOnUiThread(new Runnable() {
+                            @SuppressLint({"UseCompatLoadingForDrawables", "SetTextI18n"})
+                            @Override
+                            public void run() {
+                                ((TextView)findViewById(R.id.SuMExploreInfo_MangaViewsTXT)).setText(ResBody);
+                            }
+                        });
+                    }
+                });
+            }
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        notifyUser("SuM-Views: Loading failed!");
+                        ((TextView)findViewById(R.id.SuMExploreInfo_MangaViewsTXT)).setText("!!");
+                    }
+                });
+            }
+
+        });
+    }
+    private String SUMINFO_ID = null;
+    private int SUMINFO_FavBit = 0;
+    private int SUMINFO_WannaBit = 0;
+    private void SuMInfo_LoadFav(String MID){
+        Object cookies = CookieManager.getInstance().getCookie("https://sum-manga.azurewebsites.net/");
+        String[] cp = cookies.toString().split(";");
+        String SuMCurrentUser_Value = null;
+        for (int i = 0;i<cp.length;i++){
+            if(cp[i].contains("SuMCurrentUser=")&&cp[i].contains("SID=")) {
+                SuMCurrentUser_Value = cp[i].replace("SuMCurrentUser=", "");
+                i=cp.length;
+            }
+        }
+        OkHttp3CookieHelper cookieHelper = new OkHttp3CookieHelper();
+        cookieHelper.setCookie("https://sum-manga.azurewebsites.net/", "SuMCurrentUser", SuMCurrentUser_Value);
+        Handler mHandler = new Handler(Looper.getMainLooper());
+        OkHttpClient client = new OkHttpClient.Builder()
+                .cookieJar(cookieHelper.cookieJar())
+                .build();
+        Request request = new Request.Builder()
+                .url("https://sum-manga.azurewebsites.net/APIs/GetMangaLibState.aspx?MID="+MID+"&LIB=Fav")
+                .build();
+        String finalSuMCurrentUser_Value = SuMCurrentUser_Value;
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                final String ResBody =  response.body().string().replace(" ","");
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if(ResBody.equals("1")) {
+                                    SUMINFO_FavBit = 1;
+                                    findViewById(R.id.SuMInfo_Fav_VIEWIMG).setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.ic_bookmark_fill1_wght500_grad0_opsz48));
+                                } else {
+                                    SUMINFO_FavBit = 0;
+                                    findViewById(R.id.SuMInfo_Fav_VIEWIMG).setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.ic_bookmark_fill0_wght500_grad0_opsz48));
+                                }
+                                SUMINFO_ID = MID;
+                                SuMInfo_LoadWanna(MID);
+                            }
+                        });
+                    }
+                });
+            }
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        notifyUser("SuM-Fav: Loading failed!");
+                        findViewById(R.id.SuMInfo_Fav_VIEWIMG).setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.ic_bookmark_fill0_wght500_grad0_opsz48));
+                        SUMINFO_ID = null;
+                        SUMINFO_FavBit = 0;
+                        SuMExploreInfoStart_Native_ReadyQ();
+                    }
+                });
+            }
+
+        });
+    }
+    private void SuMInfo_LoadWanna(String MID){
+        Object cookies = CookieManager.getInstance().getCookie("https://sum-manga.azurewebsites.net/");
+        String[] cp = cookies.toString().split(";");
+        String SuMCurrentUser_Value = null;
+        for (int i = 0;i<cp.length;i++){
+            if(cp[i].contains("SuMCurrentUser=")&&cp[i].contains("SID=")) {
+                SuMCurrentUser_Value = cp[i].replace("SuMCurrentUser=", "");
+                i=cp.length;
+            }
+        }
+        OkHttp3CookieHelper cookieHelper = new OkHttp3CookieHelper();
+        cookieHelper.setCookie("https://sum-manga.azurewebsites.net/", "SuMCurrentUser", SuMCurrentUser_Value);
+        Handler mHandler = new Handler(Looper.getMainLooper());
+        OkHttpClient client = new OkHttpClient.Builder()
+                .cookieJar(cookieHelper.cookieJar())
+                .build();
+        Request request = new Request.Builder()
+                .url("https://sum-manga.azurewebsites.net/APIs/GetMangaLibState.aspx?MID="+MID+"&LIB=Wanna")
+                .build();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                final String ResBody =  response.body().string().replace(" ","");
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if(ResBody.equals("1")) {
+                                    SUMINFO_WannaBit = 1;
+                                    findViewById(R.id.SuMInfo_Wanna_VIEWIMG).setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.ic_check_fill1_wght600_grad0_opsz48));
+                                } else {
+                                    SUMINFO_WannaBit = 0;
+                                    findViewById(R.id.SuMInfo_Wanna_VIEWIMG).setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.ic_add_fill1_wght600_grad0_opsz48));
+                                }
+                                SUMINFO_ID = MID;
+                                SuMExploreInfoStart_Native_ReadyQ();
+                            }
+                        });
+                    }
+                });
+            }
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        notifyUser("SuM-Fav: Loading failed!");
+                        findViewById(R.id.SuMInfo_Wanna_VIEWIMG).setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.ic_check_fill1_wght600_grad0_opsz48));
+                        SUMINFO_ID = null;
+                        SUMINFO_WannaBit = 0;
+                        SuMExploreInfoStart_Native_ReadyQ();
+                    }
+                });
+            }
+
+        });
+    }
+
+    private void SuMInfo_LoadSuMCurr(String MID,String MangaRootDir){
+        Object cookies = CookieManager.getInstance().getCookie("https://sum-manga.azurewebsites.net/");
+        String[] cp = cookies.toString().split(";");
+        String SuMCurrentUser_Value = null;
+        for (int i = 0;i<cp.length;i++){
+            if(cp[i].contains("SuMCurrentUser=")&&cp[i].contains("SID=")) {
+                SuMCurrentUser_Value = cp[i].replace("SuMCurrentUser=", "");
+                i=cp.length;
+            }
+        }
+        OkHttp3CookieHelper cookieHelper = new OkHttp3CookieHelper();
+        cookieHelper.setCookie("https://sum-manga.azurewebsites.net/", "SuMCurrentUser", SuMCurrentUser_Value);
+        Handler mHandler = new Handler(Looper.getMainLooper());
+        OkHttpClient client = new OkHttpClient.Builder()
+                .cookieJar(cookieHelper.cookieJar())
+                .build();
+        Request request = new Request.Builder()
+                .url("https://sum-manga.azurewebsites.net/APIs/GetMangaLibState.aspx?MID="+MID+"&LIB=Curr")
+                .build();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                final String ResBody =  response.body().string().replace(" ","");
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        runOnUiThread(new Runnable() {
+                            @SuppressLint({"UseCompatLoadingForDrawables", "SetTextI18n"})
+                            @Override
+                            public void run() {
+                                String ResBody0 = "1";
+                                if(!ResBody.equals("0") && !ResBody.contains("[")) ResBody0 = ResBody;
+                                ((TextView)findViewById(R.id.SuMMangaExploreInfo_CURR_CN)).setText(ResBody0);
+                                String ChF=null;
+                                if(ResBody0.length()==1) ChF="000";
+                                if(ResBody0.length()==2) ChF="00";
+                                if(ResBody0.length()==3) ChF="0";
+                                ChF+=ResBody0;
+                                String IMGURL = "https://sum-manga.azurewebsites.net/storeitems/"+MangaRootDir+"/sumcp"+ChF+".jpg";
+                                SUMCURR_URL = "/APIs/MangaParser.aspx?MID="+MID+"&CN=ch"+ChF+"&MN="+MangaRootDir;
+                                SuMInfo_LoadFav(MID);
+                                Glide.with(MainActivity.this)
+                                        .load(IMGURL)
+                                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                        .addListener(new RequestListener<Drawable>() {
+                                            @Override
+                                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                                return false;
+                                            }
+                                            @Override
+                                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                                return false;
+                                            }
+                                        })
+                                        .apply(new RequestOptions().placeholder(R.drawable.bg_tr_br0dp_c22dp_).error(R.drawable.bg_tr_br0dp_c22dp_))
+                                        .into((ImageView)findViewById(R.id.SuMInfo_Curr_IMG));
+                                SuMInfo_LoadViews(MID);
+                            }
+                        });
+                    }
+                });
+            }
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        notifyUser("SuM-Current: Loading failed!");
+                        SuMExploreInfoStart_Native_ReadyQ();
+                    }
+                });
+            }
+
+        });
     }
 
     public boolean isConnectedToInternet(){
@@ -3495,6 +4048,7 @@ public class MainActivity extends AppCompatActivity {
                         webView5.loadUrl("about:blank");
                         SuMPauseXWebView(webView5);
                         findViewById(R.id.SuMViewFilpperClickBlocker).setVisibility(View.GONE);
+                        SUMCOINS_COUNT_UPDATE();
                     }
                 }, 320);
             }
@@ -3505,6 +4059,7 @@ public class MainActivity extends AppCompatActivity {
         Intent i = new Intent(MainActivity.this, SuMReader.class);
         i.putExtra("THEME_RBG", RootHexColor);
         i.putExtra("FILES_LINK", ReadingURL);
+        i.putExtra("USERCOINS_COUNT",USERCOINS_COUNT+"");
         startActivity(i);
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);//Improves Perf
     }
@@ -3529,7 +4084,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    private void initView() {
+    private void initView(String Gern) {
 
         // Initialize RecyclerView and set Adapter
         SuMStaticVs.MainC = MainActivity.this;
@@ -3548,14 +4103,20 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-        createList();
+        createList(Gern);
     }
 
-    private void createList() {
+    private void createList(String Gern) {
         new Thread(new Runnable() {
+            @SuppressLint("NotifyDataSetChanged")
             public void run() {
-
-                String CURL = "https://sum-manga.azurewebsites.net/ExploreGetByGarnAPI.aspx";
+                if(!scoutArrayList.isEmpty()){
+                    scoutArrayList.clear();
+                    //adapter.notifyDataSetChanged();
+                }
+                String GernHelperX = "";
+                if(!Gern.toLowerCase(Locale.ROOT).replace(" ","").equals("All".toLowerCase(Locale.ROOT))) GernHelperX = "?GR=" + Gern.replace(" ","").replace("-","");
+                String CURL = "https://sum-manga.azurewebsites.net/ExploreGetByGarnAPI.aspx" + GernHelperX;
                 File httpCacheDirectory = new File(MainActivity.this.getCacheDir(), "http-cache");
                 int cacheSize = 10 * 1024 * 1024; // 10 MiB
                 Cache cache = new Cache(httpCacheDirectory, cacheSize);

@@ -17,15 +17,15 @@ android {
         applicationId "com.summanga.android"
         minSdk 29
         targetSdk 32
-        versionCode 7
-        versionName "5.7.4"
+        versionCode 8
+        versionName "5.8.0"
         signingConfig signingConfigs.debug
         multiDexEnabled true
     }
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -34,7 +34,7 @@ android {
         targetCompatibility JavaVersion.VERSION_11
     }
     dependenciesInfo {
-        includeInApk false
+        includeInApk true
     }
     namespace 'com.summanga.android'
 }

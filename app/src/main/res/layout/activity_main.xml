@@ -438,11 +438,4 @@
                 tools:ignore="HardcodedText" />
         </RelativeLayout>
     </RelativeLayout>
-    <WebView
-        android:id="@+id/webViewX_SECURE_JS"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@android:color/black"
-        android:visibility="gone"
-        tools:ignore="MissingConstraints" />
 </androidx.constraintlayout.widget.ConstraintLayout>

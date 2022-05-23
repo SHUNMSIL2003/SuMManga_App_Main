@@ -25,45 +25,190 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <RelativeLayout
-                android:layout_marginBottom="12dp"
-                android:gravity="center"
+            <LinearLayout
+                android:layout_marginBottom="16dp"
+                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
-                android:layout_height="164dp">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-                <View
-                    android:alpha="0.86"
-                    android:background="@drawable/bg_white_c22dp"
+                <HorizontalScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="wrap_content"
+                    android:fadeScrollbars="false"
+                    android:scrollIndicators="none"
+                    android:scrollbarAlwaysDrawHorizontalTrack="false"
+                    android:scrollbarAlwaysDrawVerticalTrack="false"
+                    android:scrollbarSize="0dp"
+                    tools:ignore="UselessParent">
 
-                <RelativeLayout
-                    android:padding="3dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-                    <View
-                        android:background="@android:color/darker_gray"
-                        android:alpha="0.86"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"/>
-                </RelativeLayout>
-
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
                     <LinearLayout
-                        android:orientation="horizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                        <View
-                            android:background="@drawable/ic_filter_alt_fill1_wght400_grad0_opsz48"
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"/>
-                    </LinearLayout>
-                </LinearLayout>
+                        android:gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="42dp"
+                        android:orientation="horizontal">
 
-            </RelativeLayout>
+                        <View
+                            android:layout_width="18dp"
+                            android:layout_height="match_parent"
+                            android:background="@android:color/transparent" />
+
+                        <TextView
+                            android:id="@+id/SuMExplore_Gern_ALL_Toggle"
+                            android:layout_width="56dp"
+                            android:clipToOutline="true"
+                            android:foreground="?attr/selectableItemBackground"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="12dp"
+                            android:alpha="0.86"
+                            android:background="@drawable/bg_gern_tr_bor_w_c_fixer_home"
+                            android:fontFamily="@font/varela_round"
+                            android:gravity="center"
+                            android:text="All"
+                            android:textColor="@android:color/white"
+                            android:textSize="17.5sp"
+                            android:onClick="LoadGernXInHome"
+                            tools:ignore="HardcodedText,UnusedAttribute" />
+
+                        <TextView
+                            android:id="@+id/SuMExplore_Gern_Action_Toggle"
+                            android:layout_width="78dp"
+                            android:clipToOutline="true"
+                            android:foreground="?attr/selectableItemBackground"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="12dp"
+                            android:alpha="0.64"
+                            android:background="@drawable/bg_gern_tr_bor_w_c_fixer_home"
+                            android:fontFamily="@font/varela_round"
+                            android:gravity="center"
+                            android:text="Action"
+                            android:textColor="@android:color/black"
+                            android:textSize="18sp"
+                            android:onClick="LoadGernXInHome"
+                            tools:ignore="HardcodedText,UnusedAttribute" />
+
+                        <TextView
+                            android:clipToOutline="true"
+                            android:foreground="?attr/selectableItemBackground"
+                            android:id="@+id/SuMExplore_Gern_Drama_Toggle"
+                            android:layout_width="88dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="12dp"
+                            android:alpha="0.64"
+                            android:background="@drawable/bg_gern_tr_bor_w_c_fixer_home"
+                            android:fontFamily="@font/varela_round"
+                            android:gravity="center"
+                            android:text="Drama"
+                            android:textColor="@android:color/black"
+                            android:textSize="18sp"
+                            android:visibility="visible"
+                            android:onClick="LoadGernXInHome"
+                            tools:ignore="HardcodedText,UnusedAttribute" />
+
+                        <TextView
+                            android:clipToOutline="true"
+                            android:foreground="?attr/selectableItemBackground"
+                            android:id="@+id/SuMExplore_Gern_Fantasy_Toggle"
+                            android:layout_width="96dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="12dp"
+                            android:alpha="0.64"
+                            android:background="@drawable/bg_gern_tr_bor_w_c_fixer_home"
+                            android:fontFamily="@font/varela_round"
+                            android:gravity="center"
+                            android:text="Fantasy"
+                            android:textColor="@android:color/black"
+                            android:textSize="18sp"
+                            android:onClick="LoadGernXInHome"
+                            tools:ignore="HardcodedText,UnusedAttribute" />
+
+                        <TextView
+                            android:id="@+id/SuMExplore_Gern_Comedy_Toggle"
+                            android:layout_width="100dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="12dp"
+                            android:alpha="0.64"
+                            android:background="@drawable/bg_gern_tr_bor_w_c_fixer_home"
+                            android:clipToOutline="true"
+                            android:fontFamily="@font/varela_round"
+                            android:foreground="?attr/selectableItemBackground"
+                            android:gravity="center"
+                            android:text="Comedy"
+                            android:textColor="@android:color/black"
+                            android:textSize="18sp"
+                            android:onClick="LoadGernXInHome"
+                            tools:ignore="HardcodedText,UnusedAttribute" />
+
+                        <TextView
+                            android:clipToOutline="true"
+                            android:foreground="?attr/selectableItemBackground"
+                            android:id="@+id/SuMExplore_Gern_SliceofLife_Toggle"
+                            android:layout_width="132dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="12dp"
+                            android:alpha="0.64"
+                            android:background="@drawable/bg_gern_tr_bor_w_c_fixer_home"
+                            android:fontFamily="@font/varela_round"
+                            android:gravity="center"
+                            android:text="Slice of Life"
+                            android:textColor="@android:color/black"
+                            android:textSize="18sp"
+                            android:onClick="LoadGernXInHome"
+                            tools:ignore="HardcodedText,UnusedAttribute" />
+
+                        <TextView
+                            android:clipToOutline="true"
+                            android:foreground="?attr/selectableItemBackground"
+                            android:id="@+id/SuMExplore_Gern_SciFi_Toggle"
+                            android:layout_width="80dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="12dp"
+                            android:alpha="0.64"
+                            android:background="@drawable/bg_gern_tr_bor_w_c_fixer_home"
+                            android:fontFamily="@font/varela_round"
+                            android:gravity="center"
+                            android:text="Sci-Fi"
+                            android:textColor="@android:color/black"
+                            android:textSize="18sp"
+                            android:onClick="LoadGernXInHome"
+                            tools:ignore="HardcodedText,UnusedAttribute" />
+
+                        <TextView
+                            android:clipToOutline="true"
+                            android:foreground="?attr/selectableItemBackground"
+                            android:id="@+id/SuMExplore_Gern_Supernatural_Toggle"
+                            android:layout_width="142dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="12dp"
+                            android:alpha="0.64"
+                            android:background="@drawable/bg_gern_tr_bor_w_c_fixer_home"
+                            android:fontFamily="@font/varela_round"
+                            android:gravity="center"
+                            android:text="Supernatural"
+                            android:textColor="@android:color/black"
+                            android:textSize="18sp"
+                            android:onClick="LoadGernXInHome"
+                            tools:ignore="HardcodedText,UnusedAttribute" />
+
+                        <TextView
+                            android:clipToOutline="true"
+                            android:foreground="?attr/selectableItemBackground"
+                            android:id="@+id/SuMExplore_Gern_Mystery_Toggle"
+                            android:layout_width="98dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="12dp"
+                            android:alpha="0.64"
+                            android:background="@drawable/bg_gern_tr_bor_w_c_fixer_home"
+                            android:fontFamily="@font/varela_round"
+                            android:gravity="center"
+                            android:text="Mystery"
+                            android:textColor="@android:color/black"
+                            android:textSize="18sp"
+                            android:onClick="LoadGernXInHome"
+                            tools:ignore="HardcodedText,UnusedAttribute" />
+                    </LinearLayout>
+                </HorizontalScrollView>
+            </LinearLayout>
 
             <RelativeLayout
                 android:layout_gravity="center"

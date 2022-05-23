@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -66,12 +67,20 @@ public class SuMReader extends AppCompatActivity {
     private ScoutAdapterIMG adapter;
     private ArrayList<ScoutIMG> scoutArrayList;
     private boolean SUM_NEXT = false;
+    private int USERCOINS_COUNT = 0;
+    private int REQ_COINS = -1;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sumreader_popup);
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+        Window window = this.getWindow();
+        window.setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            setTranslucent(true);
+            window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        }
         int UID = 0;
         Object cookies = CookieManager.getInstance().getCookie("https://sum-manga.azurewebsites.net/");
         if (cookies != null) {
@@ -109,6 +118,7 @@ public class SuMReader extends AppCompatActivity {
             THEME_RBG= (String) savedInstanceState.getSerializable("THEME_RBG");
         }
         if(THEME_RBG == null){
+            notifyUser("404");
             SuMReader.this.finish();
         }
         if (savedInstanceState == null) {
@@ -122,7 +132,19 @@ public class SuMReader extends AppCompatActivity {
             FILES_LINK= (String) savedInstanceState.getSerializable("FILES_LINK");
         }
         if(FILES_LINK == null){
+            notifyUser("404");
             SuMReader.this.finish();
+        }
+
+        if (savedInstanceState == null) {
+            Bundle extras = getIntent().getExtras();
+            if(extras == null) {
+                USERCOINS_COUNT = 0;
+            } else {
+                USERCOINS_COUNT = Integer.parseInt(extras.getString("USERCOINS_COUNT"));
+            }
+        } else {
+            USERCOINS_COUNT = Integer.parseInt((String) savedInstanceState.getSerializable("USERCOINS_COUNT"));
         }
 
         String[] cp = cookies.toString().split(";");
@@ -159,6 +181,13 @@ public class SuMReader extends AppCompatActivity {
                                 findViewById(R.id.LoadChapter_BTN).setBackground(setTint(getResources().getDrawable(R.drawable.bg_btn_c18dp), Color.parseColor(THEME_RBG)));
                                 findViewById(R.id.SuMReadeInfinateLoading_anim).setVisibility(View.GONE);
                                 findViewById(R.id.SuMAgreementPOPUP).setVisibility(View.VISIBLE);
+                                if(ResBody.contains("[")||ResBody.contains("_")||ResBody.contains("<")||ResBody.contains(">")||ResBody.contains('"'+"")){
+                                    REQ_COINS = -1;
+                                    notifyUser("Loading failed!");
+                                    SuMReader.this.finish();
+                                }else {
+                                    REQ_COINS = Integer.parseInt(ResBody);
+                                }
                             }
                         });
                     }
@@ -188,6 +217,10 @@ public class SuMReader extends AppCompatActivity {
         return wrappedDrawable;
     }
     public void LoadChapter(View view) {
+        if(REQ_COINS > USERCOINS_COUNT){
+            notifyUser("SuM-Coins: insufficient balance!");
+            return;
+        }
         SuMStaticVs.SUMREADER_MOVEON_MBIT = 1;
         findViewById(R.id.SuMAgreementPOPUP).setVisibility(View.GONE);
         SuMSecure();
@@ -248,7 +281,10 @@ public class SuMReader extends AppCompatActivity {
                             @SuppressLint({"UseCompatLoadingForDrawables", "SetTextI18n"})
                             @Override
                             public void run() {
-                                initView(ResBody);
+                                if(!ResBody.contains("#File;Split&")){
+                                    notifyUser("SuM-Reader: Chapter is not available!");
+                                    SuMReader.this.finish();
+                                } else initView(ResBody);
                             }
                         });
                     }
@@ -405,6 +441,7 @@ public class SuMReader extends AppCompatActivity {
             Intent i = new Intent(SuMReader.this, SuMReader.class);
             i.putExtra("THEME_RBG", THEME_RBG);
             i.putExtra("FILES_LINK", FILES_LINK_NEXT);
+            i.putExtra("USERCOINS_COUNT", USERCOINS_COUNT+"");
             startActivity(i);
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);//Improves Perf
             Timer timer = new Timer();

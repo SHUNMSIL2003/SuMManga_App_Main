@@ -521,7 +521,7 @@ public class SplashScreen extends AppCompatActivity {
         @Override
         public void onPageFinished(WebView view, String url) {
             CookieManager.getInstance().flush();
-            if(url.contains("/SettingsAccountCard.aspx")||url.contains("SuMMangaInstallAPP.aspx")){
+            if(url.contains("Tr-Test-SuT.html") || url.contains("/SettingsAccountCard.aspx") || url.contains("SuMMangaInstallAPP.aspx")){
                 Object cookies = CookieManager.getInstance().getCookie("https://sum-manga.azurewebsites.net/");
                 int UID = 0;
                 if (cookies != null) {

@@ -47,7 +47,6 @@
                                        android:layout_marginTop="3.5dp"
                                        android:alpha="0.74"
                                        android:background="@drawable/ic_arrow_back_ios_fill1_wght600_grad0_opsz48"
-                                       android:foreground="?attr/selectableItemBackgroundBorderless"
                                        android:onClick="CloseSuMExploreInfo" />
 
                                    <LinearLayout
@@ -69,8 +68,8 @@
                                            <TextView
                                                android:layout_width="wrap_content"
                                                android:layout_height="wrap_content"
-                                               android:layout_marginTop="8dp"
-                                               android:layout_marginEnd="-20dp"
+                                               android:layout_marginTop="9dp"
+                                               android:layout_marginEnd="-19dp"
                                                android:alpha="0.60"
                                                android:fontFamily="@font/varela_round"
                                                android:text="Wanna"
@@ -78,6 +77,8 @@
                                                android:textSize="12sp" />
 
                                            <View
+                                               android:onClick="SuMInfo_AddRemoreFromWanna"
+                                               android:id="@+id/SuMInfo_Wanna_VIEWIMG"
                                                android:layout_width="38dp"
                                                android:layout_height="38dp"
                                                android:layout_marginStart="8dp"
@@ -86,6 +87,8 @@
                                        </LinearLayout>
 
                                        <View
+                                           android:onClick="SuMInfo_AddRemoreFromFav"
+                                           android:id="@+id/SuMInfo_Fav_VIEWIMG"
                                            android:layout_width="39dp"
                                            android:layout_height="39dp"
                                            android:layout_marginStart="2dp"
@@ -121,7 +124,7 @@
                                </RelativeLayout>
                                <RelativeLayout
                                    android:layout_width="match_parent"
-                                   android:layout_height="68dp" >
+                                   android:layout_height="72dp" >
 
                                    <View
                                        android:layout_width="match_parent"
@@ -131,13 +134,14 @@
 
                                    <RelativeLayout
                                        android:layout_width="match_parent"
-                                       android:layout_height="wrap_content"
+                                       android:layout_height="match_parent"
                                        android:gravity="center"
                                        android:paddingStart="12dp"
                                        android:paddingEnd="12dp"
-                                       android:paddingBottom="6dp">
+                                       android:paddingBottom="18dp">
 
                                        <LinearLayout
+                                           android:onClick="LoadCurr_SuMCurr"
                                            android:layout_width="wrap_content"
                                            android:layout_height="58dp"
                                            android:background="@drawable/bg_w_tr_mangainfo_currbtn"
@@ -150,11 +154,13 @@
                                            tools:ignore="UnusedAttribute">
 
                                            <ImageView
-                                               android:layout_width="62dp"
+                                               android:id="@+id/SuMInfo_Curr_IMG"
+                                               android:layout_width="54dp"
                                                android:layout_height="match_parent"
                                                android:layout_marginEnd="16dp"
                                                android:alpha="0.64"
-                                               android:background="@drawable/bg_w_tr_mangainfo_currbtn"
+                                               android:scaleType="centerCrop"
+                                               android:background="@drawable/bg_w_tr_mangainfo_currbtn_img"
                                                android:clipToOutline="true"
                                                tools:ignore="UnusedAttribute" />
 
@@ -168,7 +174,7 @@
                                                <TextView
                                                    android:layout_width="wrap_content"
                                                    android:layout_height="wrap_content"
-                                                   android:layout_marginTop="-12dp"
+                                                   android:layout_marginTop="-15dp"
                                                    android:alpha="0.64"
                                                    android:fontFamily="@font/varela_round"
                                                    android:text="Chapter"
@@ -185,7 +191,7 @@
                                                    android:fontFamily="@font/varela_round"
                                                    android:text="0"
                                                    android:textColor="@android:color/white"
-                                                   android:textSize="23sp"
+                                                   android:textSize="22sp"
                                                    tools:ignore="HardcodedText,RtlSymmetry" />
                                            </LinearLayout>
 

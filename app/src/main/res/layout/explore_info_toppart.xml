@@ -55,12 +55,12 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="24dp"
+                    android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
                     <HorizontalScrollView
                         android:layout_width="match_parent"
-                        android:layout_height="24dp"
+                        android:layout_height="wrap_content"
                         android:fadeScrollbars="false"
                         android:scrollIndicators="none"
                         android:scrollbarAlwaysDrawHorizontalTrack="false"
@@ -71,7 +71,7 @@
                         <LinearLayout
                             android:gravity="center"
                             android:layout_width="wrap_content"
-                            android:layout_height="24dp"
+                            android:layout_height="wrap_content"
                             android:orientation="horizontal">
 
                             <View
@@ -88,7 +88,7 @@
                                 android:background="@drawable/bg_gern_tr_bor_w_c_fixer"
                                 android:fontFamily="@font/varela_round"
                                 android:gravity="center"
-                                android:text="Ation"
+                                android:text="Action"
                                 android:textColor="@android:color/white"
                                 android:textSize="13.5sp"
                                 android:visibility="gone"
@@ -234,12 +234,13 @@
                     android:gravity="center"
                     android:layout_width="match_parent"
                     android:layout_height="fill_parent">
+
                     <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="-28dp"
                         android:gravity="left"
-                        android:paddingStart="16dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:paddingStart="16dp">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -258,7 +259,7 @@
                             android:text="show description"
                             android:textColor="@android:color/white"
                             android:textSize="12sp"
-                            tools:ignore="HardcodedText,RtlSymmetry" />
+                            tools:ignore="HardcodedText,RtlSymmetry,UnusedAttribute" />
                     </RelativeLayout>
                 </RelativeLayout>
 

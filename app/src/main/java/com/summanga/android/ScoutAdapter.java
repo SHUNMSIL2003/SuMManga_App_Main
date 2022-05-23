@@ -84,6 +84,13 @@ public class ScoutAdapter extends RecyclerView.Adapter<ScoutAdapter.ScoutHolder>
     }
 
 
+    @SuppressLint("NotifyDataSetChanged")
+    public void clearData() {
+        scouts.clear();
+        notifyDataSetChanged();
+    }
+
+
     @NonNull
     @Override
     public ScoutHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
