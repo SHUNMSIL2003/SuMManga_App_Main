@@ -15,10 +15,10 @@ android {
     }
     defaultConfig {
         applicationId "com.summanga.android"
-        minSdk 29
+        minSdk 28
         targetSdk 32
         versionCode 8
-        versionName "5.8.0"
+        versionName "5.8.1"
         signingConfig signingConfigs.debug
         multiDexEnabled true
     }
@@ -47,7 +47,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.7.0-alpha01'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation "androidx.core:core:1.7.0"
-    implementation 'com.google.android.gms:play-services-ads:19.3.0'
+    implementation 'com.google.android.gms:play-services-ads:19.4.0'
     implementation "com.android.billingclient:billing:5.0.0"
     implementation(platform("com.squareup.okhttp3:okhttp-bom:4.9.3"))
     implementation("com.squareup.okhttp3:okhttp")

@@ -11,10 +11,13 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.hardware.GeomagneticField;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -70,7 +73,6 @@ public class ScoutAdapter extends RecyclerView.Adapter<ScoutAdapter.ScoutHolder>
     @Override
     public void onBindViewHolder(@NonNull ScoutHolder holder, @SuppressLint("RecyclerView") int position, @NonNull List<Object> payloads) {
         super.onBindViewHolder(holder, position, payloads);
-
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -81,7 +83,29 @@ public class ScoutAdapter extends RecyclerView.Adapter<ScoutAdapter.ScoutHolder>
                 }
             }
         });
+        setAnimation(holder.itemView, position);
     }
+
+    private void setAnimation(View viewToAnimate, int position)
+    {
+        // If the bound view wasn't previously displayed on screen, it's animated
+        /*if (position > SuMStaticVs.lastPosition)
+        {
+            Animation animation = AnimationUtils.loadAnimation(context, R.anim.slide_up);
+            viewToAnimate.startAnimation(animation);
+        } else {
+            Animation animation = AnimationUtils.loadAnimation(context, R.anim.slide_down);
+            viewToAnimate.startAnimation(animation);
+        }
+        SuMStaticVs.lastPosition = position;*/
+        //viewToAnimate.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+        if(position>SuMStaticVs.lastPosition) {
+            Animation animation = AnimationUtils.loadAnimation(context, R.anim.card_pop);
+            viewToAnimate.startAnimation(animation);
+            SuMStaticVs.lastPosition = position;
+        }
+    }
+
 
 
     @SuppressLint("NotifyDataSetChanged")
@@ -136,8 +160,12 @@ public class ScoutAdapter extends RecyclerView.Adapter<ScoutAdapter.ScoutHolder>
             txtName.setText(scout.getName());
             viewColor.setBackgroundColor(hex);
             String Image_URL = "https://sum-manga.azurewebsites.net" + scout.getRank();
+            RequestOptions myOptions = new RequestOptions()
+                    .fitCenter(); // or centerCrop
+                    //.override(450, 450);
             Glide.with(context)
                     .load(Image_URL)
+                    .apply(myOptions)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .addListener(new RequestListener<Drawable>() {
                         @Override
@@ -147,8 +175,9 @@ public class ScoutAdapter extends RecyclerView.Adapter<ScoutAdapter.ScoutHolder>
                         @Override
                         public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
                             Bitmap a = ((BitmapDrawable)resource).getBitmap();
+                            a = Bitmap.createScaledBitmap(a, a.getWidth()/8, a.getHeight()/8, false);
                             int rh = (int) (a.getHeight()*0.38);
-                            a = MainActivity.blurDark(context,Bitmap.createBitmap(a, 0, a.getHeight()-rh, a.getWidth(), rh),12.0f,r,g,b);
+                            a = MainActivity.blurDark(context,Bitmap.createBitmap(a, 0, a.getHeight()-rh, a.getWidth(), rh),2.0f,r,g,b);
                             //Bitmap resizedBmp = Bitmap.createBitmap(((BitmapDrawable)resource).getBitmap(), 0, 0, 180, 86);
                             viewColor.setBackground(new BitmapDrawable(context.getResources(), a));
                             return false;
@@ -156,46 +185,57 @@ public class ScoutAdapter extends RecyclerView.Adapter<ScoutAdapter.ScoutHolder>
                     })
                     .apply(new RequestOptions().placeholder(R.drawable.bg_tr_br0dp_c22dp_).error(R.drawable.bg_tr_br0dp_c22dp_))
                     .into(imgCover);
-            View namebar;
             myCardView.setCardBackgroundColor(Color.TRANSPARENT);
             idItemBG.setBackgroundColor(hex);
             if(index % 2 == 0)
             {
                 //System.out.println("The given number "+index+" is Even ");
-                namebar = ViewPaddingTop;
+                //namebar = ViewPaddingTop;
+                itemView.findViewById(R.id.idCardPaddingTop).setVisibility(View.GONE);
+                itemView.findViewById(R.id.idCardPaddingBottom).setVisibility(View.VISIBLE);
             }
             else
             {
                 //System.out.println("The given number "+index+" is Odd ");
-                namebar = ViewPaddingBottom;
+                //namebar = ViewPaddingBottom;
+                itemView.findViewById(R.id.idCardPaddingBottom).setVisibility(View.GONE);
+                itemView.findViewById(R.id.idCardPaddingTop).setVisibility(View.VISIBLE);
             }
-            ((ViewGroup) namebar.getParent()).removeView(namebar);
+            //((ViewGroup) namebar.getParent()).removeView(namebar);
 
             final String MangaGernsToPross = scout.getGernString().toLowerCase(Locale.ROOT).replace(" ","").replace("-","");
             if(!MangaGernsToPross.contains("action")){
-                ((ViewGroup) itemView.findViewById(R.id.idSuMExploreIndo_Gern_Action).getParent()).removeView(itemView.findViewById(R.id.idSuMExploreIndo_Gern_Action));
-            }
+                //((ViewGroup) itemView.findViewById(R.id.idSuMExploreIndo_Gern_Action).getParent()).removeView(itemView.findViewById(R.id.idSuMExploreIndo_Gern_Action));
+                itemView.findViewById(R.id.idSuMExploreIndo_Gern_Action).setVisibility(View.GONE);
+            } else itemView.findViewById(R.id.idSuMExploreIndo_Gern_Action).setVisibility(View.VISIBLE);
             if(!MangaGernsToPross.contains("drama")){
-                ((ViewGroup) itemView.findViewById(R.id.idSuMExploreIndo_Gern_Drama).getParent()).removeView(itemView.findViewById(R.id.idSuMExploreIndo_Gern_Drama));
-            }
+                //((ViewGroup) itemView.findViewById(R.id.idSuMExploreIndo_Gern_Drama).getParent()).removeView(itemView.findViewById(R.id.idSuMExploreIndo_Gern_Drama));
+                itemView.findViewById(R.id.idSuMExploreIndo_Gern_Drama).setVisibility(View.GONE);
+            } else itemView.findViewById(R.id.idSuMExploreIndo_Gern_Drama).setVisibility(View.VISIBLE);
             if(!MangaGernsToPross.contains("fantasy")){
-                ((ViewGroup) itemView.findViewById(R.id.idSuMExploreIndo_Gern_Fantasy).getParent()).removeView(itemView.findViewById(R.id.idSuMExploreIndo_Gern_Fantasy));
-            }
+                //((ViewGroup) itemView.findViewById(R.id.idSuMExploreIndo_Gern_Fantasy).getParent()).removeView(itemView.findViewById(R.id.idSuMExploreIndo_Gern_Fantasy));
+                itemView.findViewById(R.id.idSuMExploreIndo_Gern_Fantasy).setVisibility(View.GONE);
+            } else itemView.findViewById(R.id.idSuMExploreIndo_Gern_Fantasy).setVisibility(View.VISIBLE);
             if(!MangaGernsToPross.contains("comedy")){
-                ((ViewGroup) itemView.findViewById(R.id.idSuMExploreIndo_Gern_Comedy).getParent()).removeView(itemView.findViewById(R.id.idSuMExploreIndo_Gern_Comedy));
-            }
+                //((ViewGroup) itemView.findViewById(R.id.idSuMExploreIndo_Gern_Comedy).getParent()).removeView(itemView.findViewById(R.id.idSuMExploreIndo_Gern_Comedy));
+                itemView.findViewById(R.id.idSuMExploreIndo_Gern_Comedy).setVisibility(View.GONE);
+            } else itemView.findViewById(R.id.idSuMExploreIndo_Gern_Comedy).setVisibility(View.VISIBLE);
             if(!MangaGernsToPross.contains("sliceoflife")) {
-                ((ViewGroup) itemView.findViewById(R.id.idSuMExploreIndo_Gern_SliceofLife).getParent()).removeView(itemView.findViewById(R.id.idSuMExploreIndo_Gern_SliceofLife));
-            }
+                //((ViewGroup) itemView.findViewById(R.id.idSuMExploreIndo_Gern_SliceofLife).getParent()).removeView(itemView.findViewById(R.id.idSuMExploreIndo_Gern_SliceofLife));
+                itemView.findViewById(R.id.idSuMExploreIndo_Gern_SliceofLife).setVisibility(View.GONE);
+            } else itemView.findViewById(R.id.idSuMExploreIndo_Gern_SliceofLife).setVisibility(View.VISIBLE);
             if(!MangaGernsToPross.contains("scifi")){
-                ((ViewGroup) itemView.findViewById(R.id.idSuMExploreIndo_Gern_SciFi).getParent()).removeView(itemView.findViewById(R.id.idSuMExploreIndo_Gern_SciFi));
-            }
+                //((ViewGroup) itemView.findViewById(R.id.idSuMExploreIndo_Gern_SciFi).getParent()).removeView(itemView.findViewById(R.id.idSuMExploreIndo_Gern_SciFi));
+                itemView.findViewById(R.id.idSuMExploreIndo_Gern_SciFi).setVisibility(View.GONE);
+            } else itemView.findViewById(R.id.idSuMExploreIndo_Gern_SciFi).setVisibility(View.VISIBLE);
             if(!MangaGernsToPross.contains("supernatural")){
-                ((ViewGroup) itemView.findViewById(R.id.idSuMExploreIndo_Gern_Supernatural).getParent()).removeView(itemView.findViewById(R.id.idSuMExploreIndo_Gern_Supernatural));
-            }
+                //((ViewGroup) itemView.findViewById(R.id.idSuMExploreIndo_Gern_Supernatural).getParent()).removeView(itemView.findViewById(R.id.idSuMExploreIndo_Gern_Supernatural));
+                itemView.findViewById(R.id.idSuMExploreIndo_Gern_Supernatural).setVisibility(View.GONE);
+            } else itemView.findViewById(R.id.idSuMExploreIndo_Gern_Supernatural).setVisibility(View.VISIBLE);
             if(!MangaGernsToPross.contains("mystery")){
-                ((ViewGroup) itemView.findViewById(R.id.idSuMExploreIndo_Gern_Mystery).getParent()).removeView(itemView.findViewById(R.id.idSuMExploreIndo_Gern_Mystery));
-            }
+                //((ViewGroup) itemView.findViewById(R.id.idSuMExploreIndo_Gern_Mystery).getParent()).removeView(itemView.findViewById(R.id.idSuMExploreIndo_Gern_Mystery));
+                itemView.findViewById(R.id.idSuMExploreIndo_Gern_Mystery).setVisibility(View.GONE);
+            } else itemView.findViewById(R.id.idSuMExploreIndo_Gern_Mystery).setVisibility(View.VISIBLE);
 
         }
     }

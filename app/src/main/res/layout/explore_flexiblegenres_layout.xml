@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:background="@android:color/transparent"
-    android:layout_height="wrap_content"
+    android:layout_height="fill_parent"
     app:layout_constraintHeight_default="wrap"
     tools:context=".MainActivity">
 
@@ -18,11 +18,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="fill_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:orientation="vertical">
 
             <LinearLayout
@@ -212,13 +212,13 @@
 
             <RelativeLayout
                 android:layout_gravity="center"
-                android:gravity="center"
+                android:gravity="top"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="fill_parent">
                 <RelativeLayout
                     android:id="@+id/scout_recycler_view_Width"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="fill_parent"
                     android:paddingStart="-8dp"
                     android:paddingTop="0dp"
                     android:paddingBottom="0dp"
@@ -227,14 +227,30 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/scout_recycler_view"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:nestedScrollingEnabled="false"
+                        android:layout_height="fill_parent"
+                        android:nestedScrollingEnabled="true"
                         android:orientation="vertical"
                         android:scrollbars="none"
                         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                         app:spanCount="2" />
+
                 </RelativeLayout>
             </RelativeLayout>
+            <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:id="@+id/SuMExploreProssC"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_gravity="center"
+                android:alpha="0.64"
+                android:layout_marginTop="12dp"
+                android:progress="0"
+                android:indeterminate="true"
+                android:indeterminateBehavior="cycle"
+                android:indeterminateOnly="true"
+                app:indicatorColor="@android:color/darker_gray"
+                app:trackColor="@android:color/transparent"
+                app:trackThickness="4dp"
+                app:trackCornerRadius="2dp"/>
         </LinearLayout>
 
     </RelativeLayout>

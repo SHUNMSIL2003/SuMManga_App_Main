@@ -31,6 +31,55 @@
             android:layout_height="match_parent"/>
 
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:id="@+id/Offline_Options"
+            android:visibility="gone">
+
+            <View
+                android:layout_width="74dp"
+                android:layout_height="74dp"
+                android:alpha="0.45"
+                android:background="@drawable/ic_cloud_off_fill1_wght400_grad0_opsz48" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:alpha="0.45"
+                android:fontFamily="@font/varela_round"
+                android:text="You are Offline!"
+                android:textColor="@android:color/black"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                tools:ignore="HardcodedText" />
+
+            <Button
+                android:id="@+id/LoadChapter_BTN_Cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="34dp"
+                android:layout_margin="6dp"
+                android:alpha="0.32"
+                android:background="@drawable/bg_splash_downloads_btn"
+                android:clipToOutline="true"
+                android:fontFamily="@font/varela_round"
+                android:foreground="?attr/selectableItemBackground"
+                android:gravity="center"
+                android:onClick="OpenDownloads"
+                android:paddingStart="12dp"
+                android:visibility="gone"
+                android:paddingEnd="12dp"
+                android:text="Downloads"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"
+                android:textSize="13sp"
+                tools:ignore="HardcodedText,UnusedAttribute" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
             android:id="@+id/SuMSplashIMG"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -61,14 +110,14 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingStart="64dp"
-                android:paddingEnd="64dp">
+                android:paddingStart="86dp"
+                android:paddingEnd="86dp">
 
                 <com.google.android.material.progressindicator.LinearProgressIndicator
                     android:id="@+id/SuMSplashProssBar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:alpha="0.32"
+                    android:alpha="0.28"
                     android:progress="0"
                     app:indicatorColor="@android:color/darker_gray"
                     app:trackColor="@android:color/transparent"

@@ -14,7 +14,7 @@ public class CacheInterceptor implements Interceptor {
 
         CacheControl cacheControl = new CacheControl.Builder()
                 //.maxAge(15, TimeUnit.MINUTES) // 15 minutes cache
-                .maxAge(8,TimeUnit.HOURS)
+                .maxAge(12,TimeUnit.HOURS)
                 .build();
 
         return response.newBuilder()

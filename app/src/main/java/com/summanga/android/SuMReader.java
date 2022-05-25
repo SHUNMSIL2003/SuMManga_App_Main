@@ -141,12 +141,19 @@ public class SuMReader extends AppCompatActivity {
             if(extras == null) {
                 USERCOINS_COUNT = 0;
             } else {
-                USERCOINS_COUNT = Integer.parseInt(extras.getString("USERCOINS_COUNT"));
+                String aancc = extras.getString("USERCOINS_COUNT");
+                if(!aancc.contains("[") && !aancc.contains("_")) {
+                    USERCOINS_COUNT = Integer.parseInt(aancc);
+                }
             }
         } else {
-            USERCOINS_COUNT = Integer.parseInt((String) savedInstanceState.getSerializable("USERCOINS_COUNT"));
+            String aancc = (String) savedInstanceState.getSerializable("USERCOINS_COUNT");
+            if(!aancc.contains("[") && !aancc.contains("_")) {
+                USERCOINS_COUNT = Integer.parseInt(aancc);
+            }
         }
 
+        assert cookies != null;
         String[] cp = cookies.toString().split(";");
         String SuMCurrentUser_Value = null;
         for (int i = 0;i<cp.length;i++){
@@ -316,6 +323,7 @@ public class SuMReader extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         createList(RS);
     }
+
 
     private void createList(final String RS) {
         runOnUiThread(new Runnable() {

@@ -97,6 +97,9 @@ import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.rewarded.RewardedAdCallback;
+import com.google.android.material.progressindicator.CircularProgressIndicator;
+import com.google.android.material.progressindicator.LinearProgressIndicator;
+
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -313,9 +316,6 @@ public class MainActivity extends AppCompatActivity {
             MainActivity.this.finish();
             return;
         }
-        //CookieSyncManager.createInstance(MainActivity.this);
-        //CookieManager.getInstance().setAcceptCookie(true);
-        //CookieSyncManager.getInstance().startSync();
         String LOADING_MESSAGE;
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
@@ -549,7 +549,6 @@ public class MainActivity extends AppCompatActivity {
                             SharedPreferences mPrefs = getSharedPreferences("summanga", 0);
                             SharedPreferences.Editor mEditor = mPrefs.edit();
                             mEditor.putString("sumthemebit", "1").apply();
-                            //webView3AccountSettingsCard.loadUrl("javascript:SetSuMThemeBitStateIO(1);");
                             String cookieString = "SuMUserThemeState=1; path=/";
                             CookieManager.getInstance().setCookie("https://sum-manga.azurewebsites.net/", cookieString);
                         }
@@ -559,7 +558,6 @@ public class MainActivity extends AppCompatActivity {
                     SharedPreferences mPrefs = getSharedPreferences("summanga", 0);
                     SharedPreferences.Editor mEditor = mPrefs.edit();
                     mEditor.putString("sumthemebit", "0").apply();
-                    //webView3AccountSettingsCard.loadUrl("javascript:SetSuMThemeBitStateIO(0);");
                     String cookieString = "SuMUserThemeState=0; path=/";
                     CookieManager.getInstance().setCookie("https://sum-manga.azurewebsites.net/", cookieString);
                 }
@@ -933,7 +931,7 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("UseCompatLoadingForDrawables")
     public void LoadExplore(View view) {
         findViewById(R.id.SuMViewFilpperClickBlocker).setVisibility(View.GONE);
-        if(simpleViewFlipper.getDisplayedChild()!=0) ((ScrollView)findViewById(R.id.SuMExplore_Home_ScrollView_Main)).scrollTo(0, 0);
+        //if(simpleViewFlipper.getDisplayedChild()!=0) ((ScrollView)findViewById(R.id.SuMExplore_Home_ScrollView_Main)).scrollTo(0, 0);
         if(simpleViewFlipper.getDisplayedChild()==0&&!SUMFIRSTLOAD) return;
         if(RootStateBit == 1){
             findViewById(R.id.SuMExplore_recentsCard_BG).setBackground(getDrawable(R.drawable.gb_dark_c22dp));
@@ -980,6 +978,7 @@ public class MainActivity extends AppCompatActivity {
             finish();
         }
         LoadColors();
+        ((CircularProgressIndicator)findViewById(R.id.SuMExploreProssC)).setIndicatorColor(Color.parseColor(RootHexColor));
         findViewById(R.id.ExploreBTN).setBackground(setTint(getResources().getDrawable(R.drawable.ic_dashboard_black_48dp), Color.parseColor(RootHexColor)));
         ((TextView)findViewById(R.id.ExploreBTNTXT)).setTextColor(Color.parseColor(RootHexColor));
         LastBSearchView = simpleViewFlipper.getDisplayedChild();
@@ -994,16 +993,15 @@ public class MainActivity extends AppCompatActivity {
                             "https://sum-manga.azurewebsites.net/ExploreGetByGarn.aspx?GR=Action"*/}
             );
         }
-        //SuMPauseXWebView(webView0FlexibleGenreCard);
-        /*RelativeLayout SuMExplore_FlexibleGenreCard_CardHeightElm = findViewById(R.id.SuMExplore_FlexibleGenreCard_CardHeightElm);
-        double SuMExplore_FlexibleGenreCard_CardHeightElm_ReqNum = Math.floor((((double)convertPixelsToDp(Device_Width,MainActivity.this) - 24 -6) / (118+6)));
-        SuMExplore_FlexibleGenreCard_CardHeightElm_ReqNum = Math.ceil(12/SuMExplore_FlexibleGenreCard_CardHeightElm_ReqNum);
-        int HRS_FG = (int) convertDpToPixel((186+(int)(SuMExplore_FlexibleGenreCard_CardHeightElm_ReqNum*177)),MainActivity.this);
-        ViewGroup.LayoutParams params = SuMExplore_FlexibleGenreCard_CardHeightElm.getLayoutParams();
-        params.height = HRS_FG;
-        SuMExplore_FlexibleGenreCard_CardHeightElm.setLayoutParams(params);*/
         SuMResumeXWebView(WebView0RecentsCard);
-        ((ScrollView)findViewById(R.id.SuMExplore_Home_ScrollView_Main)).setVerticalScrollbarThumbDrawable(setTint(getDrawable(R.drawable.scrollbar_thum), Color.parseColor(RootHexColor)));
+        new android.os.Handler(Looper.getMainLooper()).postDelayed(
+                new Runnable() {
+                    @RequiresApi(api = Build.VERSION_CODES.Q)
+                    public void run() {
+                        //((ScrollView)findViewById(R.id.SuMExplore_Home_ScrollView_Main)).setVerticalScrollbarThumbDrawable(setTint(getDrawable(R.drawable.scrollbar_thum), Color.parseColor(RootHexColor)));
+                    }
+                },
+                0);
     }
     @SuppressLint("UseCompatLoadingForDrawables")
     public void LoadHit(View view) {
@@ -1243,7 +1241,14 @@ public class MainActivity extends AppCompatActivity {
             ((Switch)findViewById(R.id.SuMDarkModeInOnOrOff)).setChecked(false);
         }
 
-        ((ScrollView)findViewById(R.id.SuMSettings_ScrollView_Main)).setVerticalScrollbarThumbDrawable(setTint(getDrawable(R.drawable.scrollbar_thum), Color.parseColor(RootHexColor)));
+        new android.os.Handler(Looper.getMainLooper()).postDelayed(
+                new Runnable() {
+                    @RequiresApi(api = Build.VERSION_CODES.Q)
+                    public void run() {
+                        ((ScrollView)findViewById(R.id.SuMSettings_ScrollView_Main)).setVerticalScrollbarThumbDrawable(setTint(getDrawable(R.drawable.scrollbar_thum), Color.parseColor(RootHexColor)));
+                    }
+                },
+                0);
 
         @SuppressLint("UseSwitchCompatOrMaterialCode") Switch SuMLockToggle = (Switch)findViewById(R.id.SuMLockInOnOrOff);
         SuMLockToggle.setThumbTintList(thumbStates);
@@ -2043,7 +2048,14 @@ public class MainActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-
+                                if(ResBody.contains("[SESSION_EXPIRED]")){
+                                    notifyUser("SESSION EXPIRED!");
+                                    //new ClearApplicationData(MainActivity.this).execute();
+                                    //Intent i = new Intent(MainActivity.this, SplashScreen.class);
+                                    //startActivity(i);
+                                    //overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);//Improves Perf
+                                    return;
+                                }
                                 String HelperX = ResBody + " Coins";
                                 String HelperAABC = UserNameFC+ " · " + HelperX;
                                 final TextView textViewToChange = (TextView) findViewById(R.id.SuMUseNameTXT);
@@ -2157,11 +2169,8 @@ public class MainActivity extends AppCompatActivity {
         view.setAlpha((float) 0.86);
         LoadGernXInHome_LastView = view;
 
-        //adapter.clearData();
-
         initView(((TextView)view).getText().toString());
 
-        //createList(((TextView)view).getText().toString());
     }
 
 
@@ -2342,6 +2351,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    private boolean SacondADBBackClick = false;
+
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -2366,6 +2377,11 @@ public class MainActivity extends AppCompatActivity {
                 //LoadExplore(null);
                 return false;
             }
+        }
+        if(!SacondADBBackClick){
+            SacondADBBackClick = true;
+            notifyUser("SuM-App: Click back again to exit!");
+            return false;
         }
         if(event!=null) {
             return super.onKeyDown(keyCode, event);
@@ -3282,27 +3298,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    @JavascriptInterface
-    public void SuMCoinsShowITTA(String CoinsC){
-
-        GlobalCurrCoinsCount = Integer.parseInt(CoinsC);
-        runOnUiThread(new Runnable() {
-            @SuppressLint("SetTextI18n")
-            @Override
-            public void run() {
-
-                String HelperX = "";
-                HelperX = CoinsC + " Coins";
-                String HelperAABC = UserNameFC+ " · " + HelperX;
-                final TextView textViewToChange = (TextView) findViewById(R.id.SuMUseNameTXT);
-                textViewToChange.setText(HelperAABC);
-                ((TextView)findViewById(R.id.SuMCoinCard_CountTXT)).setText(CoinsC+"");
-
-            }
-        });
-
-    }
-
 
     @JavascriptInterface
     public void GoBack(){
@@ -4085,15 +4080,16 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void initView(String Gern) {
-
-        // Initialize RecyclerView and set Adapter
+        SuMStaticVs.lastPosition = -1;
+        findViewById(R.id.SuMExploreProssC).setVisibility(View.VISIBLE);
         SuMStaticVs.MainC = MainActivity.this;
         recyclerView = findViewById(R.id.scout_recycler_view);
+        recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         scoutArrayList = new ArrayList<>();
         adapter = new ScoutAdapter(this,scoutArrayList,this);
         recyclerView.setAdapter(adapter);
-
+        recyclerView.setHasFixedSize(true);
         final float scale = MainActivity.this.getResources().getDisplayMetrics().density;
         //int pixels = (int) (640 * scale + 0.5f);
 
@@ -4117,12 +4113,26 @@ public class MainActivity extends AppCompatActivity {
                 String GernHelperX = "";
                 if(!Gern.toLowerCase(Locale.ROOT).replace(" ","").equals("All".toLowerCase(Locale.ROOT))) GernHelperX = "?GR=" + Gern.replace(" ","").replace("-","");
                 String CURL = "https://sum-manga.azurewebsites.net/ExploreGetByGarnAPI.aspx" + GernHelperX;
+
+                Object cookies = CookieManager.getInstance().getCookie("https://sum-manga.azurewebsites.net/");
+                String[] cp = cookies.toString().split(";");
+                String SuMCurrentUser_Value = null;
+                for (int i = 0; i < cp.length; i++) {
+                    if (cp[i].contains("SuMCurrentUser=") && cp[i].contains("SID=")) {
+                        SuMCurrentUser_Value = cp[i].replace("SuMCurrentUser=", "");
+                        i = cp.length;
+                    }
+                }
+                OkHttp3CookieHelper cookieHelper = new OkHttp3CookieHelper();
+                cookieHelper.setCookie("https://sum-manga.azurewebsites.net/", "SuMCurrentUser", SuMCurrentUser_Value);
+
                 File httpCacheDirectory = new File(MainActivity.this.getCacheDir(), "http-cache");
                 int cacheSize = 10 * 1024 * 1024; // 10 MiB
                 Cache cache = new Cache(httpCacheDirectory, cacheSize);
                 OkHttpClient okHttpClient = new OkHttpClient.Builder()
                         .addNetworkInterceptor(new CacheInterceptor())
                         .cache(cache)
+                        .cookieJar(cookieHelper.cookieJar())
                         .build();
                 Request request = new Request.Builder()
                         .url(CURL)
@@ -4140,11 +4150,20 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 responses.close();
+                if(resStr==null){
+                    notifyUser("SuM-Infinite-Scroll: failed to get mangas list!");
+                    return;
+                }
                 String finalResStr = resStr;
                 runOnUiThread(new Runnable() {
                     @SuppressLint("NotifyDataSetChanged")
                     @Override
                     public void run() {
+
+                        if(finalResStr.contains("[")&&finalResStr.contains("_")) {
+                            notifyUser(finalResStr);
+                            return;
+                        }
 
                         JSONArray jsonArr = null;
                         try {
@@ -4209,6 +4228,7 @@ public class MainActivity extends AppCompatActivity {
                             scoutArrayList.add(new Scout(A[1], A[0], A[2],A[4],A[5],A[6],A[3]));
                         }
                         adapter.notifyDataSetChanged();
+                        findViewById(R.id.SuMExploreProssC).setVisibility(View.GONE);
                     }
                 });
 
@@ -4218,26 +4238,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+
 }
 
-/*class GetExample {
-    final OkHttpClient client = new OkHttpClient();
 
-    String run(String url) throws IOException {
-        Request request = new Request.Builder()
-                .url(url)
-                .build();
-
-        try (Response response = client.newCall(request).execute()) {
-            return response.body().string();
-        }
-    }
-
-    public static void main(String[] args) throws IOException {
-        GetExample example = new GetExample();
-        String response = example.run("https://raw.github.com/square/okhttp/master/README.md");
-        System.out.println(response);
-    }
-}*/
 
 

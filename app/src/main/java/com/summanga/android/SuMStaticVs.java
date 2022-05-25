@@ -19,5 +19,7 @@ public class SuMStaticVs {
 
     public static int SUMREADER_MOVEON_MBIT = 0;
 
+    public static int lastPosition = -1;
+
 }
 

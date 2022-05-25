@@ -27,61 +27,45 @@
             android:scrollbarTrackVertical="@drawable/scrollbar_track"
             android:scrollbarThumbVertical="@drawable/scrollbar_thum"
         -->
-        <ScrollView
+        <!-- <ScrollView
             android:id="@+id/SuMExplore_Home_ScrollView_Main"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            android:scrollbarStyle="outsideOverlay">
+            android:scrollbarStyle="outsideOverlay"> -->
 
             <LinearLayout
                 android:background="@android:color/transparent"
-                android:layout_marginBottom="174dp"
+                android:layout_marginBottom="0dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="vertical"
                 tools:ignore="ScrollViewSize">
-
-                <!-- <include layout="@layout/explore_laytest_card_layout" /> -->
 
                 <include layout="@layout/explore_recents_layout" />
 
                 <RelativeLayout
                     android:padding="12dp"
+                    android:nestedScrollingEnabled="true"
                     android:background="@android:color/transparent"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="match_parent">
 
                     <include layout="@layout/explore_flexiblegenres_layout" />
                 </RelativeLayout>
 
-                <RelativeLayout
+                <!-- <RelativeLayout
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="112dp"
-                    tools:ignore="UselessLeaf" />
-
-                <!-- <include layout="@layout/explore_action_layout" />
-
-                <include layout="@layout/explore_drama_layout" />
-
-                <include layout="@layout/explore_fantasy_layout" />
-
-                <include layout="@layout/explore_comedy_layout" />
-
-                <include layout="@layout/explore_sliceoflife_layout" />
-
-                <include layout="@layout/explore_scifi_layout" />
-
-                <include layout="@layout/explore_supernatural_layout" />
-
-                <include layout="@layout/explore_mystery_layout" /> -->
+                    tools:ignore="UselessLeaf" /> -->
 
 
             </LinearLayout>
 
-        </ScrollView>
+        <!-- </ScrollView> -->
 
     </LinearLayout>
 

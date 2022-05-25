@@ -67,9 +67,12 @@ public class ScoutAdapterIMG extends RecyclerView.Adapter<ScoutAdapterIMG.ScoutH
         }
 
         public void setDetails(ScoutIMG scout, int index) {
+            RequestOptions myOptions = new RequestOptions()
+                    .fitCenter();
             Glide.with(context)
                     .load("https://sum-manga.azurewebsites.net"+scout.getName())
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .apply(myOptions)
                     .addListener(new RequestListener<Drawable>() {
                         @Override
                         public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
