@@ -27,20 +27,21 @@
             android:scrollbarTrackVertical="@drawable/scrollbar_track"
             android:scrollbarThumbVertical="@drawable/scrollbar_thum"
         -->
-        <!-- <ScrollView
+        <ScrollView
             android:id="@+id/SuMExplore_Home_ScrollView_Main"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:scrollbars="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            android:scrollbarStyle="outsideOverlay"> -->
+            android:scrollbarSize="0dp"
+            android:scrollbarStyle="outsideOverlay">
 
             <LinearLayout
                 android:background="@android:color/transparent"
                 android:layout_marginBottom="0dp"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
                 tools:ignore="ScrollViewSize">
 
@@ -48,24 +49,20 @@
 
                 <RelativeLayout
                     android:padding="12dp"
-                    android:nestedScrollingEnabled="true"
+                    android:nestedScrollingEnabled="false"
                     android:background="@android:color/transparent"
+                    android:id="@+id/explore_recents_layout_H"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content">
 
                     <include layout="@layout/explore_flexiblegenres_layout" />
                 </RelativeLayout>
 
-                <!-- <RelativeLayout
-                    android:visibility="gone"
-                    android:layout_width="match_parent"
-                    android:layout_height="112dp"
-                    tools:ignore="UselessLeaf" /> -->
 
 
             </LinearLayout>
 
-        <!-- </ScrollView> -->
+        </ScrollView>
 
     </LinearLayout>
 

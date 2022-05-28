@@ -17,16 +17,30 @@ android {
         applicationId "com.summanga.android"
         minSdk 28
         targetSdk 32
-        versionCode 8
-        versionName "5.8.1"
+        versionCode 10
+        versionName "5.8.2"
+        //resourceConfigurations.addAll(listOf("en"))
         signingConfig signingConfigs.debug
         multiDexEnabled true
     }
 
     buildTypes {
         release {
+            // Enables code shrinking, obfuscation, and optimization for only
+            // your project's release build type.
             minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+            // Enables resource shrinking, which is performed by the
+            // Android Gradle plugin.
+            shrinkResources true
+
+            // Includes the default ProGuard rules files that are packaged with
+            // the Android Gradle plugin. To learn more, go to the section about
+            // R8 configuration files.
+            proguardFiles getDefaultProguardFile(
+                    'proguard-android-optimize.txt'),
+                    'proguard-rules.pro'
+
         }
     }
     compileOptions {
@@ -61,6 +75,10 @@ dependencies {
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'com.github.bumptech.glide:glide:4.13.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.13.0'
+    implementation ("com.github.bumptech.glide:recyclerview-integration:4.11.0") {
+        // Excludes the support library because it's already included by Glide.
+        transitive = false
+    }
 
 
 }

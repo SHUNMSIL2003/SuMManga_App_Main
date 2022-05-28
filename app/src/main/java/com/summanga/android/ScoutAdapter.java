@@ -4,15 +4,11 @@ import static androidx.core.graphics.drawable.DrawableCompat.setTint;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.hardware.GeomagneticField;
-import android.util.Log;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +20,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -37,9 +32,6 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -70,17 +62,29 @@ public class ScoutAdapter extends RecyclerView.Adapter<ScoutAdapter.ScoutHolder>
 
         }
     }
+    // Return the size of your dataset (invoked by the layout manager)
+    public boolean IsEmpty() {
+        return scouts.isEmpty();
+    }
     @Override
     public void onBindViewHolder(@NonNull ScoutHolder holder, @SuppressLint("RecyclerView") int position, @NonNull List<Object> payloads) {
         super.onBindViewHolder(holder, position, payloads);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try {
-                    mainActivity.SuMExploreInfoStart_Native(scouts.get(position).getSuMExploreURL(), scouts.get(position).getKillCount(), scouts.get(position).getName(), scouts.get(position).getSuMExploreAuthor(), scouts.get(position).getSuMExploreGerns(), scouts.get(position).getMangaAgeRating(), scouts.get(position).getRank());
-                } catch (IOException | InterruptedException e) {
-                    e.printStackTrace();
-                }
+                Animation animation = AnimationUtils.loadAnimation(context, R.anim.card_click);
+                holder.itemView.startAnimation(animation);
+                new android.os.Handler(Looper.getMainLooper()).postDelayed(
+                        new Runnable() {
+                            public void run() {
+                                try {
+                                    mainActivity.SuMExploreInfoStart_Native(scouts.get(position).getSuMExploreURL(), scouts.get(position).getKillCount(), scouts.get(position).getName(), scouts.get(position).getSuMExploreAuthor(), scouts.get(position).getSuMExploreGerns(), scouts.get(position).getMangaAgeRating(), scouts.get(position).getRank());
+                                } catch (IOException | InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        },
+                        365);
             }
         });
         setAnimation(holder.itemView, position);
@@ -128,6 +132,7 @@ public class ScoutAdapter extends RecyclerView.Adapter<ScoutAdapter.ScoutHolder>
         holder.setDetails(scout,position);
     }
 
+
     @Override
     public int getItemCount() {
         return scouts.size();
@@ -166,6 +171,7 @@ public class ScoutAdapter extends RecyclerView.Adapter<ScoutAdapter.ScoutHolder>
             Glide.with(context)
                     .load(Image_URL)
                     .apply(myOptions)
+                    .override(SuMStaticVs.imageWidthPixels, SuMStaticVs.imageHeightPixels)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .addListener(new RequestListener<Drawable>() {
                         @Override

@@ -9,6 +9,9 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.ListPreloader;
+import com.bumptech.glide.util.FixedPreloadSizeProvider;
+
 public class SuMStaticVs {
 
     public static Object RedirectFromSuMNotiURL;
@@ -20,6 +23,8 @@ public class SuMStaticVs {
     public static int SUMREADER_MOVEON_MBIT = 0;
 
     public static int lastPosition = -1;
+    public static int imageWidthPixels = 200;
+    public static int imageHeightPixels = 300;
 
 }
 

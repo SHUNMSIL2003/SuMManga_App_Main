@@ -1,7 +1,5 @@
 package com.summanga.android;
 
-import static androidx.core.graphics.drawable.DrawableCompat.setTint;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.Drawable;

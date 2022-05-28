@@ -50,6 +50,7 @@ import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -65,6 +66,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Switch;
@@ -81,12 +83,14 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.ListPreloader;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
+import com.bumptech.glide.util.FixedPreloadSizeProvider;
 import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.LoadAdError;
@@ -298,12 +302,13 @@ public class MainActivity extends AppCompatActivity {
         return px / ((float) context.getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT);
     }
 
-    //public Handler SuMExploreScrollViewFunc_Handler = new Handler();
-    //public Runnable SuMExploreScrollViewFunc_Runnable;
-    //public int SuMExploreScrollViewFunc_scrollY = 0;
+    public Handler SuMExploreScrollViewFunc_Handler = new Handler();
+    public Runnable SuMExploreScrollViewFunc_Runnable;
+    public int SuMExploreScrollViewFunc_scrollY = 0;
 
     private int USERCOINS_COUNT = 0;
     private boolean SUMFIRSTLOAD = true;
+
 
 
     @SuppressLint({"SetJavaScriptEnabled", "UseCompatLoadingForDrawables"})
@@ -520,6 +525,40 @@ public class MainActivity extends AppCompatActivity {
         textViewToChange.setText(UserNameFC);
 
 
+        ReqH_DH_RCV_TOPH = (int)convertDpToPixel(112,MainActivity.this);
+        SuMExplore_Home_ScrollView_Main_ELM = findViewById(R.id.SuMExplore_Home_ScrollView_Main);
+        SuMExplore_Home_ScrollView_Main_ELM.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+            @Override
+            public void onScrollChanged() {
+                int scrollY = SuMExplore_Home_ScrollView_Main_ELM.getScrollY(); // For ScrollView
+                //int scrollX = SuMExplore_Home_ScrollView_Main_ELM.getScrollX(); // For HorizontalScrollView
+                // DO SOMETHING WITH THE SCROLL COORDINATES
+                int totalHeight = SuMExplore_Home_ScrollView_Main_ELM.getChildAt(0).getHeight();
+                if((scrollY)>=(totalHeight-ReqH_DH_RCV-ReqH_DH_RCV_TOPH*1.5)) {
+                    SuMExploreScrollViewFunc_Runnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            recyclerView.setNestedScrollingEnabled(true);
+                            SuMExplore_Home_ScrollView_Main_ELM.smoothScrollTo(0,totalHeight-ReqH_DH_RCV);
+                        }
+                    };
+                }
+                else {
+                    SuMExploreScrollViewFunc_Runnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            recyclerView.setNestedScrollingEnabled(false);
+                            SuMExplore_Home_ScrollView_Main_ELM.smoothScrollTo(0,0);
+                            recyclerView.smoothScrollToPosition(0);
+                        }
+                    };
+                }
+                SuMExploreScrollViewFunc_Handler.removeCallbacksAndMessages(null);
+                SuMExploreScrollViewFunc_Handler.postDelayed(SuMExploreScrollViewFunc_Runnable, 20);
+            }
+        });
+
+
         ((Switch)findViewById(R.id.SuMLockInOnOrOff)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
@@ -578,6 +617,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+    private int ReqH_DH_RCV_TOPH =0;
 
     public boolean SuMExploreScrollViewFunc_Active = false;
 
@@ -933,6 +973,11 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.SuMViewFilpperClickBlocker).setVisibility(View.GONE);
         //if(simpleViewFlipper.getDisplayedChild()!=0) ((ScrollView)findViewById(R.id.SuMExplore_Home_ScrollView_Main)).scrollTo(0, 0);
         if(simpleViewFlipper.getDisplayedChild()==0&&!SUMFIRSTLOAD) return;
+        else {
+            if(SuMExplore_Home_ScrollView_Main_ELM==null) SuMExplore_Home_ScrollView_Main_ELM = findViewById(R.id.SuMExplore_Home_ScrollView_Main);
+            SuMExplore_Home_ScrollView_Main_ELM.scrollTo(0,0);
+            if(adapter!=null) if(!adapter.IsEmpty()) recyclerView.scrollToPosition(0);
+        }
         if(RootStateBit == 1){
             findViewById(R.id.SuMExplore_recentsCard_BG).setBackground(getDrawable(R.drawable.gb_dark_c22dp));
             //((TextView)findViewById(R.id.SuMExploreCard_GernCard_FlexibleGenre_TXT)).setTextColor(Color.WHITE);
@@ -1884,6 +1929,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void GetMangaDis_MangaInfo(String MID){
 
+        ((TextView)findViewById(R.id.SuMMangaExploreInfo_MangaDisc)).setText("loading...");
         if(MID==null) return;
 
         Object cookies = CookieManager.getInstance().getCookie("https://sum-manga.azurewebsites.net/");
@@ -4079,21 +4125,32 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+    private int ReqH_DH_RCV = 0;
     private void initView(String Gern) {
+        //ReqH_DH_RCV = findViewById(R.id.SuMExplore_Home_ScrollView_Main_HeightHelper).getHeight();
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        ReqH_DH_RCV = displayMetrics.heightPixels;
         SuMStaticVs.lastPosition = -1;
         findViewById(R.id.SuMExploreProssC).setVisibility(View.VISIBLE);
-        SuMStaticVs.MainC = MainActivity.this;
+        //SuMStaticVs.MainC = MainActivity.this;
         recyclerView = findViewById(R.id.scout_recycler_view);
+        ViewGroup.LayoutParams params=recyclerView.getLayoutParams();
+        params.height= ReqH_DH_RCV;
+        recyclerView.setLayoutParams(params);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        int width = (int)convertPixelsToDp(displayMetrics.widthPixels,MainActivity.this);
+        int spanCount = (int)Math.floor((width-28)/190.0);
+        if(spanCount<1) spanCount = 1;
+        //if(width>500) spanCount = 3;
+        recyclerView.setLayoutManager(new GridLayoutManager(this, spanCount));
         scoutArrayList = new ArrayList<>();
         adapter = new ScoutAdapter(this,scoutArrayList,this);
         recyclerView.setAdapter(adapter);
-        recyclerView.setHasFixedSize(true);
         final float scale = MainActivity.this.getResources().getDisplayMetrics().density;
         //int pixels = (int) (640 * scale + 0.5f);
 
-        RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.scout_recycler_view_Width);
+        LinearLayout relativeLayout = (LinearLayout) findViewById(R.id.scout_recycler_view_Width);
         if(relativeLayout.getWidth()>(int) (500 * scale + 0.5f)){
             relativeLayout.getLayoutParams().width = (int) (500 * scale + 0.5f);
         }
@@ -4145,7 +4202,9 @@ public class MainActivity extends AppCompatActivity {
                 }
                 String resStr = null;
                 try {
+                    if(responses!=null)
                     resStr = responses.body().string();
+                    else notifyUser("SuM-Infinite-Scroll: failed to get mangas list!");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
