@@ -427,7 +427,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:padding="32dp"
-                android:id="@+id/SuMMangaExploreInfo_MangaDisc"
+                android:id="@+id/SuMMangaExploreInfo_MangaDisc_OLD"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:alpha="0.86"

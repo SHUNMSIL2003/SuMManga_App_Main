@@ -126,6 +126,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 
 import okhttp3.Cache;
@@ -310,6 +311,8 @@ public class MainActivity extends AppCompatActivity {
     private boolean SUMFIRSTLOAD = true;
 
 
+    private Animation animation_card_click;
+    private boolean onCreate_IP = true;
 
     @SuppressLint({"SetJavaScriptEnabled", "UseCompatLoadingForDrawables"})
     @Override
@@ -342,6 +345,7 @@ public class MainActivity extends AppCompatActivity {
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         Device_Height = displayMetrics.heightPixels;
         Device_Width = displayMetrics.widthPixels;
+        animation_card_click = AnimationUtils.loadAnimation(MainActivity.this, R.anim.card_click);
         setContentView(R.layout.activity_main);
         DarkSBIcons();
         String BANNER_STRING64;
@@ -600,8 +604,8 @@ public class MainActivity extends AppCompatActivity {
                     String cookieString = "SuMUserThemeState=0; path=/";
                     CookieManager.getInstance().setCookie("https://sum-manga.azurewebsites.net/", cookieString);
                 }
-                LoadSettings(null);
-                LoadSettings(null);
+                //LoadSettings(null);
+                //LoadSettings(null);
             }
         });
 
@@ -718,11 +722,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void ShowExploreMangaInfoDisc(View view){
-        Animation fadeIn = new AlphaAnimation(0, 1);
-        fadeIn.setDuration(320);
-        findViewById(R.id.SuMMangaExploreInfo_MangaDiscABS).setVisibility(View.VISIBLE);
-        findViewById(R.id.SuMMangaExploreInfo_MangaDiscABS).startAnimation(fadeIn);
-        GetMangaDis_MangaInfo(SUMINFO_ID);
+
 
     }
     @SuppressLint("SetTextI18n")
@@ -791,6 +791,7 @@ public class MainActivity extends AppCompatActivity {
         MainActivity.this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                view.startAnimation(animation_card_click);
                 onShowRewardAd();
             }
         });
@@ -800,6 +801,7 @@ public class MainActivity extends AppCompatActivity {
         MainActivity.this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                view.startAnimation(animation_card_click);
                 Toast.makeText(MainActivity.this, "will be available soon!", Toast.LENGTH_SHORT).show();
             }
         });
@@ -808,6 +810,7 @@ public class MainActivity extends AppCompatActivity {
         MainActivity.this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                view.startAnimation(animation_card_click);
                 Toast.makeText(MainActivity.this, "will be available soon!", Toast.LENGTH_SHORT).show();
             }
         });
@@ -816,6 +819,7 @@ public class MainActivity extends AppCompatActivity {
         MainActivity.this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                view.startAnimation(animation_card_click);
                 Toast.makeText(MainActivity.this, "will be available soon!", Toast.LENGTH_SHORT).show();
             }
         });
@@ -824,6 +828,7 @@ public class MainActivity extends AppCompatActivity {
         MainActivity.this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                view.startAnimation(animation_card_click);
                 Toast.makeText(MainActivity.this, "will be available soon!", Toast.LENGTH_SHORT).show();
             }
         });
@@ -831,6 +836,7 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint({"UseCompatLoadingForDrawables", "SetTextI18n"})
     public void ClearCacheX(View view){
 
+        view.startAnimation(animation_card_click);
         //clearCache(MainActivity.this,0);
         //deleteDir(getCacheDir());
         //deleteDir(getExternalCacheDir());
@@ -970,6 +976,8 @@ public class MainActivity extends AppCompatActivity {
 
     @SuppressLint("UseCompatLoadingForDrawables")
     public void LoadExplore(View view) {
+        if(!onCreate_IP) view.startAnimation(animation_card_click);
+        else onCreate_IP = false;
         findViewById(R.id.SuMViewFilpperClickBlocker).setVisibility(View.GONE);
         //if(simpleViewFlipper.getDisplayedChild()!=0) ((ScrollView)findViewById(R.id.SuMExplore_Home_ScrollView_Main)).scrollTo(0, 0);
         if(simpleViewFlipper.getDisplayedChild()==0&&!SUMFIRSTLOAD) return;
@@ -1050,6 +1058,8 @@ public class MainActivity extends AppCompatActivity {
     }
     @SuppressLint("UseCompatLoadingForDrawables")
     public void LoadHit(View view) {
+        if(!onCreate_IP) view.startAnimation(animation_card_click);
+        else onCreate_IP = false;
         findViewById(R.id.SuMViewFilpperClickBlocker).setVisibility(View.GONE);
         if(findViewById(R.id.SuMExploreInfo_ABS).getVisibility() == View.VISIBLE) {
             CloseSuMExploreInfo(null);
@@ -1063,6 +1073,8 @@ public class MainActivity extends AppCompatActivity {
     }
     @SuppressLint({"UseCompatLoadingForDrawables", "SetTextI18n"})
     public void LoadLibrary(View view) {
+        if(!onCreate_IP) view.startAnimation(animation_card_click);
+        else onCreate_IP = false;
         findViewById(R.id.SuMViewFilpperClickBlocker).setVisibility(View.GONE);
         int UID = 0;
         Object cookies = CookieManager.getInstance().getCookie("https://sum-manga.azurewebsites.net/");
@@ -1129,6 +1141,8 @@ public class MainActivity extends AppCompatActivity {
     }
     @SuppressLint({"UseCompatLoadingForDrawables", "DefaultLocale"})
     public void LoadSettings(View view) {
+        if(!onCreate_IP) view.startAnimation(animation_card_click);
+        else onCreate_IP = false;
         findViewById(R.id.SuMViewFilpperClickBlocker).setVisibility(View.GONE);
         if(simpleViewFlipper.getDisplayedChild()!=3) ((ScrollView)findViewById(R.id.SuMSettings_ScrollView_Main)).scrollTo(0, 0);
         if(RootStateBit == 1) {
@@ -1354,6 +1368,8 @@ public class MainActivity extends AppCompatActivity {
         return size;
     }
     public void LoadSearch(View view) {
+        if(!onCreate_IP) view.startAnimation(animation_card_click);
+        else onCreate_IP = false;
         findViewById(R.id.SuMViewFilpperClickBlocker).setVisibility(View.GONE);
         if(findViewById(R.id.SuMExploreInfo_ABS).getVisibility() == View.VISIBLE) {
             CloseSuMExploreInfo(null);
@@ -1376,11 +1392,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void GoBack(View view) {
+        view.startAnimation(animation_card_click);
         GoBackABS();
     }
 
     @SuppressLint({"UseCompatLoadingForDrawables", "SetTextI18n"})
     public void LoadLibraryCurr(View view) {
+        view.startAnimation(animation_card_click);
         webView2.loadUrl("https://sum-manga.azurewebsites.net/UserLibrary.aspx?RT=Curr");
         String SecColor = "#2b2b2b";
         TextView SuMDscInLyb = findViewById(R.id.SuMLibraryInfoTXT);
@@ -1410,6 +1428,7 @@ public class MainActivity extends AppCompatActivity {
 
     @SuppressLint({"UseCompatLoadingForDrawables", "SetTextI18n"})
     public void LoadLibraryFav(View view) {
+        view.startAnimation(animation_card_click);
         webView2.loadUrl("https://sum-manga.azurewebsites.net/UserLibrary.aspx?RT=Fav");
         String SecColor = "#2b2b2b";
         TextView SuMDscInLyb = findViewById(R.id.SuMLibraryInfoTXT);
@@ -1438,6 +1457,7 @@ public class MainActivity extends AppCompatActivity {
     }
     @SuppressLint({"UseCompatLoadingForDrawables", "SetTextI18n"})
     public void LoadLibraryWanna(View view) {
+        view.startAnimation(animation_card_click);
         String SecColor = "#2b2b2b";
         TextView SuMDscInLyb = findViewById(R.id.SuMLibraryInfoTXT);
         if(RootStateBit==1) {
@@ -1821,7 +1841,7 @@ public class MainActivity extends AppCompatActivity {
         return bm;*/
 
     }
-    public static Bitmap blurDark(Context context, Bitmap image,float BLUR_RADIUS,int r,int g,int b) {
+    public static Bitmap blurDark(Context context, Bitmap image,float BLUR_RADIUS,int r,int g,int b,int a) {
         int width = Math.round(image.getWidth() * BITMAP_SCALE);
         int height = Math.round(image.getHeight() * BITMAP_SCALE);
 
@@ -1841,13 +1861,14 @@ public class MainActivity extends AppCompatActivity {
         Bitmap bm = outputBitmap;
 
         Canvas canvas = new Canvas(bm);
-        canvas.drawARGB(192,r,g,b);
+        canvas.drawARGB(a,r,g,b);
         canvas.drawBitmap(bm, new Matrix(), new Paint());
         return bm;
 
     }
 
     public void LoadCurr_SuMCurr(View view) {
+        findViewById(R.id.LoadCurr_SuMCurr_BTN).startAnimation(animation_card_click);
         if(SUMCURR_URL==null){
             notifyUser("404");
             return;
@@ -1856,6 +1877,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void SuMInfo_AddRemoreFromFav(View view) {
+        findViewById(R.id.SuMInfo_Fav_VIEWIMG).startAnimation(animation_card_click);
         if(SUMINFO_ID==null){
             notifyUser("SuM-Fav is not loaded!");
             return;
@@ -2132,6 +2154,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void SuMInfo_AddRemoreFromWanna(View view) {
+        findViewById(R.id.SuMInfo_Wanna_VIEWIMG).startAnimation(animation_card_click);
         if(SUMINFO_ID==null){
             notifyUser("SuM-Wanna is not loaded!");
             return;
@@ -2205,6 +2228,7 @@ public class MainActivity extends AppCompatActivity {
 
     private View LoadGernXInHome_LastView;
     public void LoadGernXInHome(View view) {
+        view.startAnimation(animation_card_click);
         if(LoadGernXInHome_LastView==view) return;
         if(LoadGernXInHome_LastView==null) LoadGernXInHome_LastView = findViewById(R.id.SuMExplore_Gern_ALL_Toggle);
         LoadGernXInHome_LastView.setAlpha((float) 0.64);
@@ -2216,6 +2240,35 @@ public class MainActivity extends AppCompatActivity {
         LoadGernXInHome_LastView = view;
 
         initView(((TextView)view).getText().toString());
+
+    }
+
+    public void LoadChapters_SuMInfo(View view) {
+
+        runOnUiThread(new Runnable() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void run() {
+                findViewById(R.id.LoadChapters_SuMInfo_BTN).startAnimation(animation_card_click);
+                if(SuMInfo_SuMDisc_LINK==null){
+                    notifyUser("SuM-Info: SuM DiscLink is null!");
+                    return;
+                }
+                if(findViewById(R.id.SuMInfo_MoreChapters_WebView_CON).getVisibility()!=View.VISIBLE) {
+                    webView5.onResume();
+                    if(!Objects.equals(webView5.getUrl(), SuMInfo_SuMDisc_LINK)) webView5.loadUrl(SuMInfo_SuMDisc_LINK);
+                    findViewById(R.id.SuMInfo_Disc_TextView_CON).setVisibility(View.GONE);
+                    findViewById(R.id.SuMInfo_MoreChapters_WebView_CON).setVisibility(View.VISIBLE);
+                    ((TextView)findViewById(R.id.SuMInfo_ShowMoreLess_TextView)).setText("Show less");
+                } else {
+                    webView5.onPause();
+                    findViewById(R.id.SuMInfo_MoreChapters_WebView_CON).setVisibility(View.GONE);
+                    findViewById(R.id.SuMInfo_Disc_TextView_CON).setVisibility(View.VISIBLE);
+                    ((TextView)findViewById(R.id.SuMInfo_ShowMoreLess_TextView)).setText("Show more");
+                }
+
+            }
+        });
 
     }
 
@@ -3602,24 +3655,35 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void SuMExploreInfoBG(Bitmap MangaCoverBitmap){
+    public void SuMExploreInfoBG(Bitmap MangaCoverBitmap0,String Raw_RGB_String){
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Bitmap ResizedIMGForFrame = Bitmap.createScaledBitmap(MangaCoverBitmap, 360, 540, false);//Bitmap.createScaledBitmap(MangaCoverBitmap, 60, 90, false);
-                //double aspectRatio = (double) findViewById(R.id.MainLayout).getHeight() / (double) findViewById(R.id.MainLayout).getWidth();
-                //int targetHeight = (int) (180 * aspectRatio);
-                int b = (260*(Device_Height/Device_Width));
-                if(b>540){ b = 540; }
-                Bitmap ResizedIMGForBlur = Bitmap.createBitmap(ResizedIMGForFrame, 0, 0, 260, b);
-                ResizedIMGForBlur = Bitmap.createScaledBitmap(ResizedIMGForBlur, 180, (180*(Device_Height/Device_Width)), false);
-                final Bitmap BluredCover = blur(MainActivity.this, ResizedIMGForBlur);
-                //findViewById(R.id.SuMExploreInfo_MangaBluredBG).setBackground(new BitmapDrawable(getApplicationContext().getResources(), BluredCover));
-                findViewById(R.id.SuMExploreInfo_MangaBGABSBlured).setBackground(new BitmapDrawable(getApplicationContext().getResources(), BluredCover));
-                //Bitmap ResizedIMGForShow = Bitmap.createScaledBitmap(MangaCoverBitmap, 260, 390, false);
-                ((ImageView)findViewById(R.id.SuMExploreInfo_MangaIMG)).setImageBitmap(ResizedIMGForFrame);
+                final String Raw_RGB_String_P = Raw_RGB_String.toLowerCase(Locale.ROOT).replace("rgb","").replace("a","").replace("(","").replace(")","");
+                final int r = Integer.parseInt(Raw_RGB_String_P.split(",")[0]);
+                final int g = Integer.parseInt(Raw_RGB_String_P.split(",")[1]);
+                final int b = Integer.parseInt(Raw_RGB_String_P.split(",")[2]);
+                Bitmap a = blurDark(MainActivity.this,Bitmap.createScaledBitmap(MangaCoverBitmap0, MangaCoverBitmap0.getWidth()/8, MangaCoverBitmap0.getHeight()/8, false),2.0f,r,g,b,114);
+                ((ImageView)findViewById(R.id.SuMExploreInfo_MangaBGABSBlured_IMGView)).setImageBitmap(a);
             }
         });
+    }
+
+    public Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {
+        int width = bm.getWidth();
+        int height = bm.getHeight();
+        float scaleWidth = ((float) newWidth) / width;
+        float scaleHeight = ((float) newHeight) / height;
+        // CREATE A MATRIX FOR THE MANIPULATION
+        Matrix matrix = new Matrix();
+        // RESIZE THE BIT MAP
+        matrix.postScale(scaleWidth, scaleHeight);
+
+        // "RECREATE" THE NEW BITMAP
+        Bitmap resizedBitmap = Bitmap.createBitmap(
+                bm, 0, 0, width, height, matrix, false);
+        bm.recycle();
+        return resizedBitmap;
     }
 
     @JavascriptInterface
@@ -3693,77 +3757,70 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         if(UID>0) {
-            URL MangaCoverLinkURL = new URL("https://sum-manga.azurewebsites.net" + MangaCoverLink);
-            final Bitmap[] image = {null};
-            Thread secondThread = new Thread(() -> {
-                try {
-                    image[0] = BitmapFactory.decodeStream(MangaCoverLinkURL.openConnection().getInputStream());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
-            secondThread.start();
-            secondThread.join();
-            SuMExploreInfoTitle(SuMExploreTitle);
-            SuMExploreInfoAuthor(SuMExploreAuthor);
-            SuMExploreInfoGerns(SuMExploreGerns);
-            final Bitmap aabc = image[0];
+            if (!isConnectedToInternet()) {
+                notifyUser("SuM-Info: You're offline!");
+                return;
+            }
+            if(MangaCoverLink==null){
+                notifyUser("SuM-Info: Not Cover link!");
+                return;
+            }
+            final String Image_URL = "https://sum-manga.azurewebsites.net" + MangaCoverLink;
             runOnUiThread(new Runnable() {
                 @SuppressLint("UseCompatLoadingForDrawables")
                 @Override
                 public void run() {
-                    //int CurrIndexPTM = ((ViewFlipper)findViewById(R.id.simpleViewFlipper)).getDisplayedChild();
-                    /*WebViewToDistroyABS = new WebView[]{
-                            WebView0RecentsCard};
-                    if(CurrIndexPTM == 1){
-                        WebViewToDistroyABS = new WebView[]{webView1};
-                    }
-                    if(CurrIndexPTM == 2){
-                        WebViewToDistroyABS = new WebView[]{webView2};
-                    }
-                    if(CurrIndexPTM == 3){
-                        WebViewToDistroyABS = new WebView[]{webView3AccountSettingsCard};
-                    }
-                    if(CurrIndexPTM == 4){
-                        WebViewToDistroyABS = new WebView[]{webView4};
-                    }
-                    if(CurrIndexPTM>4){
-                        WebViewToDistroyABS = null;
-                    }
-                    if(WebViewToDistroyABS != null) {
-                        destroyWebViews(WebViewToDistroyABS);
-                    }*/
-                    if (!isConnectedToInternet()) {
-                        final WallpaperManager wallpaperManager = WallpaperManager.getInstance(MainActivity.this);
-                        @SuppressLint("MissingPermission") final Drawable wallpaperDrawable = wallpaperManager.getDrawable();
-                        final Bitmap image = Bitmap.createScaledBitmap(((BitmapDrawable) wallpaperDrawable).getBitmap(), 260, 390, false);
-                    } else {
-                        SuMExploreInfoBG(aabc);
-                    }
-                    LoadColors();
-                    String[] rgbrootpross = ThemeColor.replace(" ", "").replace("rgb", "").replace("a", "").replace("(", "").replace(")", "").split(",");
-                    String hex = String.format("#%02x%02x%02x", Integer.parseInt(rgbrootpross[0]), Integer.parseInt(rgbrootpross[1]), Integer.parseInt(rgbrootpross[2]));
-                    findViewById(R.id.SuMEXPLOREiNFO_MangaDiscBG).setBackground(setTint(getResources().getDrawable(R.drawable.bg_xcolor_c22dp), Color.parseColor(hex)));
-                    findViewById(R.id.ExploreBTN).setBackground(setTint(getResources().getDrawable(R.drawable.ic_dashboard_black_48dp), Color.parseColor(hex)));
-                    ((TextView) findViewById(R.id.ExploreBTNTXT)).setTextColor(Color.parseColor(hex));
-                    TextView textvivesubt = (TextView) findViewById(R.id.SuMMangaTXT);
-                    textvivesubt.setTextColor(Color.parseColor(hex));
-                    textvivesubt = (TextView) findViewById(R.id.NavBackTXT);
-                    textvivesubt.setTextColor(Color.parseColor(hex));
-                    ((TextView) findViewById(R.id.SuMExploreInfo_MangaAgeRating)).setText(MangaAgeRating);
-                    webView5.onResume();
-                    webView5.loadUrl("https://sum-manga.azurewebsites.net" + SuMExploreURL.replace("ContantExplorer.aspx", "ContantExplorerCard.aspx"));
-                    //findViewById(R.id.SuMExploreInfo_MangaBGColor).setClipToOutline(true); --imp 0
-                    String MangaRootName = SuMExploreURL.split("Manga=")[1].split("&")[0];
-                    String MID = SuMExploreURL.split("&VC=")[1].split("&")[0];
-                    findViewById(R.id.SuMExploreInfo_MangaIMG_CornerFix).setClipToOutline(true);
-                    SuMInfo_LoadSuMCurr(MID,MangaRootName);
+                    //RequestOptions myOptions = new RequestOptions()
+                    //        .fitCenter(); // or centerCrop
+                    Glide.with(MainActivity.this)
+                            .load(Image_URL)
+                            .apply(new RequestOptions().override(120, 180))
+                            .centerCrop()
+                            .override(SuMStaticVs.imageWidthPixels, SuMStaticVs.imageHeightPixels)
+                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .addListener(new RequestListener<Drawable>() {
+                                @Override
+                                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                    notifyUser("SuM-Info: Failed to load!");
+                                    return false;
+                                }
+                                @Override
+                                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                    SuMExploreInfoBG(((BitmapDrawable)resource).getBitmap(),ThemeColor);
+                                    SuMExploreInfoTitle(SuMExploreTitle);
+                                    SuMExploreInfoAuthor(SuMExploreAuthor);
+                                    SuMExploreInfoGerns(SuMExploreGerns);
+                                    LoadColors();
+                                    String[] rgbrootpross = ThemeColor.replace(" ", "").replace("rgb", "").replace("a", "").replace("(", "").replace(")", "").split(",");
+                                    String hex = String.format("#%02x%02x%02x", Integer.parseInt(rgbrootpross[0]), Integer.parseInt(rgbrootpross[1]), Integer.parseInt(rgbrootpross[2]));
+                                    findViewById(R.id.SuMEXPLOREiNFO_MangaDiscBG).setBackground(setTint(getResources().getDrawable(R.drawable.bg_xcolor_c22dp), Color.parseColor(hex)));
+                                    findViewById(R.id.ExploreBTN).setBackground(setTint(getResources().getDrawable(R.drawable.ic_dashboard_black_48dp), Color.parseColor(hex)));
+                                    ((TextView) findViewById(R.id.ExploreBTNTXT)).setTextColor(Color.parseColor(hex));
+                                    TextView textvivesubt = (TextView) findViewById(R.id.SuMMangaTXT);
+                                    textvivesubt.setTextColor(Color.parseColor(hex));
+                                    textvivesubt = (TextView) findViewById(R.id.NavBackTXT);
+                                    textvivesubt.setTextColor(Color.parseColor(hex));
+                                    ((TextView) findViewById(R.id.SuMExploreInfo_MangaAgeRating)).setText(MangaAgeRating);
+                                    SuMInfo_SuMDisc_LINK = "https://sum-manga.azurewebsites.net" + SuMExploreURL.replace("ContantExplorer.aspx", "ContantExplorerCard.aspx");
+                                    String MangaRootName = SuMExploreURL.split("Manga=")[1].split("&")[0];
+                                    String MID = SuMExploreURL.split("&VC=")[1].split("&")[0];
+                                    findViewById(R.id.SuMExploreInfo_MangaIMG_CornerFix).setClipToOutline(true);
+                                    SuMInfo_LoadSuMCurr(MID,MangaRootName);
+                                    GetMangaDis_MangaInfo(MID);
+                                    return false;
+                                }
+                            })
+                            .apply(new RequestOptions().placeholder(R.drawable.bg_tr_br0dp_c22dp_).error(R.drawable.bg_tr_br0dp_c22dp_))
+                            .into((ImageView)findViewById(R.id.SuMExploreInfo_MangaIMG));
                 }
             });
         } else {
             Toast.makeText(MainActivity.this, "Login in SETTINGS to start reading now!", Toast.LENGTH_LONG).show();
         }
     }
+
+
+    private String SuMInfo_SuMDisc_LINK = null;
 
     private void SuMExploreInfoStart_Native_ReadyQ(){
         runOnUiThread(new Runnable() {
@@ -4066,6 +4123,7 @@ public class MainActivity extends AppCompatActivity {
             @SuppressLint("UseCompatLoadingForDrawables")
             @Override
             public void run() {
+                findViewById(R.id.CloseSuMExploreInfo_BTN).startAnimation(animation_card_click);
                 if(WebViewToDistroyABS!=null){
                     for(int i =0;i<WebViewToDistroyABS.length;i++){
                         WebViewToDistroyABS[i].onResume();
@@ -4204,13 +4262,23 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     if(responses!=null)
                     resStr = responses.body().string();
-                    else notifyUser("SuM-Infinite-Scroll: failed to get mangas list!");
+                    else runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            notifyUser("SuM-Infinite-Scroll: failed to get mangas list!");
+                        }
+                    });
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
                 responses.close();
                 if(resStr==null){
-                    notifyUser("SuM-Infinite-Scroll: failed to get mangas list!");
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            notifyUser("SuM-Infinite-Scroll: failed to get mangas list!");
+                        }
+                    });
                     return;
                 }
                 String finalResStr = resStr;

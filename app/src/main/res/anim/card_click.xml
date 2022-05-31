@@ -7,15 +7,25 @@
         android:fromYScale="1.0"
         android:pivotX="50%"
         android:pivotY="50%"
-        android:toXScale="0.96"
-        android:toYScale="0.96" />
+        android:toXScale="0.98"
+        android:toYScale="0.98" />
+    <alpha
+        android:duration="160"
+        android:fromAlpha="1.0"
+        android:toAlpha="0.8"
+        android:startOffset="0"/>
     <scale
         android:startOffset="160"
         android:duration="160"
-        android:fromXScale="0.96"
-        android:fromYScale="0.96"
+        android:fromXScale="0.98"
+        android:fromYScale="0.98"
         android:pivotX="50%"
         android:pivotY="50%"
         android:toXScale="1.0"
         android:toYScale="1.0" />
+    <alpha
+        android:duration="160"
+        android:fromAlpha="0.8"
+        android:toAlpha="1.0"
+        android:startOffset="160"/>
 </set>

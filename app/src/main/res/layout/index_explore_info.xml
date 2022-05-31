@@ -14,15 +14,21 @@
                    android:layout_width="match_parent"
                    android:layout_height="match_parent">
 
+                   <ImageView
+                       android:id="@+id/SuMExploreInfo_MangaBGABSBlured_IMGView"
+                       android:scaleType="centerCrop"
+                       android:layout_width="match_parent"
+                       android:layout_height="match_parent"/>
+
                    <RelativeLayout
                        android:id="@+id/SuMExploreInfo_MangaBGABSBlured"
                        android:layout_width="match_parent"
                        android:layout_height="match_parent">
-
                        <View
+                           android:onClick="VoidX"
                            android:layout_width="match_parent"
                            android:layout_height="match_parent"
-                           android:alpha="0.45"
+                           android:alpha="0.38"
                            android:background="@android:color/black" />
                        <LinearLayout
                            android:layout_width="match_parent"
@@ -35,11 +41,11 @@
                                <RelativeLayout
                                    android:gravity="bottom"
                                    android:paddingTop="38dp"
-                                   android:background="#52000000"
                                    android:layout_width="match_parent"
                                    android:layout_height="wrap_content">
 
                                    <View
+                                       android:id="@+id/CloseSuMExploreInfo_BTN"
                                        android:layout_width="32dp"
                                        android:layout_height="32dp"
                                        android:layout_alignParentStart="true"
@@ -66,6 +72,7 @@
                                            android:orientation="horizontal">
 
                                            <TextView
+                                               android:visibility="gone"
                                                android:layout_width="wrap_content"
                                                android:layout_height="wrap_content"
                                                android:layout_marginTop="9dp"
@@ -74,13 +81,14 @@
                                                android:fontFamily="@font/varela_round"
                                                android:text="Wanna"
                                                android:textColor="@android:color/white"
-                                               android:textSize="12sp" />
+                                               android:textSize="12sp"
+                                               tools:ignore="HardcodedText" />
 
                                            <View
                                                android:onClick="SuMInfo_AddRemoreFromWanna"
                                                android:id="@+id/SuMInfo_Wanna_VIEWIMG"
-                                               android:layout_width="38dp"
-                                               android:layout_height="38dp"
+                                               android:layout_width="39dp"
+                                               android:layout_height="39dp"
                                                android:layout_marginStart="8dp"
                                                android:alpha="0.74"
                                                android:background="@drawable/ic_add_fill1_wght600_grad0_opsz48" />
@@ -89,8 +97,8 @@
                                        <View
                                            android:onClick="SuMInfo_AddRemoreFromFav"
                                            android:id="@+id/SuMInfo_Fav_VIEWIMG"
-                                           android:layout_width="39dp"
-                                           android:layout_height="39dp"
+                                           android:layout_width="37dp"
+                                           android:layout_height="37dp"
                                            android:layout_marginStart="2dp"
                                            android:alpha="0.74"
                                            android:background="@drawable/ic_bookmark_fill0_wght500_grad0_opsz48" />
@@ -102,13 +110,6 @@
                                    android:layout_width="match_parent"
                                    android:layout_height="232dp"
                                    android:gravity="top">
-
-                                   <View
-                                       android:layout_width="match_parent"
-                                       android:layout_height="match_parent"
-                                       android:alpha="0.32"
-                                       android:background="@android:color/black" />
-
                                    <RelativeLayout
                                        android:layout_width="match_parent"
                                        android:layout_height="match_parent"
@@ -124,30 +125,27 @@
                                </RelativeLayout>
                                <RelativeLayout
                                    android:layout_width="match_parent"
-                                   android:layout_height="72dp" >
+                                   android:layout_height="76dp" >
 
-                                   <View
-                                       android:layout_width="match_parent"
-                                       android:layout_height="match_parent"
-                                       android:alpha="0.32"
-                                       android:background="@android:color/black" />
-
-                                   <RelativeLayout
+                                   <LinearLayout
+                                       android:orientation="horizontal"
                                        android:layout_width="match_parent"
                                        android:layout_height="match_parent"
                                        android:gravity="center"
                                        android:paddingStart="12dp"
+                                       android:paddingTop="0dp"
                                        android:paddingEnd="12dp"
                                        android:paddingBottom="18dp">
 
                                        <LinearLayout
-                                           android:onClick="LoadCurr_SuMCurr"
                                            android:layout_width="wrap_content"
-                                           android:layout_height="58dp"
+                                           android:layout_height="54dp"
                                            android:background="@drawable/bg_w_tr_mangainfo_currbtn"
                                            android:clipToOutline="true"
                                            android:foreground="?attr/selectableItemBackground"
                                            android:gravity="start"
+                                           android:id="@+id/LoadCurr_SuMCurr_BTN"
+                                           android:onClick="LoadCurr_SuMCurr"
                                            android:orientation="horizontal"
                                            android:paddingStart="0dp"
                                            android:paddingEnd="24dp"
@@ -158,10 +156,10 @@
                                                android:layout_width="54dp"
                                                android:layout_height="match_parent"
                                                android:layout_marginEnd="16dp"
-                                               android:alpha="0.64"
-                                               android:scaleType="centerCrop"
+                                               android:alpha="0.74"
                                                android:background="@drawable/bg_w_tr_mangainfo_currbtn_img"
                                                android:clipToOutline="true"
+                                               android:scaleType="centerCrop"
                                                tools:ignore="UnusedAttribute" />
 
                                            <LinearLayout
@@ -186,8 +184,8 @@
                                                    android:id="@+id/SuMMangaExploreInfo_CURR_CN"
                                                    android:layout_width="wrap_content"
                                                    android:layout_height="wrap_content"
-                                                   android:alpha="0.86"
                                                    android:layout_marginTop="-3dp"
+                                                   android:alpha="0.86"
                                                    android:fontFamily="@font/varela_round"
                                                    android:text="0"
                                                    android:textColor="@android:color/white"
@@ -196,12 +194,44 @@
                                            </LinearLayout>
 
                                        </LinearLayout>
-                                   </RelativeLayout>
+
+                                       <RelativeLayout
+                                           android:layout_marginStart="12dp"
+                                           android:layout_width="58dp"
+                                           android:layout_height="54dp"
+                                           android:background="@drawable/bg_w_tr_mangainfo_currbtn"
+                                           android:clipToOutline="true"
+                                           android:foreground="?attr/selectableItemBackground"
+                                           android:gravity="center"
+                                           android:id="@+id/LoadChapters_SuMInfo_BTN"
+                                           android:onClick="LoadChapters_SuMInfo"
+                                           android:orientation="horizontal"
+                                           tools:ignore="UnusedAttribute">
+
+                                           <TextView
+                                               android:id="@+id/SuMInfo_ShowMoreLess_TextView"
+                                               android:layout_width="54dp"
+                                               android:layout_height="match_parent"
+                                               android:alpha="0.64"
+                                               android:fontFamily="@font/varela_round"
+                                               android:gravity="center"
+                                               android:text="Show more"
+                                               android:textColor="@android:color/white"
+                                               android:textSize="12sp"
+                                               tools:ignore="HardcodedText,RtlSymmetry" />
+                                       </RelativeLayout>
+
+                                   </LinearLayout>
                                </RelativeLayout>
                            </LinearLayout>
 
                            <RelativeLayout
-                               android:paddingBottom="100dp"
+                               android:id="@+id/SuMInfo_MoreChapters_WebView_CON"
+                               android:visibility="gone"
+                               android:alpha="0.86"
+                               android:paddingBottom="146dp"
+                               android:paddingStart="18dp"
+                               android:paddingEnd="18dp"
                                android:layout_width="match_parent"
                                android:layout_height="fill_parent">
 
@@ -210,16 +240,56 @@
                                    style="@android:style/Widget.Material.WebView"
                                    android:layout_width="match_parent"
                                    android:layout_height="match_parent"
-                                   android:background="@android:color/transparent"
+                                   android:background="@drawable/bg_suminfo_w_tr_bxdp"
+                                   android:clipToOutline="true"
                                    android:fontFamily="@font/varela_round"
                                    android:visibility="visible"
                                    app:layout_constraintBottom_toBottomOf="parent"
                                    app:layout_constraintEnd_toStartOf="parent"
                                    app:layout_constraintStart_toStartOf="parent"
-                                   app:layout_constraintTop_toTopOf="parent">
+                                   app:layout_constraintTop_toTopOf="parent"
+                                   tools:ignore="UnusedAttribute"/>
+                           </RelativeLayout>
+                           <RelativeLayout
+                               android:id="@+id/SuMInfo_Disc_TextView_CON"
+                               android:visibility="visible"
+                               android:alpha="0.86"
+                               android:paddingBottom="146dp"
+                               android:paddingStart="18dp"
+                               android:paddingEnd="18dp"
+                               android:layout_width="match_parent"
+                               android:layout_height="fill_parent">
 
+                               <ScrollView
+                                   android:layout_width="match_parent"
+                                   android:layout_height="match_parent"
+                                   android:background="@drawable/bg_suminfo_w_tr_bxdp"
+                                   android:clipToOutline="true"
+                                   android:fillViewport="true"
+                                   android:scrollbarSize="0dp"
+                                   tools:ignore="UnusedAttribute">
 
-                               </WebView>
+                                   <LinearLayout
+                                       android:layout_width="match_parent"
+                                       android:layout_height="wrap_content"
+                                       android:gravity="center"
+                                       android:orientation="vertical">
+
+                                       <TextView
+                                           android:id="@+id/SuMMangaExploreInfo_MangaDisc"
+                                           android:layout_width="match_parent"
+                                           android:layout_height="wrap_content"
+                                           android:alpha="0.86"
+                                           android:fontFamily="@font/varela_round"
+                                           android:gravity="center"
+                                           android:padding="32dp"
+                                           android:text="loading..."
+                                           android:textColor="@android:color/white"
+                                           android:textSize="16sp"
+                                           tools:ignore="HardcodedText" />
+
+                                   </LinearLayout>
+                               </ScrollView>
                            </RelativeLayout>
                        </LinearLayout>
 

@@ -37,6 +37,7 @@
                     android:id="@+id/SuMExploreInfo_MangaIMG"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
                     android:src="@drawable/bg_black_c0dp" />
             </RelativeLayout>
         </LinearLayout>
@@ -55,6 +56,7 @@
                 tools:ignore="RtlSymmetry">
 
                 <LinearLayout
+                    android:alpha="0.86"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
@@ -231,38 +233,7 @@
                     android:textSize="14.5sp"
                     tools:ignore="HardcodedText,RtlSymmetry" />
 
-                <RelativeLayout
-                    android:gravity="center"
-                    android:layout_width="match_parent"
-                    android:layout_height="fill_parent">
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="-28dp"
-                        android:gravity="left"
-                        android:paddingStart="16dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="26dp"
-                            android:layout_centerInParent="true"
-                            android:alpha="0.86"
-                            android:background="@drawable/bg_info_disc_btn"
-                            android:clipToOutline="true"
-                            android:fontFamily="@font/varela_round"
-                            android:foreground="?attr/selectableItemBackground"
-                            android:gravity="center"
-                            android:onClick="ShowExploreMangaInfoDisc"
-                            android:paddingStart="16dp"
-                            android:paddingEnd="16dp"
-                            android:paddingBottom="2dp"
-                            android:text="show description"
-                            android:textColor="@android:color/white"
-                            android:textSize="12sp"
-                            tools:ignore="HardcodedText,RtlSymmetry,UnusedAttribute" />
-                    </RelativeLayout>
-                </RelativeLayout>
 
 
             </LinearLayout>

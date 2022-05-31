@@ -183,7 +183,7 @@ public class ScoutAdapter extends RecyclerView.Adapter<ScoutAdapter.ScoutHolder>
                             Bitmap a = ((BitmapDrawable)resource).getBitmap();
                             a = Bitmap.createScaledBitmap(a, a.getWidth()/8, a.getHeight()/8, false);
                             int rh = (int) (a.getHeight()*0.38);
-                            a = MainActivity.blurDark(context,Bitmap.createBitmap(a, 0, a.getHeight()-rh, a.getWidth(), rh),2.0f,r,g,b);
+                            a = MainActivity.blurDark(context,Bitmap.createBitmap(a, 0, a.getHeight()-rh, a.getWidth(), rh),2.0f,r,g,b,192);
                             //Bitmap resizedBmp = Bitmap.createBitmap(((BitmapDrawable)resource).getBitmap(), 0, 0, 180, 86);
                             viewColor.setBackground(new BitmapDrawable(context.getResources(), a));
                             return false;
