@@ -38,6 +38,7 @@ import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -488,7 +489,7 @@ public class SplashScreen extends AppCompatActivity {
         }
     }
     @SuppressLint({"SetJavaScriptEnabled", "JavascriptInterface"})
-    public void GetThisWenViewReady(WebView webViewx) {
+    private void GetThisWenViewReady(WebView webViewx) {
         webViewx.setWebViewClient(new SplashScreen.yWebViewClient());
         WebSettings contentWebViewSettings = webViewx.getSettings();
         contentWebViewSettings.setJavaScriptEnabled(true);
@@ -505,6 +506,7 @@ public class SplashScreen extends AppCompatActivity {
         webViewx.loadUrl("https://sum-manga.azurewebsites.net/AccountETC/LoginETC.aspx");
         webViewx.setVisibility(View.VISIBLE);
     }
+
 
 
 }

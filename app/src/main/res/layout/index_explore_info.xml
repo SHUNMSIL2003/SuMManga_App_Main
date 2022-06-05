@@ -254,9 +254,9 @@
                                android:id="@+id/SuMInfo_Disc_TextView_CON"
                                android:visibility="visible"
                                android:alpha="0.86"
-                               android:paddingBottom="146dp"
-                               android:paddingStart="18dp"
-                               android:paddingEnd="18dp"
+                               android:paddingBottom="148dp"
+                               android:paddingStart="12dp"
+                               android:paddingEnd="12dp"
                                android:layout_width="match_parent"
                                android:layout_height="fill_parent">
 

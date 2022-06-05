@@ -551,12 +551,12 @@
                                                 android:onClick="Claim124TokenByDolars">
 
                                                 <View
-                                                    android:foreground="?attr/selectableItemBackground"
                                                     android:id="@+id/SuMCoinsCardBTN_Claim124DolarByMony"
                                                     android:layout_width="match_parent"
                                                     android:layout_height="match_parent"
                                                     android:layout_gravity="center"
-                                                    android:background="@drawable/bg_btn_c14dp" />
+                                                    android:background="@drawable/bg_btn_c14dp"
+                                                    android:foreground="?attr/selectableItemBackground" />
 
                                                 <TextView
                                                     android:layout_width="wrap_content"
@@ -648,12 +648,12 @@
                                                 android:onClick="Claim1132TokenByDolars">
 
                                                 <View
-                                                    android:foreground="?attr/selectableItemBackground"
                                                     android:id="@+id/SuMCoinsCardBTN_Claim1132DolarByMony"
                                                     android:layout_width="match_parent"
                                                     android:layout_height="match_parent"
                                                     android:layout_gravity="center"
-                                                    android:background="@drawable/bg_btn_c14dp" />
+                                                    android:background="@drawable/bg_btn_c14dp"
+                                                    android:foreground="?attr/selectableItemBackground" />
 
                                                 <TextView
                                                     android:layout_width="wrap_content"
