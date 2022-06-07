@@ -1,6 +1,8 @@
 package com.summanga.android;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -14,8 +16,10 @@ import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Locale;
@@ -103,6 +107,40 @@ public class SuMCreatorPanel extends AppCompatActivity {
         webViewx.addJavascriptInterface(SuMCreatorPanel.this, "androidAPIs");
         webViewx.loadUrl("https://sum-manga.azurewebsites.net/SuMCreator/CreatorPanel.aspx");
         webViewx.setVisibility(View.VISIBLE);
+    }
+
+    //Show a text in a bubble
+    @JavascriptInterface
+    public void ShowSuMToastsOverview(String TXT) {
+        runOnUiThread(new Runnable() {
+
+            @Override
+            public void run() {
+
+                Context context = getApplicationContext();
+                CharSequence text = TXT;
+                int duration = Toast.LENGTH_SHORT;
+
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
+            }
+
+        });
+    }
+
+    @JavascriptInterface
+    public void SuMCreatorAddAChapter(int MID_FNR){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Intent i = new Intent(SuMCreatorPanel.this, SuMCreatorCHReq.class);
+                i.putExtra("THEME_RBG", LOADING_MESSAGE);
+                i.putExtra("MSG_MID", MID_FNR+"");
+                i.putExtra(Intent.EXTRA_ALLOW_MULTIPLE,true);
+                startActivity(i);
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);//Improves Perf
+            }
+        });
     }
 
     @JavascriptInterface

@@ -25,8 +25,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Locale;
 
-import okhttp3.Response;
-
 public class SuMCreatorReq extends AppCompatActivity {
     private Animation animation_card_click;
     private String LOADING_MESSAGE;

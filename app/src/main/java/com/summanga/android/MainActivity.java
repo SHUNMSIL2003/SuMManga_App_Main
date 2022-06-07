@@ -314,7 +314,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     private Animation animation_card_click;
-    private boolean onCreate_IP = true;
     private  String BANNER_STRING64;
 
     @SuppressLint({"SetJavaScriptEnabled", "UseCompatLoadingForDrawables", "ClickableViewAccessibility"})
@@ -981,8 +980,7 @@ public class MainActivity extends AppCompatActivity {
 
     @SuppressLint("UseCompatLoadingForDrawables")
     public void LoadExplore(View view) {
-        if(!onCreate_IP) view.startAnimation(animation_card_click);
-        else onCreate_IP = false;
+        if(view != null) view.startAnimation(animation_card_click);
         findViewById(R.id.SuMViewFilpperClickBlocker).setVisibility(View.GONE);
         //if(simpleViewFlipper.getDisplayedChild()!=0) ((ScrollView)findViewById(R.id.SuMExplore_Home_ScrollView_Main)).scrollTo(0, 0);
         if(simpleViewFlipper.getDisplayedChild()==0&&!SUMFIRSTLOAD) return;
@@ -1063,8 +1061,7 @@ public class MainActivity extends AppCompatActivity {
     }
     @SuppressLint("UseCompatLoadingForDrawables")
     public void LoadHit(View view) {
-        if(!onCreate_IP) view.startAnimation(animation_card_click);
-        else onCreate_IP = false;
+        if(view != null) view.startAnimation(animation_card_click);
         findViewById(R.id.SuMViewFilpperClickBlocker).setVisibility(View.GONE);
         if(findViewById(R.id.SuMExploreInfo_ABS).getVisibility() == View.VISIBLE) {
             CloseSuMExploreInfo(null);
@@ -1078,8 +1075,7 @@ public class MainActivity extends AppCompatActivity {
     }
     @SuppressLint({"UseCompatLoadingForDrawables", "SetTextI18n"})
     public void LoadLibrary(View view) {
-        if(!onCreate_IP) view.startAnimation(animation_card_click);
-        else onCreate_IP = false;
+        if(view != null) view.startAnimation(animation_card_click);
         findViewById(R.id.SuMViewFilpperClickBlocker).setVisibility(View.GONE);
         int UID = 0;
         Object cookies = CookieManager.getInstance().getCookie("https://sum-manga.azurewebsites.net/");
@@ -1146,8 +1142,7 @@ public class MainActivity extends AppCompatActivity {
     }
     @SuppressLint({"UseCompatLoadingForDrawables", "DefaultLocale"})
     public void LoadSettings(View view) {
-        if(!onCreate_IP) view.startAnimation(animation_card_click);
-        else onCreate_IP = false;
+        if(view != null) view.startAnimation(animation_card_click);
         findViewById(R.id.SuMViewFilpperClickBlocker).setVisibility(View.GONE);
         if(simpleViewFlipper.getDisplayedChild()!=3) ((ScrollView)findViewById(R.id.SuMSettings_ScrollView_Main)).scrollTo(0, 0);
         if(RootStateBit == 1) {
@@ -1373,8 +1368,7 @@ public class MainActivity extends AppCompatActivity {
         return size;
     }
     public void LoadSearch(View view) {
-        if(!onCreate_IP) view.startAnimation(animation_card_click);
-        else onCreate_IP = false;
+        if(view != null) view.startAnimation(animation_card_click);
         findViewById(R.id.SuMViewFilpperClickBlocker).setVisibility(View.GONE);
         if(findViewById(R.id.SuMExploreInfo_ABS).getVisibility() == View.VISIBLE) {
             CloseSuMExploreInfo(null);
@@ -3906,7 +3900,7 @@ public class MainActivity extends AppCompatActivity {
                 .cookieJar(cookieHelper.cookieJar())
                 .build();
         Request request = new Request.Builder()
-                .url("https://sum-manga.azurewebsites.net/APIs/MangaViewsParser.aspx?MID=0"+MID)
+                .url("https://sum-manga.azurewebsites.net/APIs/MangaViewsParser.aspx?MID="+MID)
                 .build();
         client.newCall(request).enqueue(new Callback() {
             @Override
@@ -4157,6 +4151,10 @@ public class MainActivity extends AppCompatActivity {
             @SuppressLint("UseCompatLoadingForDrawables")
             @Override
             public void run() {
+                if(findViewById(R.id.SuMInfo_Disc_TextView_CON).getVisibility()!=View.VISIBLE) {
+                    findViewById(R.id.SuMInfo_MoreChapters_WebView_CON).setVisibility(View.GONE);
+                    findViewById(R.id.SuMInfo_Disc_TextView_CON).setVisibility(View.VISIBLE);
+                }
                 Object cookies = CookieManager.getInstance().getCookie("https://sum-manga.azurewebsites.net/");
                 String RSBit = "";
                 if (cookies != null) {
