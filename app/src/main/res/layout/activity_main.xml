@@ -87,12 +87,27 @@
         android:id="@+id/SuMViewFilpperClickBlocker"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <com.google.android.material.progressindicator.LinearProgressIndicator
+        <!-- <com.google.android.material.progressindicator.LinearProgressIndicator
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:alpha="0.86"
             android:indeterminate="true"
             android:indeterminateBehavior="repeat"
+            android:indeterminateOnly="true"
+            app:indicatorColor="@android:color/white"
+            app:trackColor="@android:color/transparent"
+            app:trackCornerRadius="2dp"
+            app:trackThickness="4dp" /> -->
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:layout_width="256dp"
+            android:layout_height="256dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="12dp"
+            android:alpha="0.86"
+            android:visibility="visible"
+
+            android:indeterminate="true"
+            android:indeterminateBehavior="cycle"
             android:indeterminateOnly="true"
             app:indicatorColor="@android:color/white"
             app:trackColor="@android:color/transparent"

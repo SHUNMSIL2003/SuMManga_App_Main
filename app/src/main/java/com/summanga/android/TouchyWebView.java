@@ -1,5 +1,6 @@
 package com.summanga.android;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -19,6 +20,7 @@ class TouchyWebView extends WebView {
         super(context, attrs, defStyle);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event){
         requestDisallowInterceptTouchEvent(true);

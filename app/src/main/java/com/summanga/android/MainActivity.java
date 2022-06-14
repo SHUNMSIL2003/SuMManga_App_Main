@@ -303,6 +303,10 @@ public class MainActivity extends AppCompatActivity {
 
     private Animation animation_card_click;;
 
+    private static int global_r = 0;
+    private static int global_g = 0;
+    private static int global_b = 0;
+
     @SuppressLint({"SetJavaScriptEnabled", "UseCompatLoadingForDrawables", "ClickableViewAccessibility"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -383,29 +387,7 @@ public class MainActivity extends AppCompatActivity {
         GetThisWenViewReady(webView5, false, false, false,false);
 
 
-        Boolean FoundAnIndex = false;
-        if (SuMStaticVs.RedirectFromSuMNotiURL == null) {
-            LoadExplore(null);
-        } else {
-            if (SuMStaticVs.RedirectFromSuMNotiURL == "Hits") {
-                LoadHit(null);
-                FoundAnIndex = true;
-            }
-            if (SuMStaticVs.RedirectFromSuMNotiURL == "Library") {
-                LoadLibrary(null);
-                FoundAnIndex = true;
-            }
-            if (SuMStaticVs.RedirectFromSuMNotiURL == "Search") {
-                LoadSearch(null);
-                FoundAnIndex = true;
-            }
-            if (SuMStaticVs.RedirectFromSuMNotiURL == "Settings") {
-                LoadSettings(null);
-                FoundAnIndex = true;
-            }
-        }
 
-        SUMFIRSTLOAD = false;
 
 
         int SBH00 = 0;
@@ -436,10 +418,19 @@ public class MainActivity extends AppCompatActivity {
             } else RS = "104,64,217";
         } else RS = "104,64,217";
 
-        RootHexColor = String.format("#%02X%02X%02X", Integer.parseInt(RS.split(",")[0]), Integer.parseInt(RS.split(",")[1]), Integer.parseInt(RS.split(",")[2]));
+        global_r = Integer.parseInt(RS.split(",")[0]);
+        global_g = Integer.parseInt(RS.split(",")[1]);
+        global_b = Integer.parseInt(RS.split(",")[2]);
+        RootHexColor = String.format("#%02X%02X%02X", global_r, global_g, global_b);
+        LoadColors();
+
         findViewById(R.id.SuMExplore_Gern_ALL_Toggle).setBackground(setTint(ContextCompat.getDrawable(MainActivity.this, R.drawable.bg_gern_tr_bor_w_c_fixer_home),Color.parseColor(RootHexColor)));
 
-        String RSBit = "";
+
+
+
+
+        RSBit = "";
         if (cookies != null) {
             if (cookies.toString().contains("SuMUserThemeState=")) {
                 String[] AA = cookies.toString().replace(" ", "").split(";");
@@ -469,6 +460,30 @@ public class MainActivity extends AppCompatActivity {
             RootStateBit = 0;
         }
         findViewById(R.id.SuMBackCWA2).setBackgroundColor(Color.parseColor(RootHexColor));
+
+        Boolean FoundAnIndex = false;
+        if (SuMStaticVs.RedirectFromSuMNotiURL == null) {
+            LoadExplore(null);
+        } else {
+            if (SuMStaticVs.RedirectFromSuMNotiURL == "Hits") {
+                LoadHit(null);
+                FoundAnIndex = true;
+            }
+            if (SuMStaticVs.RedirectFromSuMNotiURL == "Library") {
+                LoadLibrary(null);
+                FoundAnIndex = true;
+            }
+            if (SuMStaticVs.RedirectFromSuMNotiURL == "Search") {
+                LoadSearch(null);
+                FoundAnIndex = true;
+            }
+            if (SuMStaticVs.RedirectFromSuMNotiURL == "Settings") {
+                LoadSettings(null);
+                FoundAnIndex = true;
+            }
+        }
+
+        SUMFIRSTLOAD = false;
 
 
         if (cookies != null) {
@@ -519,22 +534,20 @@ public class MainActivity extends AppCompatActivity {
         textViewToChange.setText(UserNameFC);
 
 
-        ReqH_DH_RCV_TOPH = (int)convertDpToPixel(112,MainActivity.this);
+        ReqH_DH_RCV_TOPH = (int)convertDpToPixel(164,MainActivity.this);
         SuMExplore_Home_ScrollView_Main_ELM = findViewById(R.id.SuMExplore_Home_ScrollView_Main);
         SuMExplore_Home_ScrollView_Main_ELM.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
             @Override
             public void onScrollChanged() {
-                int scrollY = SuMExplore_Home_ScrollView_Main_ELM.getScrollY(); // For ScrollView
-                //int scrollX = SuMExplore_Home_ScrollView_Main_ELM.getScrollX(); // For HorizontalScrollView
-                // DO SOMETHING WITH THE SCROLL COORDINATES
+                int scrollY = SuMExplore_Home_ScrollView_Main_ELM.getScrollY();
                 int totalHeight = SuMExplore_Home_ScrollView_Main_ELM.getChildAt(0).getHeight();
-                if((scrollY)>=(totalHeight-ReqH_DH_RCV-ReqH_DH_RCV_TOPH*1.5)) {
+                if((scrollY)>=(ReqH_DH_RCV_TOPH)) {
                     SuMExploreScrollViewFunc_Runnable = new Runnable() {
                         @Override
                         public void run() {
                             recyclerView.setNestedScrollingEnabled(true);
                             SuMExplore_Home_ScrollView_Main_ELM_Scroll = false;
-                            SuMExplore_Home_ScrollView_Main_ELM.smoothScrollTo(0,totalHeight-ReqH_DH_RCV);
+                            SuMExplore_Home_ScrollView_Main_ELM.smoothScrollTo(0,totalHeight);
                         }
                     };
                 }
@@ -596,8 +609,9 @@ public class MainActivity extends AppCompatActivity {
                     String cookieString = "SuMUserThemeState=0; path=/";
                     CookieManager.getInstance().setCookie("https://sum-manga.azurewebsites.net/", cookieString);
                 }
-                //LoadSettings(null);
-                //LoadSettings(null);
+                LoadSettings(null);
+                LoadSettings(null);
+                //LoadColors_IsCalled = false;
             }
         });
 
@@ -1608,7 +1622,7 @@ public class MainActivity extends AppCompatActivity {
         }
         if(xurl[0].contains("/Search.aspx")) {
             IndexX = 4;
-            webViewX = new WebView[]{ webView4 };;
+            webViewX = new WebView[]{ webView4 };
             SuMBTActTopNBottomVoid();
         }
         SuMPauseXWebViews(WebViewToDistroy);
@@ -1632,31 +1646,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private String RSBit = "";
+    boolean LoadColors_IsCalled = false;
     @SuppressLint("UseCompatLoadingForDrawables")
     public void LoadColors() {
         Object cookies = CookieManager.getInstance().getCookie("https://sum-manga.azurewebsites.net/");
-
-        String RS = "";
-        if (cookies != null) {
-            if (cookies.toString().contains("RGBRoot=")) {
-                String[] AA = cookies.toString().replace(" ", "").split(";");
-                boolean foundAA = false;
-                for (int i = 0; i < AA.length; i++) {
-                    if (AA[i].contains("RGBRoot=")) {
-                        RS = AA[i].replace(" ", "").replace("SuMUserThemeColor=RGBRoot=", "");
-                        foundAA = true;
-                        i = AA.length;
-                    }
-                }
-                if (!foundAA) {
-                    RS = "104,64,217";
-                }
-            } else RS = "104,64,217";
-        } else RS = "104,64,217";
-
-        RootHexColor = String.format("#%02X%02X%02X", Integer.parseInt(RS.split(",")[0]), Integer.parseInt(RS.split(",")[1]), Integer.parseInt(RS.split(",")[2]));
-
-        String RSBit = "";
+        RSBit = "";
         if (cookies != null) {
             if (cookies.toString().contains("SuMUserThemeState=")) {
                 String[] AA = cookies.toString().replace(" ", "").split(";");
@@ -1686,18 +1681,9 @@ public class MainActivity extends AppCompatActivity {
             RootStateBit = 0;
         }
 
-        String[] BB = RS.split(",");
-        String hex = String.format("#%02X%02X%02X", Integer.parseInt(BB[0]), Integer.parseInt(BB[1]), Integer.parseInt(BB[2]));
-        findViewById(R.id.SuMStatusBar).getBackground().setColorFilter(Color.parseColor(hex), PorterDuff.Mode.ADD);
-        findViewById(R.id.SuMStatusBarExtendor).setBackground(setTint(getResources().getDrawable(R.drawable.bg_xcolor_nb_c0dp), Color.parseColor(hex)));
-        findViewById(R.id.SuMNavBarExtendor).setBackground(setTint(getResources().getDrawable(R.drawable.bg_xcolor_nb_c0dp), Color.parseColor(hex)));
-        findViewById(R.id.SuMNavBar).setBackground(setTint(getResources().getDrawable(R.drawable.bg_xcolor_nb_c0dp), Color.parseColor(hex)));
-        findViewById(R.id.SuMUseNameTXT).getBackground().setColorFilter(Color.parseColor(hex), PorterDuff.Mode.ADD);
+        String hex = RootHexColor;
 
-        TextView textvivesubt = (TextView) findViewById(R.id.SuMMangaTXT);
-        textvivesubt.setTextColor(Color.parseColor(hex));
-        textvivesubt = (TextView) findViewById(R.id.NavBackTXT);
-        textvivesubt.setTextColor(Color.parseColor(hex));
+        TextView textvivesubt;
 
         textvivesubt = (TextView) findViewById(R.id.ExploreBTNTXT);
         findViewById(R.id.ExploreBTN).setBackground(setTint(getResources().getDrawable(R.drawable.ic_dashboard_black_48dp), Color.parseColor(SecSelectColor)));
@@ -1720,6 +1706,15 @@ public class MainActivity extends AppCompatActivity {
         textvivesubt = (TextView) findViewById(R.id.NavBackTXT);
         textvivesubt.setTextColor(Color.parseColor(hex));
 
+        textvivesubt = (TextView) findViewById(R.id.SuMMangaTXT);
+        textvivesubt.setTextColor(Color.parseColor(hex));
+        textvivesubt = (TextView) findViewById(R.id.NavBackTXT);
+        textvivesubt.setTextColor(Color.parseColor(hex));
+        findViewById(R.id.SuMStatusBar).getBackground().setColorFilter(Color.parseColor(hex), PorterDuff.Mode.ADD);
+        findViewById(R.id.SuMStatusBarExtendor).setBackground(setTint(getResources().getDrawable(R.drawable.bg_xcolor_nb_c0dp), Color.parseColor(hex)));
+        findViewById(R.id.SuMNavBarExtendor).setBackground(setTint(getResources().getDrawable(R.drawable.bg_xcolor_nb_c0dp), Color.parseColor(hex)));
+        findViewById(R.id.SuMNavBar).setBackground(setTint(getResources().getDrawable(R.drawable.bg_xcolor_nb_c0dp), Color.parseColor(hex)));
+        findViewById(R.id.SuMUseNameTXT).getBackground().setColorFilter(Color.parseColor(hex), PorterDuff.Mode.ADD);
         findViewById(R.id.SuMStatusBarExtendor).setVisibility(View.VISIBLE);
         findViewById(R.id.SuMNavBarExtendor).setVisibility(View.VISIBLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
@@ -1845,7 +1840,7 @@ public class MainActivity extends AppCompatActivity {
         return bm;*/
 
     }
-    public static Bitmap blurDark(Context context, Bitmap image,float BLUR_RADIUS,int r,int g,int b,int a) {
+    public static Bitmap blurDark(Context context, Bitmap image,float BLUR_RADIUS,float BITMAP_SCALE,int r,int g,int b,int a) {
         int width = Math.round(image.getWidth() * BITMAP_SCALE);
         int height = Math.round(image.getHeight() * BITMAP_SCALE);
 
@@ -3636,7 +3631,7 @@ public class MainActivity extends AppCompatActivity {
                 final int r = Integer.parseInt(Raw_RGB_String_P.split(",")[0]);
                 final int g = Integer.parseInt(Raw_RGB_String_P.split(",")[1]);
                 final int b = Integer.parseInt(Raw_RGB_String_P.split(",")[2]);
-                Bitmap a = blurDark(MainActivity.this,Bitmap.createScaledBitmap(MangaCoverBitmap0, MangaCoverBitmap0.getWidth()/8, MangaCoverBitmap0.getHeight()/8, false),2.0f,r,g,b,114);
+                Bitmap a = blurDark(MainActivity.this,Bitmap.createScaledBitmap(MangaCoverBitmap0, MangaCoverBitmap0.getWidth()/8, MangaCoverBitmap0.getHeight()/8, false),2.0f,0.4f,r,g,b,114);
                 ((ImageView)findViewById(R.id.SuMExploreInfo_MangaBGABSBlured_IMGView)).setImageBitmap(a);
             }
         });
@@ -3702,10 +3697,15 @@ public class MainActivity extends AppCompatActivity {
 
     public void SuMExploreInfoStart_Native(String SuMExploreURL, String ThemeColor, String SuMExploreTitle, String SuMExploreAuthor, String SuMExploreGerns, String MangaAgeRating, String MangaCoverLink) throws IOException, InterruptedException {
 
+        Bitmap vbg = getScreenShot(findViewById(R.id.MainLayout));
+        vbg = getResizedBitmap(vbg,vbg.getWidth()/8,vbg.getHeight()/8);
+        vbg = blurDark(MainActivity.this,vbg,18.0f,0.64f,global_r,global_g,global_b, (int) (255*0.32));
+        findViewById(R.id.SuMViewFilpperClickBlocker).setBackground(new BitmapDrawable(getResources(), vbg));
         new android.os.Handler(Looper.getMainLooper()).postDelayed(
                 new Runnable() {
                     public void run() {
                         Animation fade_in = AnimationUtils.loadAnimation(MainActivity.this, android.R.anim.fade_in);
+
                         findViewById(R.id.SuMViewFilpperClickBlocker).setVisibility(View.VISIBLE);
                         findViewById(R.id.SuMViewFilpperClickBlocker).startAnimation(fade_in);
                     }
@@ -3765,7 +3765,6 @@ public class MainActivity extends AppCompatActivity {
                                     SuMExploreInfoTitle(SuMExploreTitle);
                                     SuMExploreInfoAuthor(SuMExploreAuthor);
                                     SuMExploreInfoGerns(SuMExploreGerns);
-                                    //LoadColors();
                                     rgbrootpross_SuMInfo = ThemeColor.replace(" ", "").replace("rgb", "").replace("a", "").replace("(", "").replace(")", "").split(",");
                                     //colors where here
                                     ((TextView) findViewById(R.id.SuMExploreInfo_MangaAgeRating)).setText(MangaAgeRating);

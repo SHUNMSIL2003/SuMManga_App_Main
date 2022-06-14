@@ -48,7 +48,7 @@
                 <include layout="@layout/explore_recents_layout" />
 
                 <RelativeLayout
-                    android:padding="12dp"
+                    android:padding="0dp"
                     android:nestedScrollingEnabled="false"
                     android:background="@android:color/transparent"
                     android:id="@+id/explore_recents_layout_H"
@@ -58,6 +58,10 @@
                     <include layout="@layout/explore_flexiblegenres_layout" />
                 </RelativeLayout>
 
+
+               <!-- <View
+                    android:layout_width="match_parent"
+                    android:layout_height="112dp" /> -->
 
 
             </LinearLayout>
