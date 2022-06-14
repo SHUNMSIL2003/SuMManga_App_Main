@@ -71,7 +71,7 @@ public class ScoutAdapterIMG extends RecyclerView.Adapter<ScoutAdapterIMG.ScoutH
                     .load("https://sum-manga.azurewebsites.net"+scout.getName())
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .apply(myOptions)
-                    .addListener(new RequestListener<Drawable>() {
+                    /*.addListener(new RequestListener<Drawable>() {
                         @Override
                         public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                             return false;
@@ -80,7 +80,7 @@ public class ScoutAdapterIMG extends RecyclerView.Adapter<ScoutAdapterIMG.ScoutH
                         public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
                             return false;
                         }
-                    })
+                    })*/
                     .apply(new RequestOptions().placeholder(R.drawable.bg_tr_br0dp_c22dp_).error(R.drawable.bg_tr_br0dp_c22dp_))
                     .into(imgCover);
 

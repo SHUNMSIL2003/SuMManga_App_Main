@@ -12,9 +12,18 @@
     android:windowSoftInputMode="adjustResize"
     tools:context=".SuMReader">
 
+    <ImageView
+        android:background="@android:color/transparent"
+        android:id="@+id/SuMPOPUP_SUMREADER_BG_Tr_BLUR"
+        android:alpha="1.0"
+        android:src="@android:color/transparent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
     <View
+        android:id="@+id/SuMPOPUP_SUMREADER_BG_Tr"
         android:background="@android:color/black"
-        android:alpha="0.74"
+        android:alpha="0.32"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
@@ -106,10 +115,10 @@
                 </LinearLayout>
 
                 <TextView
-                    android:layout_marginTop="0dp"
-                    android:layout_marginBottom="0dp"
-                    android:paddingStart="24dp"
-                    android:paddingEnd="24dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="12dp"
+                    android:paddingStart="64dp"
+                    android:paddingEnd="64dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:alpha="0.86"
@@ -174,22 +183,36 @@
 
     </RelativeLayout>
 
+
     <RelativeLayout
         android:background="@android:color/transparent"
+        android:keepScreenOn="true"
         android:id="@+id/SuMMangaIMGs_C"
         android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <androidx.recyclerview.widget.RecyclerView
-            android:background="@android:color/transparent"
-            android:id="@+id/scout_IMG_recycler_view"
+        <com.alexvasilkov.gestures.views.GestureFrameLayout
+            android:id="@+id/SuMReder_GesVFL"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:nestedScrollingEnabled="true"
-            android:orientation="vertical"
-            android:scrollbars="none"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:spanCount="1" />
+            android:layout_height="match_parent">
+            <!-- GestureFrameLayout can contain only one child -->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <!-- Layout content goes here -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:keepScreenOn="true"
+                    android:background="@android:color/transparent"
+                    android:id="@+id/scout_IMG_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:nestedScrollingEnabled="true"
+                    android:orientation="vertical"
+                    android:scrollbars="none"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:spanCount="1" />
+            </FrameLayout>
+        </com.alexvasilkov.gestures.views.GestureFrameLayout>
     </RelativeLayout>
 
     <RelativeLayout

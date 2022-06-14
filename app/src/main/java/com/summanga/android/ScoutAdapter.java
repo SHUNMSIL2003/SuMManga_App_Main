@@ -1,7 +1,5 @@
 package com.summanga.android;
 
-import static androidx.core.graphics.drawable.DrawableCompat.setTint;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -193,20 +191,55 @@ public class ScoutAdapter extends RecyclerView.Adapter<ScoutAdapter.ScoutHolder>
                     .into(imgCover);
             myCardView.setCardBackgroundColor(Color.TRANSPARENT);
             idItemBG.setBackgroundColor(hex);
-            if(index % 2 == 0)
-            {
-                //System.out.println("The given number "+index+" is Even ");
-                //namebar = ViewPaddingTop;
-                itemView.findViewById(R.id.idCardPaddingTop).setVisibility(View.GONE);
-                itemView.findViewById(R.id.idCardPaddingBottom).setVisibility(View.VISIBLE);
+            if(SuMStaticVs.RV_ItemsInRowCount_LASTREALINDEX < index) {
+                SuMStaticVs.RV_ItemsInRowCount_INDEX++;
+                if (SuMStaticVs.RV_ItemsInRowCount_INDEX > SuMStaticVs.RV_ItemsInRowCount) {
+                    SuMStaticVs.RV_ItemsInRowCount_Helper = false;
+                    SuMStaticVs.RV_ItemsInRowCount_INDEX = 1;
+                }
+                //SuMStaticVs.RV_ItemsInRowCount_INDEX++;
+                if (SuMStaticVs.RV_ItemsInRowCount_INDEX % 2 == 0) {
+                    //System.out.println("The given number "+index+" is Even ");
+                    //namebar = ViewPaddingTop;
+                    itemView.findViewById(R.id.idCardPaddingTop).setVisibility(View.GONE);
+                    itemView.findViewById(R.id.idCardPaddingBottom).setVisibility(View.VISIBLE);
+                } else {
+                    //System.out.println("The given number "+index+" is Odd ");
+                    //namebar = ViewPaddingBottom;
+                    itemView.findViewById(R.id.idCardPaddingBottom).setVisibility(View.GONE);
+                    itemView.findViewById(R.id.idCardPaddingTop).setVisibility(View.VISIBLE);
+                }
+                //SuMStaticVs.RV_ItemsInRowCount_INDEX++;
+                SuMStaticVs.RV_ItemsInRowCount_LASTREALINDEX = index;
             }
-            else
-            {
-                //System.out.println("The given number "+index+" is Odd ");
-                //namebar = ViewPaddingBottom;
-                itemView.findViewById(R.id.idCardPaddingBottom).setVisibility(View.GONE);
-                itemView.findViewById(R.id.idCardPaddingTop).setVisibility(View.VISIBLE);
-            }
+            /*if(SuMStaticVs.RV_ItemsInRowCount % 2 == 0) {
+                if (index % 2 == 0) {
+                    //System.out.println("The given number "+index+" is Even ");
+                    //namebar = ViewPaddingTop;
+                    itemView.findViewById(R.id.idCardPaddingTop).setVisibility(View.GONE);
+                    itemView.findViewById(R.id.idCardPaddingBottom).setVisibility(View.VISIBLE);
+                } else {
+                    //System.out.println("The given number "+index+" is Odd ");
+                    //namebar = ViewPaddingBottom;
+                    itemView.findViewById(R.id.idCardPaddingBottom).setVisibility(View.GONE);
+                    itemView.findViewById(R.id.idCardPaddingTop).setVisibility(View.VISIBLE);
+                }
+            }else {
+                if(index % 3 == 0) SuMStaticVs.RV_ItemsInRowCount_Helper = true;
+                else SuMStaticVs.RV_ItemsInRowCount_Helper = false;
+                if (index % 2 == 0 && !SuMStaticVs.RV_ItemsInRowCount_Helper) {
+                    SuMStaticVs.RV_ItemsInRowCount_Helper = true;
+                    //System.out.println("The given number "+index+" is Even ");
+                    //namebar = ViewPaddingTop;
+                    itemView.findViewById(R.id.idCardPaddingTop).setVisibility(View.GONE);
+                    itemView.findViewById(R.id.idCardPaddingBottom).setVisibility(View.VISIBLE);
+                } else {
+                    //System.out.println("The given number "+index+" is Odd ");
+                    //namebar = ViewPaddingBottom;
+                    itemView.findViewById(R.id.idCardPaddingBottom).setVisibility(View.GONE);
+                    itemView.findViewById(R.id.idCardPaddingTop).setVisibility(View.VISIBLE);
+                }
+            }*/
             //((ViewGroup) namebar.getParent()).removeView(namebar);
 
             final String MangaGernsToPross = scout.getGernString().toLowerCase(Locale.ROOT).replace(" ","").replace("-","");

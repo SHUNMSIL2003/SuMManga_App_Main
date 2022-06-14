@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -74,6 +75,7 @@ public class SuMCreatorReq extends AppCompatActivity {
                 if(animation_card_click == null) animation_card_click = AnimationUtils.loadAnimation(SuMCreatorReq.this, R.anim.card_click);
                 view.startAnimation(animation_card_click);
                 SuMCreatorReq.this.finish();
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
         });
     }
@@ -92,7 +94,10 @@ public class SuMCreatorReq extends AppCompatActivity {
             public void onPageFinished(WebView view, String url) {
                 //CookieSyncManager.getInstance().sync();
                 CookieManager.getInstance().flush();
-                if(!url.contains("/CreatorMangaPanel.aspx")) SuMCreatorReq.this.finish();
+                if(!url.contains("/CreatorMangaPanel.aspx")) {
+                    SuMCreatorReq.this.finish();
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                }
             }
         });
         webViewx.setWebChromeClient(new WebChromeClient() {
@@ -196,7 +201,25 @@ public class SuMCreatorReq extends AppCompatActivity {
     }
     @JavascriptInterface
     public void CurrPageURL(String URL){
-        if(!URL.contains("/CreatorMangaPanel.aspx")) SuMCreatorReq.this.finish();
+        if(!URL.contains("/CreatorMangaPanel.aspx")) {
+            SuMCreatorReq.this.finish();
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        }
+    }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            runOnUiThread(new Runnable() {
+                @SuppressLint("ObsoleteSdkInt")
+                @Override
+                public void run() {
+                    finish();
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                }
+            });
+            return false;
+        } else return super.onKeyDown(keyCode, event);
     }
 
 }

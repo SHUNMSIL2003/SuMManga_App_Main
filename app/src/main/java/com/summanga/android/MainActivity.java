@@ -10,7 +10,6 @@ import android.app.KeyguardManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.WallpaperManager;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -44,11 +43,11 @@ import android.renderscript.Allocation;
 import android.renderscript.Element;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
+import android.telephony.TelephonyManager;
 import android.text.format.DateUtils;
 import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -67,11 +66,11 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewFlipper;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
@@ -82,37 +81,28 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.ListPreloader;
-import com.bumptech.glide.load.DataSource;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.Target;
-import com.bumptech.glide.util.FixedPreloadSizeProvider;
-import com.google.android.gms.ads.AdError;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.LoadAdError;
-import com.google.android.gms.ads.rewarded.RewardItem;
-import com.google.android.gms.ads.rewarded.RewardedAd;
-import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
-
-
-import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.rewarded.RewardedAdCallback;
-import com.google.android.material.progressindicator.CircularProgressIndicator;
-import com.google.android.material.progressindicator.LinearProgressIndicator;
-
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.ColorUtils;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.widget.TextView;
-import android.widget.ViewFlipper;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
+import com.google.android.gms.ads.AdError;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.rewarded.RewardItem;
+import com.google.android.gms.ads.rewarded.RewardedAd;
+import com.google.android.gms.ads.rewarded.RewardedAdCallback;
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
+import com.google.android.material.progressindicator.CircularProgressIndicator;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -121,7 +111,6 @@ import org.riversun.okhttp3.OkHttp3CookieHelper;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -129,7 +118,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-
 
 import okhttp3.Cache;
 import okhttp3.Call;
@@ -313,8 +301,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean SUMFIRSTLOAD = true;
 
 
-    private Animation animation_card_click;
-    private  String BANNER_STRING64;
+    private Animation animation_card_click;;
 
     @SuppressLint({"SetJavaScriptEnabled", "UseCompatLoadingForDrawables", "ClickableViewAccessibility"})
     @Override
@@ -350,15 +337,16 @@ public class MainActivity extends AppCompatActivity {
         animation_card_click = AnimationUtils.loadAnimation(MainActivity.this, R.anim.card_click);
         setContentView(R.layout.activity_main);
         DarkSBIcons();
+        String BANNER_STRING64;
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             if(extras == null) {
-                BANNER_STRING64= null;
+                BANNER_STRING64 = null;
             } else {
-                BANNER_STRING64= extras.getString("BANNER_BITMAP_STRING64");
+                BANNER_STRING64 = extras.getString("BANNER_BITMAP_STRING64");
             }
         } else {
-            BANNER_STRING64= (String) savedInstanceState.getSerializable("BANNER_BITMAP_STRING64");
+            BANNER_STRING64 = (String) savedInstanceState.getSerializable("BANNER_BITMAP_STRING64");
         }
         if(BANNER_STRING64 == null){
             MainActivity.this.finish();
@@ -513,6 +501,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.SuMNavBarExtendor).setBackground(setTint(getResources().getDrawable(R.drawable.bg_xcolor_nb_c0dp), Color.parseColor(hex)));
         findViewById(R.id.SuMNavBar).setBackground(setTint(getResources().getDrawable(R.drawable.bg_xcolor_nb_c0dp), Color.parseColor(hex)));
         findViewById(R.id.SuMUseNameTXT).getBackground().setColorFilter(Color.parseColor(hex), PorterDuff.Mode.ADD);
+        findViewById(R.id.SuMViewFilpperClickBlocker).setBackgroundColor(Color.parseColor(hex.replace("#","#A3")));
 
 
         TextView textvivesubt = (TextView) findViewById(R.id.SuMMangaTXT);
@@ -1505,8 +1494,16 @@ public class MainActivity extends AppCompatActivity {
                 ViewGroup.LayoutParams params0 = findViewById(R.id.SuMStatusBar).getLayoutParams();
                 params0.height = SBH;
                 findViewById(R.id.SuMStatusBar).setLayoutParams(params0);
+                TelephonyManager manager = (TelephonyManager)MainActivity.this.getSystemService(Context.TELEPHONY_SERVICE);
                 ViewGroup.LayoutParams params1 = findViewById(R.id.SuMNavBar).getLayoutParams();
-                params1.height = NBH;
+                if(manager.getPhoneType() == TelephonyManager.PHONE_TYPE_NONE){
+                    //return "Tablet";
+                    params1.height = (int) (NBH*1.64/*+convertDpToPixel(24,MainActivity.this)*/);
+                }else{
+                    //return "Mobile";
+                    params1.height = NBH;
+                }
+                //params1.height = NBH;
                 findViewById(R.id.SuMNavBar).setLayoutParams(params1);
 
                 findViewById(R.id.SuMStatusBar).setVisibility(View.VISIBLE);
@@ -1536,8 +1533,16 @@ public class MainActivity extends AppCompatActivity {
                 ViewGroup.LayoutParams params0 = findViewById(R.id.SuMStatusBar).getLayoutParams();
                 params0.height = SBH;
                 findViewById(R.id.SuMStatusBar).setLayoutParams(params0);
+                TelephonyManager manager = (TelephonyManager)MainActivity.this.getSystemService(Context.TELEPHONY_SERVICE);
                 ViewGroup.LayoutParams params1 = findViewById(R.id.SuMNavBar).getLayoutParams();
-                params1.height = NBH;
+                if(manager.getPhoneType() == TelephonyManager.PHONE_TYPE_NONE){
+                    //return "Tablet";
+                    params1.height = (int) (NBH*1.64/*+convertDpToPixel(24,MainActivity.this)*/);
+                }else{
+                    //return "Mobile";
+                    params1.height = NBH;
+                }
+                //params1.height = NBH;
                 findViewById(R.id.SuMNavBar).setLayoutParams(params1);
                 findViewById(R.id.SuMStatusBar).setVisibility(View.VISIBLE);
                 findViewById(R.id.SuMNavBar).setVisibility(View.VISIBLE);
@@ -1869,10 +1874,18 @@ public class MainActivity extends AppCompatActivity {
     public void LoadCurr_SuMCurr(View view) {
         findViewById(R.id.LoadCurr_SuMCurr_BTN).startAnimation(animation_card_click);
         if(SUMCURR_URL==null){
-            notifyUser("404");
+            notifyUser("URL:404");
             return;
         }
-        SuMExploreLoadReader_Native(SUMCURR_URL);
+        if(SUMCURR_THEMECOLOR==null){
+            notifyUser("TC:404");
+            return;
+        }
+        if(SUMCURR_THEMECOLOR.contains(",")){
+            SUMCURR_THEMECOLOR = SUMCURR_THEMECOLOR.toLowerCase(Locale.ROOT).replace("rgb","").replace("a","").replace("(","").replace(")","");
+            SUMCURR_THEMECOLOR = String.format("#%02X%02X%02X", Integer.parseInt(SUMCURR_THEMECOLOR.split(",")[0]), Integer.parseInt(SUMCURR_THEMECOLOR.split(",")[1]), Integer.parseInt(SUMCURR_THEMECOLOR.split(",")[2]));
+        }
+        SuMExploreLoadReader_Native(SUMCURR_URL,SUMCURR_THEMECOLOR);
     }
 
     public void SuMInfo_AddRemoreFromFav(View view) {
@@ -2230,7 +2243,6 @@ public class MainActivity extends AppCompatActivity {
         view.startAnimation(animation_card_click);
         if(LoadGernXInHome_LastView==view) return;
         if(LoadGernXInHome_LastView==null) LoadGernXInHome_LastView = findViewById(R.id.SuMExplore_Gern_ALL_Toggle);
-        //LoadGernXInHome_LastView.setAlpha((float) 0.64);
         LoadGernXInHome_LastView.setBackground(setTint(ContextCompat.getDrawable(MainActivity.this, R.drawable.bg_gern_tr_bor_w_c_fixer_home),Color.parseColor("#ffffff")));
         ((TextView)LoadGernXInHome_LastView).setTextColor(Color.BLACK);
         view.setBackground(setTint(ContextCompat.getDrawable(MainActivity.this, R.drawable.bg_gern_tr_bor_w_c_fixer_home),Color.parseColor(RootHexColor)));
@@ -2238,7 +2250,16 @@ public class MainActivity extends AppCompatActivity {
         //view.setAlpha((float) 0.86);
         LoadGernXInHome_LastView = view;
 
-        initView(((TextView)view).getText().toString());
+        Animation fade_out = AnimationUtils.loadAnimation(MainActivity.this, android.R.anim.fade_out);
+        new android.os.Handler(Looper.getMainLooper()).postDelayed(
+                new Runnable() {
+                    public void run() {
+                        findViewById(R.id.scout_recycler_view_H).setAlpha(0.0f);
+                        findViewById(R.id.SuMExploreProssC).setVisibility(View.VISIBLE);
+                        initView(((TextView)view).getText().toString());
+                    }
+                },
+                fade_out.getDuration());
 
     }
 
@@ -2641,70 +2662,6 @@ public class MainActivity extends AppCompatActivity {
     @JavascriptInterface
     public void layoutDoneLoading(){
 
-        // android.layoutDoneLoading();
-
-        /*DarkSBIcons();
-
-        // Show the WebView
-        runOnUiThread(new Runnable() {
-
-            @Override
-            public void run() {
-
-                if (!SlpashSuMGone) {
-
-                    int SBH = 0;
-                    int resourceId1 = getResources().getIdentifier("status_bar_height", "dimen", "android");
-                    if (resourceId1 > 0) {
-                        SBH = getResources().getDimensionPixelSize(resourceId1);
-                    }
-
-                    int NBH = 0;
-                    Resources resources = MainActivity.this.getResources();
-                    int resourceId0 = resources.getIdentifier("navigation_bar_height", "dimen", "android");
-                    if (resourceId0 > 0) {
-                        NBH = resources.getDimensionPixelSize(resourceId0);
-                    }
-                    ViewGroup.LayoutParams params0 = findViewById(R.id.SuMStatusBar).getLayoutParams();
-                    params0.height = SBH;
-                    findViewById(R.id.SuMStatusBar).setLayoutParams(params0);
-                    ViewGroup.LayoutParams params1 = findViewById(R.id.SuMNavBar).getLayoutParams();
-                    params1.height = NBH;
-                    findViewById(R.id.SuMNavBar).setLayoutParams(params1);
-
-                    findViewById(R.id.SuMStatusBar).setVisibility(View.VISIBLE);
-                    findViewById(R.id.SuMNavBar).setVisibility(View.VISIBLE);
-
-                    Animation fadeOut = new AlphaAnimation(1, 0);
-                    fadeOut.setStartOffset(200);
-                    fadeOut.setDuration(320);
-                    SplashScreen.startAnimation(fadeOut);
-                    final Handler handler0 = new Handler();
-                    handler0.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            SplashScreen.setVisibility(View.INVISIBLE);
-                            webView.setVisibility(View.VISIBLE);
-                            Animation fadeIn = new AlphaAnimation(0, 1);
-                            fadeIn.setDuration(460);
-                            webView.setAnimation(fadeIn);
-                            SplashScreen.setVisibility(View.GONE);
-                            //getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
-                            SplashScreen.setImageResource(0);
-                            SplashScreen.setImageDrawable(null);
-                            SlpashSuMGone = true;
-                            DarkSBIcons();
-                            findViewById(R.id.SuMBottomWebNavBarABS).setVisibility(View.VISIBLE);
-                            findViewById(R.id.SuMBottomWebNavBarABS).startAnimation(fadeIn);
-
-                        }
-                    }, 520);
-                }
-                DarkSBIcons();
-
-            }
-
-        });*/
 
     }
     //To prevent screenshots in non sum tabs
@@ -3297,8 +3254,16 @@ public class MainActivity extends AppCompatActivity {
                 ViewGroup.LayoutParams params0 = findViewById(R.id.SuMStatusBar).getLayoutParams();
                 params0.height = SBH;
                 findViewById(R.id.SuMStatusBar).setLayoutParams(params0);
+                TelephonyManager manager = (TelephonyManager)MainActivity.this.getSystemService(Context.TELEPHONY_SERVICE);
                 ViewGroup.LayoutParams params1 = findViewById(R.id.SuMNavBar).getLayoutParams();
-                params1.height = NBH;
+                if(manager.getPhoneType() == TelephonyManager.PHONE_TYPE_NONE){
+                    //return "Tablet";
+                    params1.height = (int) (NBH*1.64/*+convertDpToPixel(24,MainActivity.this)*/);
+                } else{
+                    //return "Mobile";
+                    params1.height = NBH;
+                }
+                //params1.height = NBH;
                 findViewById(R.id.SuMNavBar).setLayoutParams(params1);
 
                 findViewById(R.id.SuMStatusBar).setVisibility(View.VISIBLE);
@@ -3332,8 +3297,16 @@ public class MainActivity extends AppCompatActivity {
                 ViewGroup.LayoutParams params0 = findViewById(R.id.SuMStatusBar).getLayoutParams();
                 params0.height = SBH;
                 findViewById(R.id.SuMStatusBar).setLayoutParams(params0);
+                TelephonyManager manager = (TelephonyManager)MainActivity.this.getSystemService(Context.TELEPHONY_SERVICE);
                 ViewGroup.LayoutParams params1 = findViewById(R.id.SuMNavBar).getLayoutParams();
-                params1.height = NBH;
+                if(manager.getPhoneType() == TelephonyManager.PHONE_TYPE_NONE){
+                    //return "Tablet";
+                    params1.height = (int) (NBH*1.64/*+convertDpToPixel(24,MainActivity.this)*/);
+                }else{
+                    //return "Mobile";
+                    params1.height = NBH;
+                }
+                //params1.height = NBH;
                 findViewById(R.id.SuMNavBar).setLayoutParams(params1);
 
                 findViewById(R.id.SuMStatusBar).setVisibility(View.VISIBLE);
@@ -3659,6 +3632,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 final String Raw_RGB_String_P = Raw_RGB_String.toLowerCase(Locale.ROOT).replace("rgb","").replace("a","").replace("(","").replace(")","");
+                SUMCURR_THEMECOLOR = Raw_RGB_String_P;
                 final int r = Integer.parseInt(Raw_RGB_String_P.split(",")[0]);
                 final int g = Integer.parseInt(Raw_RGB_String_P.split(",")[1]);
                 final int b = Integer.parseInt(Raw_RGB_String_P.split(",")[2]);
@@ -3731,7 +3705,9 @@ public class MainActivity extends AppCompatActivity {
         new android.os.Handler(Looper.getMainLooper()).postDelayed(
                 new Runnable() {
                     public void run() {
+                        Animation fade_in = AnimationUtils.loadAnimation(MainActivity.this, android.R.anim.fade_in);
                         findViewById(R.id.SuMViewFilpperClickBlocker).setVisibility(View.VISIBLE);
+                        findViewById(R.id.SuMViewFilpperClickBlocker).startAnimation(fade_in);
                     }
                 },
                 32);
@@ -3820,8 +3796,7 @@ public class MainActivity extends AppCompatActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Animation fadeIn = new AlphaAnimation(0, 1);
-                fadeIn.setDuration(320);
+                Animation fade_in = AnimationUtils.loadAnimation(MainActivity.this, android.R.anim.fade_in);
                 new android.os.Handler(Looper.getMainLooper()).postDelayed(
                         new Runnable() {
                             public void run() {
@@ -3830,7 +3805,7 @@ public class MainActivity extends AppCompatActivity {
                                 findViewById(R.id.SuMNavBarExtendor).setAlpha((float) 0.0);
                                 findViewById(R.id.SuMNavBar).setAlpha((float) 0.0);
                                 findViewById(R.id.SuMExploreInfo_ABS).setVisibility(View.VISIBLE);
-                                findViewById(R.id.SuMExploreInfo_ABS).startAnimation(fadeIn);
+                                findViewById(R.id.SuMExploreInfo_ABS).startAnimation(fade_in);
 
                                 new android.os.Handler(Looper.getMainLooper()).postDelayed(
                                         new Runnable() {
@@ -3863,7 +3838,7 @@ public class MainActivity extends AppCompatActivity {
                                                 ((TextView)findViewById(R.id.NavBackTXT)).setTextColor(ColorRS);
                                             }
                                         },
-                                        160);
+                                        fade_in.getDuration()/2);
 
                                 new android.os.Handler(Looper.getMainLooper()).postDelayed(
                                         new Runnable() {
@@ -3871,16 +3846,17 @@ public class MainActivity extends AppCompatActivity {
                                                 findViewById(R.id.SuMViewFilpperClickBlocker).setVisibility(View.GONE);
                                             }
                                         },
-                                        320);
+                                        fade_in.getDuration());
 
                             }
                         },
-                        320);
+                        20);
             }
         });
     }
 
     private String SUMCURR_URL = null;
+    private String SUMCURR_THEMECOLOR = null;
 
     private void SuMInfo_LoadViews(String MID) {
         ((TextView)findViewById(R.id.SuMExploreInfo_MangaViewsTXT)).setText("...");
@@ -4231,18 +4207,36 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void SuMExploreLoadReader_Native(String ReadingURL){
+    private void SuMExploreLoadReader_Native(String ReadingURL,String HEX){
+        if(!HEX.contains("#")) HEX = RootHexColor;
+        Bitmap vbg = getScreenShot(findViewById(R.id.MainLayout));
         Intent i = new Intent(MainActivity.this, SuMReader.class);
-        i.putExtra("THEME_RBG", RootHexColor);
+        i.putExtra("THEME_RBG", HEX);
         i.putExtra("FILES_LINK", ReadingURL);
         i.putExtra("USERCOINS_COUNT",USERCOINS_COUNT+"");
+        i.putExtra("VIEWBITMAP",ImageUtil.convert(getResizedBitmap(vbg,vbg.getWidth()/6,vbg.getHeight()/6)));
         startActivity(i);
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);//Improves Perf
     }
 
+    public static Bitmap getScreenShot(View view) {
+        View screenView = view.getRootView();
+        screenView.setDrawingCacheEnabled(true);
+        Bitmap bitmap = Bitmap.createBitmap(screenView.getDrawingCache());
+        screenView.setDrawingCacheEnabled(false);
+        return bitmap;
+    }
+
     @JavascriptInterface
-    public void SuMExploreLoadReader(String ReadingURL) {
-        SuMExploreLoadReader_Native(ReadingURL);
+    public void SuMExploreLoadReader(String ReadingURL,String ThemeColor) {
+        String ThemeC = "#000000";
+        if(ThemeColor!=null){
+            if(ThemeColor.toLowerCase(Locale.ROOT).contains("rgb")){
+                ThemeColor = ThemeColor.toLowerCase(Locale.ROOT).replace("rgb","").replace("a","").replace("(","").replace(")","");
+                ThemeC = String.format("#%02X%02X%02X", Integer.parseInt(ThemeColor.split(",")[0]), Integer.parseInt(ThemeColor.split(",")[1]), Integer.parseInt(ThemeColor.split(",")[2]));
+            }
+        }
+        SuMExploreLoadReader_Native(ReadingURL,ThemeC);
     }
     @JavascriptInterface
     public void GoToSettingsSuMExplore(){
@@ -4262,6 +4256,9 @@ public class MainActivity extends AppCompatActivity {
 
     private int ReqH_DH_RCV = 0;
     private void initView(String Gern) {
+        SuMStaticVs.RV_ItemsInRowCount_Helper = false;
+        SuMStaticVs.RV_ItemsInRowCount_INDEX = 0;
+        SuMStaticVs.RV_ItemsInRowCount_LASTREALINDEX = -1;
         //ReqH_DH_RCV = findViewById(R.id.SuMExplore_Home_ScrollView_Main_HeightHelper).getHeight();
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -4277,18 +4274,19 @@ public class MainActivity extends AppCompatActivity {
         int width = (int)convertPixelsToDp(displayMetrics.widthPixels,MainActivity.this);
         int spanCount = (int)Math.floor((width-28)/190.0);
         if(spanCount<1) spanCount = 1;
-        //if(width>500) spanCount = 3;
+        if(spanCount>18) spanCount = 18;
+        SuMStaticVs.RV_ItemsInRowCount = spanCount;
         recyclerView.setLayoutManager(new GridLayoutManager(this, spanCount));
         scoutArrayList = new ArrayList<>();
         adapter = new ScoutAdapter(this,scoutArrayList,this);
         recyclerView.setAdapter(adapter);
-        final float scale = MainActivity.this.getResources().getDisplayMetrics().density;
+        //final float scale = MainActivity.this.getResources().getDisplayMetrics().density;
         //int pixels = (int) (640 * scale + 0.5f);
 
-        LinearLayout relativeLayout = (LinearLayout) findViewById(R.id.scout_recycler_view_Width);
+        /*LinearLayout relativeLayout = (LinearLayout) findViewById(R.id.scout_recycler_view_Width);
         if(relativeLayout.getWidth()>(int) (500 * scale + 0.5f)){
             relativeLayout.getLayoutParams().width = (int) (500 * scale + 0.5f);
-        }
+        }*/
 
 
         createList(Gern);
@@ -4433,6 +4431,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                         adapter.notifyDataSetChanged();
                         findViewById(R.id.SuMExploreProssC).setVisibility(View.GONE);
+                        findViewById(R.id.scout_recycler_view_H).setAlpha(1.0f);
                     }
                 });
 

@@ -38,7 +38,6 @@ import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -47,7 +46,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
-
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -437,12 +435,12 @@ public class SplashScreen extends AppCompatActivity {
                             startActivity(i);
                             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);//Improves Perf
                             ((LinearProgressIndicator)findViewById(R.id.SuMSplashProssBar)).setProgress(100);
-                            finish();
+                            SplashScreen.this.finish();
                         }
                     }, 380);
                 }
             }, SPLASH_TIME_OUT);
-        } else finish();
+        } else SplashScreen.this.finish();
     }
 
     public void OpenDownloads(View view) {
@@ -483,6 +481,7 @@ public class SplashScreen extends AppCompatActivity {
                     Intent i = new Intent(SplashScreen.this, SplashScreen.class);
                     startActivity(i);
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);//Improves Perf
+                    SplashScreen.this.finish();
                 }
             }
             super.onPageFinished(view, url);

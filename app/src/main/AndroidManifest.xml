@@ -14,6 +14,9 @@
     <uses-permission android:name="com.android.vending.BILLING" />
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <!-- permission required to use Alarm Manager -->
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM"/>
+
 
 
     <uses-feature
@@ -54,6 +57,7 @@
         android:label="SuM Manga"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:isGame="false"
         android:hardwareAccelerated="true"
         android:usesCleartextTraffic="true"
         android:resizeableActivity="false"
@@ -179,7 +183,7 @@
             android:name=".SuMSettings"
             android:hardwareAccelerated="true"
             android:alwaysRetainTaskState="true"
-            android:excludeFromRecents="true"
+            android:excludeFromRecents="false"
             android:resizeableActivity="false"
             android:exported="true"
             tools:ignore="NonResizeableActivity">
@@ -193,7 +197,7 @@
             android:name=".SuMSearch"
             android:hardwareAccelerated="true"
             android:alwaysRetainTaskState="true"
-            android:excludeFromRecents="true"
+            android:excludeFromRecents="false"
             android:resizeableActivity="false"
             android:exported="true"
             tools:ignore="NonResizeableActivity">
@@ -221,7 +225,7 @@
             android:name=".SuMLibrary"
             android:hardwareAccelerated="true"
             android:alwaysRetainTaskState="true"
-            android:excludeFromRecents="true"
+            android:excludeFromRecents="false"
             android:resizeableActivity="false"
             android:exported="true"
             tools:ignore="NonResizeableActivity">

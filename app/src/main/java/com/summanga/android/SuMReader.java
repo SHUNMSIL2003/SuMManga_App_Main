@@ -2,11 +2,10 @@ package com.summanga.android;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -15,44 +14,44 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
-import android.util.Base64;
+import android.renderscript.Allocation;
+import android.renderscript.Element;
+import android.renderscript.RenderScript;
+import android.renderscript.ScriptIntrinsicBlur;
+import android.view.Gravity;
 import android.view.KeyEvent;
-import android.view.Surface;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.webkit.CookieManager;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.core.view.WindowCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.alexvasilkov.gestures.Settings;
+import com.alexvasilkov.gestures.views.interfaces.GestureView;
+
 import org.riversun.okhttp3.OkHttp3CookieHelper;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import okhttp3.Cache;
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.EventListener;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -68,18 +67,23 @@ public class SuMReader extends AppCompatActivity {
     private ArrayList<ScoutIMG> scoutArrayList;
     private boolean SUM_NEXT = false;
     private int USERCOINS_COUNT = 0;
+    private Bitmap VIEWBG;
     private int REQ_COINS = -1;
+    private Animation animation_card_click;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sumreader_popup);
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         Window window = this.getWindow();
         window.setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        animation_card_click = AnimationUtils.loadAnimation(SuMReader.this, R.anim.card_click);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             setTranslucent(true);
             window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            //window.setNavigationBarColor(Color.TRANSPARENT);
         }
         int UID = 0;
         Object cookies = CookieManager.getInstance().getCookie("https://sum-manga.azurewebsites.net/");
@@ -102,7 +106,7 @@ public class SuMReader extends AppCompatActivity {
         }
         if(UID<1){
             notifyUser("Login First!");
-            SuMReader.this.finish();
+            FinishSuMReader();
         }
         Animation fadeIn = new AlphaAnimation(0, 1);
         fadeIn.setDuration(320);
@@ -119,7 +123,7 @@ public class SuMReader extends AppCompatActivity {
         }
         if(THEME_RBG == null){
             notifyUser("404");
-            SuMReader.this.finish();
+            FinishSuMReader();
         }
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
@@ -133,7 +137,7 @@ public class SuMReader extends AppCompatActivity {
         }
         if(FILES_LINK == null){
             notifyUser("404");
-            SuMReader.this.finish();
+            FinishSuMReader();
         }
 
         if (savedInstanceState == null) {
@@ -151,6 +155,42 @@ public class SuMReader extends AppCompatActivity {
             if(!aancc.contains("[") && !aancc.contains("_")) {
                 USERCOINS_COUNT = Integer.parseInt(aancc);
             }
+        }
+
+
+        findViewById(R.id.SuMPOPUP_SUMREADER_BG_Tr).setBackgroundColor(Color.parseColor(THEME_RBG));
+
+        ((GestureView)findViewById(R.id.SuMReder_GesVFL)).getController().getSettings()
+                .setMaxZoom(2f)
+                .setDoubleTapZoom(-1f) // Falls back to max zoom level
+                .setPanEnabled(true)
+                .setZoomEnabled(true)
+                .setDoubleTapEnabled(true)
+                .setRotationEnabled(false)
+                .setRestrictRotation(false)
+                .setOverscrollDistance(0f, 0f)
+                .setOverzoomFactor(2f)
+                .setFillViewport(false)
+                .setFitMethod(Settings.Fit.INSIDE)
+                .setGravity(Gravity.CENTER);
+
+        if (savedInstanceState == null) {
+            Bundle extras = getIntent().getExtras();
+            if(extras == null) {
+                VIEWBG = null;
+            } else {
+                String aancc = extras.getString("VIEWBITMAP");
+                VIEWBG = ImageUtil.convert(aancc);
+            }
+        } else {
+            String aancc = (String) savedInstanceState.getSerializable("VIEWBITMAP");
+            VIEWBG = ImageUtil.convert(aancc);
+        }
+
+        if(VIEWBG==null)notifyUser("VIWE-BG-BLUR:404");
+        else {
+            VIEWBG = blur(SuMReader.this,VIEWBG,0.64f,18.0f);
+            ((ImageView)findViewById(R.id.SuMPOPUP_SUMREADER_BG_Tr_BLUR)).setImageBitmap(VIEWBG);
         }
 
         assert cookies != null;
@@ -184,14 +224,14 @@ public class SuMReader extends AppCompatActivity {
                             @Override
                             public void run() {
                                 ((TextView)findViewById(R.id.SuMReader_ReqCoinsNum)).setText(" "+ResBody+" ");
-                                findViewById(R.id.LoadChapter_BTN_Cancel).setBackground(setTint(getResources().getDrawable(R.drawable.bg_btn_c18dp), Color.parseColor("#000000")));
-                                findViewById(R.id.LoadChapter_BTN).setBackground(setTint(getResources().getDrawable(R.drawable.bg_btn_c18dp), Color.parseColor(THEME_RBG)));
+                                findViewById(R.id.LoadChapter_BTN_Cancel).setBackground(setTint(getResources().getDrawable(R.drawable.bg_btn_c18dp), Color.parseColor("#007a7a7a")));
+                                findViewById(R.id.LoadChapter_BTN).setBackground(setTint(getResources().getDrawable(R.drawable.bg_btn_c18dp), Color.parseColor("#ffffff"/*THEME_RBG*/)));
                                 findViewById(R.id.SuMReadeInfinateLoading_anim).setVisibility(View.GONE);
                                 findViewById(R.id.SuMAgreementPOPUP).setVisibility(View.VISIBLE);
                                 if(ResBody.contains("[")||ResBody.contains("_")||ResBody.contains("<")||ResBody.contains(">")||ResBody.contains('"'+"")){
                                     REQ_COINS = -1;
                                     notifyUser("Loading failed!");
-                                    SuMReader.this.finish();
+                                    FinishSuMReader();
                                 }else {
                                     REQ_COINS = Integer.parseInt(ResBody);
                                 }
@@ -206,7 +246,7 @@ public class SuMReader extends AppCompatActivity {
                     @Override
                     public void run() {
                         notifyUser("Loading failed!");
-                        SuMReader.this.finish();
+                        FinishSuMReader();
                     }
                 });
             }
@@ -216,7 +256,7 @@ public class SuMReader extends AppCompatActivity {
     }
     public void Cancel(View view){
         SuMStaticVs.SUMREADER_MOVEON_MBIT = 2;
-        SuMReader.this.finish();
+        FinishSuMReader();
     }
     public static Drawable setTint(Drawable d, int color) {
         Drawable wrappedDrawable = DrawableCompat.wrap(d);
@@ -280,7 +320,7 @@ public class SuMReader extends AppCompatActivity {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                final String ResBody = response.body().string();
+                final String ResBody = Objects.requireNonNull(response.body()).string();
                 mHandler.post(new Runnable() {
                     @Override
                     public void run() {
@@ -290,7 +330,7 @@ public class SuMReader extends AppCompatActivity {
                             public void run() {
                                 if(!ResBody.contains("#File;Split&")){
                                     notifyUser("SuM-Reader: Chapter is not available!");
-                                    SuMReader.this.finish();
+                                    FinishSuMReader();
                                 } else initView(ResBody);
                             }
                         });
@@ -304,12 +344,58 @@ public class SuMReader extends AppCompatActivity {
                     @Override
                     public void run() {
                         notifyUser("Loading failed!");
-                        SuMReader.this.finish();
+                        FinishSuMReader();
                     }
                 });
             }
 
         });
+
+    }
+    private void FinishSuMReader(){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                /*Animation FadeOut = new AlphaAnimation(1.0f,0.0f);
+                FadeOut.setDuration(280);
+                findViewById(R.id.ReaderLayout_POPUP).startAnimation(FadeOut);
+                new android.os.Handler(Looper.getMainLooper()).postDelayed(
+                        new Runnable() {
+                            public void run() {
+
+                                SuMReader.this.finish();
+                                overridePendingTransition(R.anim.nothing,R.anim.nothing);
+                            }
+                        },
+                        280);*/
+                SuMReader.this.finish();
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);//Improves Perf
+            }
+        });
+    }
+    public static Bitmap blur(Context context, Bitmap image ,float BITMAP_SCALE,float BLUR_RADIUS) {
+        int width = Math.round(image.getWidth() * BITMAP_SCALE);
+        int height = Math.round(image.getHeight() * BITMAP_SCALE);
+
+        Bitmap inputBitmap = Bitmap.createScaledBitmap(image, width, height, false);
+        Bitmap outputBitmap = Bitmap.createBitmap(inputBitmap);
+
+        RenderScript rs = RenderScript.create(context);
+        ScriptIntrinsicBlur theIntrinsic = ScriptIntrinsicBlur.create(rs, Element.U8_4(rs));
+        Allocation tmpIn = Allocation.createFromBitmap(rs, inputBitmap);
+        Allocation tmpOut = Allocation.createFromBitmap(rs, outputBitmap);
+        theIntrinsic.setRadius(BLUR_RADIUS);
+        theIntrinsic.setInput(tmpIn);
+        theIntrinsic.forEach(tmpOut);
+        tmpOut.copyTo(outputBitmap);
+
+        return  outputBitmap;
+        /*Bitmap bm = outputBitmap;
+
+        Canvas canvas = new Canvas(bm);
+        canvas.drawARGB(80,0,0,0);
+        canvas.drawBitmap(bm, new Matrix(), new Paint());
+        return bm;*/
 
     }
     private void initView(String RS) {
@@ -362,6 +448,8 @@ public class SuMReader extends AppCompatActivity {
             }
         });
     }
+
+    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
         if (keyCode == KeyEvent.KEYCODE_BACK && SuMReadingMode) {
@@ -381,8 +469,15 @@ public class SuMReader extends AppCompatActivity {
                 }
             });
             return false;
-        } else return super.onKeyDown(keyCode, event);
+        } else {
+            if(keyCode == KeyEvent.KEYCODE_BACK){
+                SuMReader.this.finish();
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+            }
+        }
+        return super.onKeyDown(keyCode, event);
     }
+
     private void notifyUser(final String message)
     {
         Toast.makeText(SuMReader.this, message, Toast.LENGTH_SHORT).show();
@@ -394,6 +489,7 @@ public class SuMReader extends AppCompatActivity {
             @SuppressLint("ObsoleteSdkInt")
             @Override
             public void run() {
+                findViewById(R.id.SuMReaderToolBar).startAnimation(animation_card_click);
                 boolean expanded = false;
                 if(findViewById(R.id.SuMCloseReader).getVisibility() == View.VISIBLE) expanded = true;
                 Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
@@ -422,6 +518,7 @@ public class SuMReader extends AppCompatActivity {
 
     @SuppressLint("ObsoleteSdkInt")
     public void ExitFullScreen(View view) {
+        if(view != null) view.startAnimation(animation_card_click);
         Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         // Vibrate for 500 milliseconds
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -430,11 +527,12 @@ public class SuMReader extends AppCompatActivity {
             //deprecated in API 26
             v.vibrate(60);
         }
-        SuMReader.this.finish();
+        FinishSuMReader();
     }
 
     @SuppressLint("ObsoleteSdkInt")
     public void Next(View view) {
+        view.startAnimation(animation_card_click);
         SuMStaticVs.SUMREADER_MOVEON_MBIT = 0;
         Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         // Vibrate for 500 milliseconds
@@ -447,9 +545,11 @@ public class SuMReader extends AppCompatActivity {
         if(!SUM_NEXT) notifyUser("No more chapters are available!");
         else {
             Intent i = new Intent(SuMReader.this, SuMReader.class);
+            Bitmap vbg = MainActivity.getScreenShot(findViewById(R.id.ReaderLayout_POPUP));
             i.putExtra("THEME_RBG", THEME_RBG);
             i.putExtra("FILES_LINK", FILES_LINK_NEXT);
             i.putExtra("USERCOINS_COUNT", USERCOINS_COUNT+"");
+            i.putExtra("VIEWBITMAP",ImageUtil.convert(getResizedBitmap(vbg,vbg.getWidth()/8,vbg.getHeight()/8)));
             startActivity(i);
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);//Improves Perf
             Timer timer = new Timer();
@@ -463,7 +563,7 @@ public class SuMReader extends AppCompatActivity {
                     }
                     if(SuMStaticVs.SUMREADER_MOVEON_MBIT == 1) {
                         SuMStaticVs.SUMREADER_MOVEON_MBIT = 0;
-                        SuMReader.this.finish();
+                        FinishSuMReader();
                         timer.cancel();
                     }
 
@@ -472,5 +572,21 @@ public class SuMReader extends AppCompatActivity {
             }, 0, 640);//wait 0 ms before doing the action and do it evry 1000ms (1second)
 
         }
+    }
+    public Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {
+        int width = bm.getWidth();
+        int height = bm.getHeight();
+        float scaleWidth = ((float) newWidth) / width;
+        float scaleHeight = ((float) newHeight) / height;
+        // CREATE A MATRIX FOR THE MANIPULATION
+        Matrix matrix = new Matrix();
+        // RESIZE THE BIT MAP
+        matrix.postScale(scaleWidth, scaleHeight);
+
+        // "RECREATE" THE NEW BITMAP
+        Bitmap resizedBitmap = Bitmap.createBitmap(
+                bm, 0, 0, width, height, matrix, false);
+        bm.recycle();
+        return resizedBitmap;
     }
 }

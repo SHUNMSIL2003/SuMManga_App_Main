@@ -1,9 +1,7 @@
 package com.summanga.android;
 
 import android.annotation.SuppressLint;
-import android.content.ActivityNotFoundException;
 import android.content.ClipData;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -12,16 +10,14 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Parcelable;
 import android.provider.MediaStore;
-import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.webkit.CookieManager;
-import android.webkit.GeolocationPermissions;
 import android.webkit.JavascriptInterface;
-import android.webkit.JsResult;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -30,12 +26,9 @@ import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.File;
-import java.io.IOException;
-import java.time.LocalTime;
 import java.util.Locale;
 
 public class SuMCreatorCHReq extends AppCompatActivity {
@@ -109,6 +102,7 @@ public class SuMCreatorCHReq extends AppCompatActivity {
                 if(animation_card_click == null) animation_card_click = AnimationUtils.loadAnimation(SuMCreatorCHReq.this, R.anim.card_click);
                 view.startAnimation(animation_card_click);
                 SuMCreatorCHReq.this.finish();
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
         });
     }
@@ -128,7 +122,10 @@ public class SuMCreatorCHReq extends AppCompatActivity {
             public void onPageFinished(WebView view, String url) {
                 //CookieSyncManager.getInstance().sync();
                 CookieManager.getInstance().flush();
-                if(!url.contains("/CreatorChapterPanel.aspx")) SuMCreatorCHReq.this.finish();
+                if(!url.contains("/CreatorChapterPanel.aspx")) {
+                    SuMCreatorCHReq.this.finish();
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                }
             }
         });
         webViewx.setWebChromeClient(new WebChromeClient() {
@@ -394,7 +391,25 @@ public class SuMCreatorCHReq extends AppCompatActivity {
     }
     @JavascriptInterface
     public void CurrPageURL(String URL){
-        if(!URL.contains("/CreatorChapterPanel.aspx")) SuMCreatorCHReq.this.finish();
+        if(!URL.contains("/CreatorChapterPanel.aspx")) {
+            SuMCreatorCHReq.this.finish();
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        }
+    }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            runOnUiThread(new Runnable() {
+                @SuppressLint("ObsoleteSdkInt")
+                @Override
+                public void run() {
+                    finish();
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                }
+            });
+            return false;
+        } else return super.onKeyDown(keyCode, event);
     }
 
 }

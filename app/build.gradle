@@ -17,8 +17,8 @@ android {
         applicationId "com.summanga.android"
         minSdk 28
         targetSdk 32
-        versionCode 13
-        versionName "5.8.5"
+        versionCode 14
+        versionName "5.8.6"
         //resourceConfigurations.addAll(listOf("en"))
         signingConfig signingConfigs.debug
         multiDexEnabled true
@@ -80,6 +80,7 @@ dependencies {
         // Excludes the support library because it's already included by Glide.
         transitive = false
     }
+    implementation 'com.alexvasilkov:gesture-views:2.8.3'
 
 
 }

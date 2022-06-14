@@ -210,6 +210,23 @@
                 </HorizontalScrollView>
             </LinearLayout>
 
+            <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:id="@+id/SuMExploreProssC"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="12dp"
+                android:alpha="0.64"
+                android:visibility="gone"
+                android:indeterminate="true"
+                android:indeterminateBehavior="cycle"
+                android:indeterminateOnly="true"
+                android:progress="0"
+                app:indicatorColor="@android:color/darker_gray"
+                app:trackColor="@android:color/transparent"
+                app:trackCornerRadius="2dp"
+                app:trackThickness="4dp" />
+
             <RelativeLayout
                 android:id="@+id/scout_recycler_view_H"
                 android:layout_width="match_parent"
@@ -223,6 +240,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:paddingStart="-8dp"
+                    android:gravity="center"
                     android:paddingTop="0dp"
                     android:paddingEnd="4dp"
                     android:paddingBottom="0dp">
@@ -231,6 +249,7 @@
                         android:id="@+id/scout_recycler_view"
                         android:layout_width="match_parent"
                         android:layout_height="320dp"
+                        android:layout_gravity="center"
                         android:nestedScrollingEnabled="false"
                         android:orientation="vertical"
                         android:overScrollMode="never"
@@ -244,22 +263,6 @@
 
                 </LinearLayout>
             </RelativeLayout>
-
-            <com.google.android.material.progressindicator.CircularProgressIndicator
-                android:id="@+id/SuMExploreProssC"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                android:layout_gravity="center"
-                android:layout_marginTop="12dp"
-                android:alpha="0.64"
-                android:indeterminate="true"
-                android:indeterminateBehavior="cycle"
-                android:indeterminateOnly="true"
-                android:progress="0"
-                app:indicatorColor="@android:color/darker_gray"
-                app:trackColor="@android:color/transparent"
-                app:trackCornerRadius="2dp"
-                app:trackThickness="4dp" />
         </LinearLayout>
 
     </RelativeLayout>

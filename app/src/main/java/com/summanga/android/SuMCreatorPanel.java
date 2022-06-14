@@ -2,10 +2,10 @@ package com.summanga.android;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -19,7 +19,6 @@ import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Locale;
@@ -62,13 +61,14 @@ public class SuMCreatorPanel extends AppCompatActivity {
         animation_card_click = AnimationUtils.loadAnimation(SuMCreatorPanel.this, R.anim.card_click);
         GetThisWenViewReady(((WebView)findViewById(R.id.SuMCreatorPanel_WebView)));
     }
-    public void CloseSuMCreatorPanel(View view){
+    public void CloseSuMCreatorPanel(View view) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 if(animation_card_click == null) animation_card_click = AnimationUtils.loadAnimation(SuMCreatorPanel.this, R.anim.card_click);
                 view.startAnimation(animation_card_click);
                 SuMCreatorPanel.this.finish();
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
         });
     }
@@ -150,6 +150,21 @@ public class SuMCreatorPanel extends AppCompatActivity {
     @JavascriptInterface
     public void SendACreatorReq(){
 
+    }
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            runOnUiThread(new Runnable() {
+                @SuppressLint("ObsoleteSdkInt")
+                @Override
+                public void run() {
+                    finish();
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                }
+            });
+            return false;
+        } else return super.onKeyDown(keyCode, event);
     }
 
 }
