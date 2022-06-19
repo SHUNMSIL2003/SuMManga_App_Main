@@ -144,6 +144,7 @@ public class ScoutAdapter extends RecyclerView.Adapter<ScoutAdapter.ScoutHolder>
         private View ViewPaddingBottom;
         private CardView myCardView;
         private RelativeLayout idItemBG;
+        private View SuMItem_BorderCliper_VF_HS_ELM;
         public ScoutHolder(@NonNull View itemView) {
             super(itemView);
             txtName = itemView.findViewById(R.id.idMangaTitle);
@@ -153,6 +154,7 @@ public class ScoutAdapter extends RecyclerView.Adapter<ScoutAdapter.ScoutHolder>
             ViewPaddingBottom = itemView.findViewById(R.id.idCardPaddingBottom);
             myCardView = itemView.findViewById(R.id.myCardViewElm);
             idItemBG = itemView.findViewById(R.id.idItemBG);
+            SuMItem_BorderCliper_VF_HS_ELM = itemView.findViewById(R.id.SuMItem_BorderCliper_VF_HS);
         }
 
         public void setDetails(Scout scout,int index) {
@@ -182,7 +184,6 @@ public class ScoutAdapter extends RecyclerView.Adapter<ScoutAdapter.ScoutHolder>
                             a = Bitmap.createScaledBitmap(a, a.getWidth()/8, a.getHeight()/8, false);
                             int rh = (int) (a.getHeight()*0.38);
                             a = MainActivity.blurDark(context,Bitmap.createBitmap(a, 0, a.getHeight()-rh, a.getWidth(), rh),2.0f,0.4f,r,g,b,192);
-                            //Bitmap resizedBmp = Bitmap.createBitmap(((BitmapDrawable)resource).getBitmap(), 0, 0, 180, 86);
                             viewColor.setBackground(new BitmapDrawable(context.getResources(), a));
                             return false;
                         }
@@ -191,6 +192,9 @@ public class ScoutAdapter extends RecyclerView.Adapter<ScoutAdapter.ScoutHolder>
                     .into(imgCover);
             myCardView.setCardBackgroundColor(Color.TRANSPARENT);
             idItemBG.setBackgroundColor(hex);
+            if (android.os.Build.VERSION.SDK_INT < 31 ) {
+                SuMItem_BorderCliper_VF_HS_ELM.setClipToOutline(true);
+            }
             if(SuMStaticVs.RV_ItemsInRowCount_LASTREALINDEX < index) {
                 SuMStaticVs.RV_ItemsInRowCount_INDEX++;
                 if (SuMStaticVs.RV_ItemsInRowCount_INDEX > SuMStaticVs.RV_ItemsInRowCount) {
@@ -212,36 +216,6 @@ public class ScoutAdapter extends RecyclerView.Adapter<ScoutAdapter.ScoutHolder>
                 //SuMStaticVs.RV_ItemsInRowCount_INDEX++;
                 SuMStaticVs.RV_ItemsInRowCount_LASTREALINDEX = index;
             }
-            /*if(SuMStaticVs.RV_ItemsInRowCount % 2 == 0) {
-                if (index % 2 == 0) {
-                    //System.out.println("The given number "+index+" is Even ");
-                    //namebar = ViewPaddingTop;
-                    itemView.findViewById(R.id.idCardPaddingTop).setVisibility(View.GONE);
-                    itemView.findViewById(R.id.idCardPaddingBottom).setVisibility(View.VISIBLE);
-                } else {
-                    //System.out.println("The given number "+index+" is Odd ");
-                    //namebar = ViewPaddingBottom;
-                    itemView.findViewById(R.id.idCardPaddingBottom).setVisibility(View.GONE);
-                    itemView.findViewById(R.id.idCardPaddingTop).setVisibility(View.VISIBLE);
-                }
-            }else {
-                if(index % 3 == 0) SuMStaticVs.RV_ItemsInRowCount_Helper = true;
-                else SuMStaticVs.RV_ItemsInRowCount_Helper = false;
-                if (index % 2 == 0 && !SuMStaticVs.RV_ItemsInRowCount_Helper) {
-                    SuMStaticVs.RV_ItemsInRowCount_Helper = true;
-                    //System.out.println("The given number "+index+" is Even ");
-                    //namebar = ViewPaddingTop;
-                    itemView.findViewById(R.id.idCardPaddingTop).setVisibility(View.GONE);
-                    itemView.findViewById(R.id.idCardPaddingBottom).setVisibility(View.VISIBLE);
-                } else {
-                    //System.out.println("The given number "+index+" is Odd ");
-                    //namebar = ViewPaddingBottom;
-                    itemView.findViewById(R.id.idCardPaddingBottom).setVisibility(View.GONE);
-                    itemView.findViewById(R.id.idCardPaddingTop).setVisibility(View.VISIBLE);
-                }
-            }*/
-            //((ViewGroup) namebar.getParent()).removeView(namebar);
-
             final String MangaGernsToPross = scout.getGernString().toLowerCase(Locale.ROOT).replace(" ","").replace("-","");
             if(!MangaGernsToPross.contains("action")){
                 //((ViewGroup) itemView.findViewById(R.id.idSuMExploreIndo_Gern_Action).getParent()).removeView(itemView.findViewById(R.id.idSuMExploreIndo_Gern_Action));

@@ -7,8 +7,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -37,6 +39,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -117,16 +120,36 @@ public class SplashScreen extends AppCompatActivity {
 
     }
 
+    /*public void onRequestPermissionsResult(
+            int requestCode,
+            @NonNull String[] permissions,
+            @NonNull int[] grantResults
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        Boolean isGarn = false;
+        for(int i = 0; i <grantResults.length;i++){
+            if(grantResults[i]>0) isGarn = true;
+            else isGarn = false;
+        }
+
+    }*/
+    protected boolean PermIsGra(String PID){
+        return ActivityCompat.checkSelfPermission(SplashScreen.this, PID) == PackageManager.PERMISSION_GRANTED;
+    }
+    @SuppressLint("SourceLockedOrientationActivity")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (ActivityCompat.checkSelfPermission(SplashScreen.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(SplashScreen.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 225);
+        if (!PermIsGra(Manifest.permission.READ_EXTERNAL_STORAGE)||!PermIsGra(Manifest.permission.READ_PHONE_STATE)) {
+            ActivityCompat.requestPermissions(SplashScreen.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.READ_PHONE_STATE}, 225);
+            notifyUser("permissions are required: READ_EXTERNAL_STORAGE & READ_PHONE_STATE");
             SplashScreen.this.finish();
             return;
         }
-
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.splashscreen);
+        /*getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);*/
         ((LinearProgressIndicator)findViewById(R.id.SuMSplashProssBar)).setProgress(0);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         ((LinearProgressIndicator)findViewById(R.id.SuMSplashProssBar)).setProgress(10);
@@ -192,7 +215,8 @@ public class SplashScreen extends AppCompatActivity {
                 int Device_Height = displayMetrics.heightPixels;
                 int Device_Width = displayMetrics.widthPixels;
                 ((LinearProgressIndicator)findViewById(R.id.SuMSplashProssBar)).setProgress(5);
-                AppBG_Bitmap = Bitmap.createScaledBitmap(AppBG_Bitmap, 180, (180*(Device_Height/Device_Width)), false);
+                if(Device_Height>Device_Width) AppBG_Bitmap = Bitmap.createScaledBitmap(AppBG_Bitmap, 180, (180*(Device_Height/Device_Width)), false);
+                else AppBG_Bitmap = Bitmap.createScaledBitmap(AppBG_Bitmap, 180*(Device_Width/Device_Height), 180, false);
                 AppBG_Bitmap = blur(SplashScreen.this,AppBG_Bitmap);
                 findViewById(R.id.SplashScreenLayout).setBackground(new BitmapDrawable(getResources(), AppBG_Bitmap));
                 ((LinearProgressIndicator) findViewById(R.id.SuMSplashProssBar)).setProgress(100);

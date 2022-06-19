@@ -29,6 +29,7 @@
             android:layout_height="12dp"/>
 
         <RelativeLayout
+            android:id="@+id/SuMItem_BorderCliper_VF_HS"
             android:foreground="?attr/selectableItemBackground"
             android:clipToOutline="true"
             android:background="@drawable/bg_explorecard"
@@ -39,7 +40,8 @@
                 android:id="@+id/idItemBG"
                 android:gravity="bottom"
                 android:layout_width="match_parent"
-                android:layout_height="292dp">
+                android:layout_height="292dp"
+                tools:ignore="UselessParent">
 
                 <ImageView
                     android:id="@+id/idMangaCover"
@@ -47,7 +49,8 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/bg_tr_br0dp_c22dp_" />
+                    android:src="@drawable/bg_tr_br0dp_c22dp_"
+                    tools:ignore="ContentDescription" />
 
                 <!-- <View
                     android:layout_width="match_parent"

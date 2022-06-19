@@ -15,6 +15,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
@@ -307,7 +308,31 @@ public class MainActivity extends AppCompatActivity {
     private static int global_g = 0;
     private static int global_b = 0;
 
-    @SuppressLint({"SetJavaScriptEnabled", "UseCompatLoadingForDrawables", "ClickableViewAccessibility"})
+    /*private Boolean checkForDebugMode() {
+        //ISDEBUGMODE = false; //(Secure.getString(getApplicationContext().getContentResolver(), Secure.ANDROID_ID) == null);
+
+        TelephonyManager man = (TelephonyManager) getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
+        if(man != null){
+            String devId = man.getDeviceSoftwareVersion();
+            return (devId == null);
+        } else return false;
+    }*/
+
+    static float fontScale = 1;
+    static int densityDpi = 0;
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        if (newConfig.fontScale != fontScale) {
+            // destroy and recreate dialog adjusting for font size.
+            fontScale = newConfig.fontScale;
+        }
+        if (newConfig.densityDpi != densityDpi) {
+            // destroy and recreate dialog adjusting for new screen size.
+            densityDpi = newConfig.densityDpi;
+        }
+    }
+    @SuppressLint({"SetJavaScriptEnabled", "UseCompatLoadingForDrawables", "ClickableViewAccessibility", "SourceLockedOrientationActivity"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -339,7 +364,10 @@ public class MainActivity extends AppCompatActivity {
         Device_Height = displayMetrics.heightPixels;
         Device_Width = displayMetrics.widthPixels;
         animation_card_click = AnimationUtils.loadAnimation(MainActivity.this, R.anim.card_click);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_main);
+        /*getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);*/
         DarkSBIcons();
         String BANNER_STRING64;
         if (savedInstanceState == null) {
@@ -1511,11 +1539,11 @@ public class MainActivity extends AppCompatActivity {
                 TelephonyManager manager = (TelephonyManager)MainActivity.this.getSystemService(Context.TELEPHONY_SERVICE);
                 ViewGroup.LayoutParams params1 = findViewById(R.id.SuMNavBar).getLayoutParams();
                 if(manager.getPhoneType() == TelephonyManager.PHONE_TYPE_NONE){
-                    //return "Tablet";
-                    params1.height = (int) (NBH*1.64/*+convertDpToPixel(24,MainActivity.this)*/);
+                    if(!EmulatorDetector.isEmulator(MainActivity.this)) params1.height = (int) (NBH*1.32);
+                    else params1.height = (int) convertPixelsToDp(8,MainActivity.this);
                 }else{
-                    //return "Mobile";
-                    params1.height = NBH;
+                    if(!EmulatorDetector.isEmulator(MainActivity.this)) params1.height = NBH;
+                    else params1.height = (int) convertPixelsToDp(8,MainActivity.this);
                 }
                 //params1.height = NBH;
                 findViewById(R.id.SuMNavBar).setLayoutParams(params1);
@@ -1550,11 +1578,11 @@ public class MainActivity extends AppCompatActivity {
                 TelephonyManager manager = (TelephonyManager)MainActivity.this.getSystemService(Context.TELEPHONY_SERVICE);
                 ViewGroup.LayoutParams params1 = findViewById(R.id.SuMNavBar).getLayoutParams();
                 if(manager.getPhoneType() == TelephonyManager.PHONE_TYPE_NONE){
-                    //return "Tablet";
-                    params1.height = (int) (NBH*1.64/*+convertDpToPixel(24,MainActivity.this)*/);
+                    if(!EmulatorDetector.isEmulator(MainActivity.this)) params1.height = (int) (NBH*1.32);
+                    else params1.height = (int) convertPixelsToDp(8,MainActivity.this);
                 }else{
-                    //return "Mobile";
-                    params1.height = NBH;
+                    if(!EmulatorDetector.isEmulator(MainActivity.this)) params1.height = NBH;
+                    else params1.height = (int) convertPixelsToDp(8,MainActivity.this);
                 }
                 //params1.height = NBH;
                 findViewById(R.id.SuMNavBar).setLayoutParams(params1);
@@ -3252,11 +3280,11 @@ public class MainActivity extends AppCompatActivity {
                 TelephonyManager manager = (TelephonyManager)MainActivity.this.getSystemService(Context.TELEPHONY_SERVICE);
                 ViewGroup.LayoutParams params1 = findViewById(R.id.SuMNavBar).getLayoutParams();
                 if(manager.getPhoneType() == TelephonyManager.PHONE_TYPE_NONE){
-                    //return "Tablet";
-                    params1.height = (int) (NBH*1.64/*+convertDpToPixel(24,MainActivity.this)*/);
+                    if(!EmulatorDetector.isEmulator(MainActivity.this)) params1.height = (int) (NBH*1.32);
+                    else params1.height = (int) convertPixelsToDp(8,MainActivity.this);
                 } else{
-                    //return "Mobile";
-                    params1.height = NBH;
+                    if(!EmulatorDetector.isEmulator(MainActivity.this)) params1.height = NBH;
+                    else params1.height = (int) convertPixelsToDp(8,MainActivity.this);
                 }
                 //params1.height = NBH;
                 findViewById(R.id.SuMNavBar).setLayoutParams(params1);
@@ -3295,11 +3323,11 @@ public class MainActivity extends AppCompatActivity {
                 TelephonyManager manager = (TelephonyManager)MainActivity.this.getSystemService(Context.TELEPHONY_SERVICE);
                 ViewGroup.LayoutParams params1 = findViewById(R.id.SuMNavBar).getLayoutParams();
                 if(manager.getPhoneType() == TelephonyManager.PHONE_TYPE_NONE){
-                    //return "Tablet";
-                    params1.height = (int) (NBH*1.64/*+convertDpToPixel(24,MainActivity.this)*/);
+                    if(!EmulatorDetector.isEmulator(MainActivity.this)) params1.height = (int) (NBH*1.32);
+                    else params1.height = (int) convertPixelsToDp(8,MainActivity.this);
                 }else{
-                    //return "Mobile";
-                    params1.height = NBH;
+                    if(!EmulatorDetector.isEmulator(MainActivity.this)) params1.height = NBH;
+                    else params1.height = (int) convertPixelsToDp(8,MainActivity.this);
                 }
                 //params1.height = NBH;
                 findViewById(R.id.SuMNavBar).setLayoutParams(params1);
@@ -3697,20 +3725,32 @@ public class MainActivity extends AppCompatActivity {
 
     public void SuMExploreInfoStart_Native(String SuMExploreURL, String ThemeColor, String SuMExploreTitle, String SuMExploreAuthor, String SuMExploreGerns, String MangaAgeRating, String MangaCoverLink) throws IOException, InterruptedException {
 
-        Bitmap vbg = getScreenShot(findViewById(R.id.MainLayout));
-        vbg = getResizedBitmap(vbg,vbg.getWidth()/8,vbg.getHeight()/8);
-        vbg = blurDark(MainActivity.this,vbg,18.0f,0.64f,global_r,global_g,global_b, (int) (255*0.32));
-        findViewById(R.id.SuMViewFilpperClickBlocker).setBackground(new BitmapDrawable(getResources(), vbg));
-        new android.os.Handler(Looper.getMainLooper()).postDelayed(
-                new Runnable() {
-                    public void run() {
-                        Animation fade_in = AnimationUtils.loadAnimation(MainActivity.this, android.R.anim.fade_in);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Bitmap vbg = getScreenShot(findViewById(R.id.MainLayout));
 
-                        findViewById(R.id.SuMViewFilpperClickBlocker).setVisibility(View.VISIBLE);
-                        findViewById(R.id.SuMViewFilpperClickBlocker).startAnimation(fade_in);
-                    }
-                },
-                32);
+                //vbg = getResizedBitmap(vbg,vbg.getWidth(),vbg.getHeight());
+                vbg = blurDark(MainActivity.this,vbg,18.0f,0.32f,global_r,global_g,global_b, (int) (255*0.32));
+
+                findViewById(R.id.SuMViewFilpperClickBlocker).setBackground(new BitmapDrawable(getResources(), vbg));
+                new android.os.Handler(Looper.getMainLooper()).postDelayed(
+                        new Runnable() {
+                            public void run() {
+                                Animation fade_in = AnimationUtils.loadAnimation(MainActivity.this, android.R.anim.fade_in);
+
+                                findViewById(R.id.SuMViewFilpperClickBlocker).setVisibility(View.VISIBLE);
+                                findViewById(R.id.SuMViewFilpperClickBlocker).startAnimation(fade_in);
+                            }
+                        },
+                        32);
+
+                if (android.os.Build.VERSION.SDK_INT < 31) {
+                    findViewById(R.id.LoadCurr_SuMCurr_BTN).setClipToOutline(true);
+                    findViewById(R.id.SuMInfo_Curr_IMG).setClipToOutline(true);
+                }
+            }
+        });
 
         int UID = 0;
         Object cookies = CookieManager.getInstance().getCookie("https://sum-manga.azurewebsites.net/");
@@ -4345,7 +4385,7 @@ public class MainActivity extends AppCompatActivity {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                responses.close();
+                //responses.close(); cuses crash when server is down
                 if(resStr==null){
                     runOnUiThread(new Runnable() {
                         @Override

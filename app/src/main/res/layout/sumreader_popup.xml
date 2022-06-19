@@ -10,6 +10,8 @@
     android:orientation="vertical"
     android:theme="@style/Theme.RealTransparentActivity"
     android:windowSoftInputMode="adjustResize"
+    android:configChanges="orientation"
+    android:screenOrientation="portrait"
     tools:context=".SuMReader">
 
     <ImageView

@@ -3,11 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"  />
     <uses-permission android:name="android.permission.REORDER_TASKS" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"  />
     <uses-permission android:name="android.permission.USE_BIOMETRIC" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.vending.BILLING" />
@@ -16,6 +16,7 @@
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <!-- permission required to use Alarm Manager -->
     <uses-permission android:name="com.android.alarm.permission.SET_ALARM"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
 
 
@@ -24,9 +25,6 @@
         android:required="false"/>
     <uses-feature
         android:name="android.hardware.location.gps"
-        android:required="false"/>
-    <uses-feature
-        android:name="android.hardware.touchscreen"
         android:required="false"/>
     <uses-feature
         android:name="android.hardware.camera"
@@ -61,8 +59,9 @@
         android:hardwareAccelerated="true"
         android:usesCleartextTraffic="true"
         android:resizeableActivity="false"
-        android:screenOrientation="portrait"
         android:largeHeap="true"
+        android:configChanges="orientation|fontScale|density|screenSize"
+        android:screenOrientation="portrait"
         android:theme="@style/Theme.MyApplication">
         <activity
             android:extractNativeLibs="true"
@@ -76,8 +75,10 @@
             android:largeHeap="true"
             android:icon="@mipmap/ic_launcher"
             android:roundIcon="@mipmap/ic_launcher_round"
+            android:configChanges="orientation|fontScale|density|screenSize"
+            android:screenOrientation="portrait"
             android:excludeFromRecents="false"
-            tools:ignore="NonResizeableActivity">
+            tools:ignore="LockedOrientationActivity,NonResizeableActivity">
             <!--<intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -103,8 +104,10 @@
             android:largeHeap="true"
             android:icon="@mipmap/ic_launcher"
             android:roundIcon="@mipmap/ic_launcher_round"
+            android:configChanges="orientation|fontScale|density|screenSize"
+            android:screenOrientation="portrait"
             android:excludeFromRecents="false"
-            tools:ignore="NonResizeableActivity">
+            tools:ignore="LockedOrientationActivity">
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW"/>
             </intent-filter>
@@ -121,8 +124,10 @@
             android:largeHeap="true"
             android:icon="@mipmap/ic_launcher"
             android:roundIcon="@mipmap/ic_launcher_round"
+            android:configChanges="orientation|fontScale|density|screenSize"
+            android:screenOrientation="portrait"
             android:excludeFromRecents="false"
-            tools:ignore="NonResizeableActivity">
+            tools:ignore="LockedOrientationActivity">
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW"/>
             </intent-filter>
@@ -139,8 +144,10 @@
             android:largeHeap="true"
             android:icon="@mipmap/ic_launcher"
             android:roundIcon="@mipmap/ic_launcher_round"
+            android:configChanges="orientation|fontScale|density|screenSize"
+            android:screenOrientation="portrait"
             android:excludeFromRecents="false"
-            tools:ignore="NonResizeableActivity">
+            tools:ignore="LockedOrientationActivity">
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW"/>
             </intent-filter>
@@ -157,8 +164,10 @@
             android:largeHeap="true"
             android:icon="@mipmap/ic_launcher"
             android:roundIcon="@mipmap/ic_launcher_round"
+            android:configChanges="orientation|fontScale|density|screenSize"
+            android:screenOrientation="portrait"
             android:excludeFromRecents="false"
-            tools:ignore="NonResizeableActivity">
+            tools:ignore="LockedOrientationActivity">
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW"/>
             </intent-filter>
@@ -170,8 +179,10 @@
             android:alwaysRetainTaskState="true"
             android:excludeFromRecents="false"
             android:resizeableActivity="false"
+            android:configChanges="orientation|fontScale|density|screenSize"
+            android:screenOrientation="portrait"
             android:exported="true"
-            tools:ignore="NonResizeableActivity">
+            tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -185,8 +196,10 @@
             android:alwaysRetainTaskState="true"
             android:excludeFromRecents="false"
             android:resizeableActivity="false"
+            android:configChanges="orientation|fontScale|density|screenSize"
+            android:screenOrientation="portrait"
             android:exported="true"
-            tools:ignore="NonResizeableActivity">
+            tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.shortcut.conversation" />
@@ -199,8 +212,10 @@
             android:alwaysRetainTaskState="true"
             android:excludeFromRecents="false"
             android:resizeableActivity="false"
+            android:configChanges="orientation|fontScale|density|screenSize"
+            android:screenOrientation="portrait"
             android:exported="true"
-            tools:ignore="NonResizeableActivity">
+            tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.shortcut.conversation" />
@@ -213,8 +228,7 @@
             android:alwaysRetainTaskState="true"
             android:excludeFromRecents="true"
             android:resizeableActivity="false"
-            android:exported="true"
-            tools:ignore="NonResizeableActivity">
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.shortcut.conversation" />
@@ -227,8 +241,7 @@
             android:alwaysRetainTaskState="true"
             android:excludeFromRecents="false"
             android:resizeableActivity="false"
-            android:exported="true"
-            tools:ignore="NonResizeableActivity">
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.shortcut.conversation" />

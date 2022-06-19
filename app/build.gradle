@@ -17,8 +17,8 @@ android {
         applicationId "com.summanga.android"
         minSdk 28
         targetSdk 32
-        versionCode 15
-        versionName "5.8.7"
+        versionCode 16
+        versionName "5.8.8"
         //resourceConfigurations.addAll(listOf("en"))
         signingConfig signingConfigs.debug
         multiDexEnabled true

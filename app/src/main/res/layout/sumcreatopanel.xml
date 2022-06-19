@@ -9,6 +9,8 @@
     android:orientation="vertical"
     android:theme="@style/Theme.TransparentActivity"
     android:windowSoftInputMode="adjustResize"
+    android:configChanges="orientation"
+    android:screenOrientation="portrait"
     tools:context=".SuMCreatorPanel">
 
     <LinearLayout
