@@ -10,7 +10,6 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
-import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -21,6 +20,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.hardware.biometrics.BiometricPrompt;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CancellationSignal;
@@ -39,7 +39,6 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -53,6 +52,9 @@ import com.google.android.material.progressindicator.LinearProgressIndicator;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 
 
 @SuppressLint("CustomSplashScreen")
@@ -136,6 +138,8 @@ public class SplashScreen extends AppCompatActivity {
     protected boolean PermIsGra(String PID){
         return ActivityCompat.checkSelfPermission(SplashScreen.this, PID) == PackageManager.PERMISSION_GRANTED;
     }
+
+    private static String uri_AL_STRING;
     @SuppressLint("SourceLockedOrientationActivity")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,6 +149,10 @@ public class SplashScreen extends AppCompatActivity {
             notifyUser("permissions are required: READ_EXTERNAL_STORAGE & READ_PHONE_STATE");
             SplashScreen.this.finish();
             return;
+        }
+        Uri uri_AL = getIntent().getData();
+        if (uri_AL!=null){
+            uri_AL_STRING = uri_AL.toString();
         }
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.splashscreen);
@@ -441,7 +449,100 @@ public class SplashScreen extends AppCompatActivity {
         return bm;
 
     }
+    public static String encode(String url)
+    {
+        try {
+            String encodeURL= URLEncoder.encode( url, "UTF-8" );
+            return encodeURL;
+        } catch (UnsupportedEncodingException e) {
+            return "Issue while encoding" +e.getMessage();
+        }
+    }
+    public static String decode(String url)
+    {
+        try {
+            String prevURL="";
+            String decodeURL=url;
+            while(!prevURL.equals(decodeURL))
+            {
+                prevURL=decodeURL;
+                decodeURL= URLDecoder.decode( decodeURL, "UTF-8" );
+            }
+            return decodeURL;
+        } catch (UnsupportedEncodingException e) {
+            return "Issue while decoding" +e.getMessage();
+        }
+    }
 
+    public String SuMLinkParsers(String LINK_S,Boolean CODE) {
+        if(LINK_S==null) return null;
+        String P_RS = "";
+        if(CODE) {
+            P_RS = "https://sum-manga.azurewebsites.net/SuM.html?MPS=" + encode(rot13(LINK_S));
+            return P_RS;
+        } else {
+            if (!LINK_S.contains("=")) return null;
+            P_RS = rot13(decode(LINK_S.split("=")[1]));
+            return P_RS;
+        }
+    }
+
+    public static String rot13(String value) {
+
+        char[] values = value.toCharArray();
+        for (int i = 0; i < values.length; i++) {
+            char letter = values[i];
+
+            if (letter >= 'a' && letter <= 'z') {
+                // Rotate lowercase letters.
+
+                if (letter > 'm') {
+                    letter -= 13;
+                } else {
+                    letter += 13;
+                }
+            } else if (letter >= 'A' && letter <= 'Z') {
+                // Rotate uppercase letters.
+
+                if (letter > 'M') {
+                    letter -= 13;
+                } else {
+                    letter += 13;
+                }
+            }
+            values[i] = letter;
+        }
+        // Convert array to a new String.
+        return new String(values);
+    }
+    public static String rot13_decode(String value) {
+
+        char[] values = value.toCharArray();
+        for (int i = 0; i < values.length; i++) {
+            char letter = values[i];
+
+            if (letter >= 'a' && letter <= 'z') {
+                // Rotate lowercase letters.
+
+                if (letter > 'm') {
+                    letter -= 13;
+                } else {
+                    letter += 13;
+                }
+            } else if (letter >= 'A' && letter <= 'Z') {
+                // Rotate uppercase letters.
+
+                if (letter > 'M') {
+                    letter -= 13;
+                } else {
+                    letter += 13;
+                }
+            }
+            values[i] = letter;
+        }
+        // Convert array to a new String.
+        return new String(values);
+    }
     private void ABSStart(String bm){
         ((LinearProgressIndicator)findViewById(R.id.SuMSplashProssBar)).setProgress(75);
         if (bm != null) {
@@ -455,6 +556,10 @@ public class SplashScreen extends AppCompatActivity {
                             Intent i = new Intent(SplashScreen.this, MainActivity.class);
                             i.putExtra("LOADING_MESSAGE", "LOADED");
                             i.putExtra("BANNER_BITMAP_STRING64", bm);
+                            if(uri_AL_STRING!=null) {
+                                String RS = SuMLinkParsers(uri_AL_STRING, false);
+                                if(RS!=null) i.putExtra("LINKOPPENSER_DECODDED_URL",RS);
+                            }
                             ((LinearProgressIndicator)findViewById(R.id.SuMSplashProssBar)).setProgress(80);
                             startActivity(i);
                             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);//Improves Perf

@@ -1,19 +1,13 @@
 package com.summanga.android;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.os.Build;
+import android.os.Environment;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
 import java.io.File;
-
-import android.bluetooth.BluetoothAdapter;
-import android.os.Environment;
-
-import androidx.core.app.ActivityCompat;
 
 /**
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with

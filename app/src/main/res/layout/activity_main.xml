@@ -78,7 +78,6 @@
             <include layout="@layout/index_settings" />
             <include layout="@layout/index_search" />
         </ViewFlipper>
-
     </RelativeLayout>
 
     <RelativeLayout
@@ -156,6 +155,43 @@
         android:layout_height="match_parent">
         <include layout="@layout/index_explore_info" />
     </RelativeLayout>
+    <LinearLayout
+        android:id="@+id/SuMFinalLoadingViewBlock"
+        android:onClick="VoidX"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="visible"
+        android:background="@android:color/black"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="12dp"
+            android:alpha="0.64"
+            android:indeterminate="true"
+            android:indeterminateBehavior="cycle"
+            android:indeterminateOnly="true"
+            android:progress="0"
+            app:indicatorColor="@android:color/white"
+            app:trackColor="@android:color/transparent"
+            app:trackCornerRadius="2dp"
+            app:trackThickness="4dp" />
+        <TextView
+            android:id="@+id/SuMLibraryInfoTXT"
+            android:textColor="@android:color/white"
+            android:text="one moment."
+            android:fontFamily="@font/varela_round"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="4dp"
+            android:alpha="0.64"
+            android:layout_height="wrap_content"
+            tools:ignore="HardcodedText" />
+    </LinearLayout>
     <View
         android:onClick="VoidX"
         android:id="@+id/SuMNavBarExtendor"
@@ -187,244 +223,249 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
-    <RelativeLayout
-        app:layout_constraintEnd_toStartOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="0dp"
-        android:layout_width="match_parent"
-        android:layout_height="110dp">
-        <LinearLayout
-            android:id="@+id/SuMBarTopPart"
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:paddingStart="4dp"
-            android:paddingEnd="0dp"
+            android:layout_height="110dp"
+            android:paddingStart="16dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="0dp"
             app:layout_constraintEnd_toStartOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            android:orientation="horizontal"
-            android:layout_height="wrap_content">
-            <LinearLayout
-                android:foreground="?attr/selectableItemBackgroundBorderless"
-                android:onClick="GoBack"
-                android:layout_width="wrap_content"
-                android:padding="0dp"
-                android:layout_marginTop="-4dp"
-                app:layout_constraintStart_toStartOf="parent"
-                android:orientation="vertical"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:id="@+id/SuMMangaTXT"
-                    android:textColor="@color/black"
-                    android:text="@string/app_name"
-                    android:fontFamily="@font/varela_round"
-                    android:textSize="16.5sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-                <TextView
-                    android:id="@+id/NavBackTXT"
-                    android:textColor="@color/black"
-                    android:text="@string/app_navigate_back"
-                    android:fontFamily="@font/varela_round"
-                    android:textSize="9sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="-6dp"
-                    android:textStyle="bold"
-                    android:layout_marginStart="0dp"
-                    tools:ignore="SmallSp" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="right"
-            android:orientation="horizontal"
-            android:padding="0dp"
-            app:layout_constraintEnd_toStartOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:ignore="RtlHardcoded">
-
-            <View
-                android:id="@+id/SearchBTN"
-                android:alpha="1.0"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:layout_marginTop="-2dp"
-                android:background="@drawable/ic_search_black_36dp"
-                android:foreground="?attr/selectableItemBackgroundBorderless"
-                android:onClick="LoadSearch" />
-            <!-- app:layout_constraintBottom_toBottomOf="@id/SuMMenuLayout"-->
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="72dp"
-            android:layout_marginTop="24dp"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:padding="0dp"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:layout_weight="1" />
-
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:id="@+id/SuMBarTopPart"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="-4dp"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="0dp"
+                android:orientation="horizontal"
+                android:paddingStart="4dp"
+                android:paddingEnd="0dp"
+                app:layout_constraintEnd_toStartOf="parent"
                 app:layout_constraintStart_toStartOf="parent">
 
-                <ImageButton
-                    android:id="@+id/ExploreBTN"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:background="@android:color/transparent"
-                    android:foreground="?attr/selectableItemBackgroundBorderless"
-                    android:onClick="LoadExplore"
-                    tools:ignore="ContentDescription" />
-
-                <TextView
-                    android:id="@+id/ExploreBTNTXT"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="-4dp"
+                    android:foreground="?attr/selectableItemBackgroundBorderless"
+                    android:onClick="GoBack"
+                    android:orientation="vertical"
+                    android:padding="0dp"
+                    app:layout_constraintStart_toStartOf="parent">
+
+                    <TextView
+                        android:id="@+id/SuMMangaTXT"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/varela_round"
+                        android:text="@string/app_name"
+                        android:textColor="@color/black"
+                        android:textSize="16.5sp" />
+
+                    <TextView
+                        android:id="@+id/NavBackTXT"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="0dp"
+                        android:layout_marginTop="-6dp"
+                        android:fontFamily="@font/varela_round"
+                        android:text="@string/app_navigate_back"
+                        android:textColor="@color/black"
+                        android:textSize="9sp"
+                        android:textStyle="bold"
+                        tools:ignore="SmallSp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:orientation="horizontal"
+                android:padding="0dp"
+                app:layout_constraintEnd_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:ignore="RtlHardcoded">
+
+                <View
+                    android:id="@+id/SearchBTN"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
                     android:layout_marginTop="-2dp"
-                    android:fontFamily="@font/varela_round"
-                    android:text="@string/shortcut_explore"
-                    android:textColor="#888888"
-                    android:textSize="10sp"
-                    android:textStyle="bold"
-                    tools:ignore="SmallSp" />
+                    android:alpha="1.0"
+                    android:background="@drawable/ic_search_black_36dp"
+                    android:foreground="?attr/selectableItemBackgroundBorderless"
+                    android:onClick="LoadSearch" />
+                <!-- app:layout_constraintBottom_toBottomOf="@id/SuMMenuLayout"-->
             </LinearLayout>
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:layout_weight="2" />
 
             <LinearLayout
-                android:id="@+id/HitsBTN_ABSCont"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="-4dp"
-                android:alpha="1.0"
+                android:layout_width="match_parent"
+                android:layout_height="72dp"
+                android:layout_marginTop="24dp"
                 android:gravity="center"
-                android:orientation="vertical"
+                android:orientation="horizontal"
                 android:padding="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent">
 
-                <ImageButton
-                    android:id="@+id/HitsBTN"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:background="@android:color/transparent"
-                    android:foreground="?attr/selectableItemBackgroundBorderless"
-                    android:onClick="LoadHit"
-                    tools:ignore="ContentDescription" />
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1" />
 
-                <TextView
-                    android:id="@+id/HitsBTNTXT"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="0dp"
-                    android:fontFamily="@font/varela_round"
-                    android:text="@string/shortcut_hits"
-                    android:textColor="#888888"
-                    android:textSize="10sp"
-                    android:textStyle="bold"
-                    tools:ignore="SmallSp" />
-            </LinearLayout>
+                    android:layout_marginTop="-4dp"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="0dp"
+                    app:layout_constraintStart_toStartOf="parent">
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:layout_weight="2" />
+                    <ImageButton
+                        android:id="@+id/ExploreBTN"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:background="@android:color/transparent"
+                        android:foreground="?attr/selectableItemBackgroundBorderless"
+                        android:onClick="LoadExplore"
+                        tools:ignore="ContentDescription" />
 
-            <LinearLayout
-                android:id="@+id/LibraryBTN_ABSCont"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="-4dp"
-                android:alpha="1.0"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="0dp"
-                app:layout_constraintStart_toStartOf="parent">
+                    <TextView
+                        android:id="@+id/ExploreBTNTXT"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="-2dp"
+                        android:fontFamily="@font/varela_round"
+                        android:text="@string/shortcut_explore"
+                        android:textColor="#888888"
+                        android:textSize="10sp"
+                        android:textStyle="bold"
+                        tools:ignore="SmallSp" />
+                </LinearLayout>
 
-                <ImageButton
-                    android:id="@+id/LibraryBTN"
-                    android:layout_width="44dp"
-                    android:layout_height="44dp"
-                    android:background="@android:color/transparent"
-                    android:foreground="?attr/selectableItemBackgroundBorderless"
-                    android:onClick="LoadLibrary"
-                    tools:ignore="ContentDescription" />
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="2" />
 
-                <TextView
-                    android:id="@+id/LibraryBTNTXT"
+                <LinearLayout
+                    android:id="@+id/HitsBTN_ABSCont"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:fontFamily="@font/varela_round"
-                    android:text="@string/shortcut_library"
-                    android:textColor="#888888"
-                    android:textSize="10sp"
-                    android:textStyle="bold"
-                    tools:ignore="SmallSp" />
-            </LinearLayout>
+                    android:layout_marginTop="-4dp"
+                    android:alpha="1.0"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="0dp"
+                    app:layout_constraintStart_toStartOf="parent">
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:layout_weight="2" />
+                    <ImageButton
+                        android:id="@+id/HitsBTN"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:background="@android:color/transparent"
+                        android:foreground="?attr/selectableItemBackgroundBorderless"
+                        android:onClick="LoadHit"
+                        tools:ignore="ContentDescription" />
 
-            <LinearLayout
-                android:id="@+id/SettingsBTN_ABSCont"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="-4dp"
-                android:alpha="1.0"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="0dp"
-                app:layout_constraintStart_toStartOf="parent">
+                    <TextView
+                        android:id="@+id/HitsBTNTXT"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="0dp"
+                        android:fontFamily="@font/varela_round"
+                        android:text="@string/shortcut_hits"
+                        android:textColor="#888888"
+                        android:textSize="10sp"
+                        android:textStyle="bold"
+                        tools:ignore="SmallSp" />
+                </LinearLayout>
 
-                <ImageButton
-                    android:id="@+id/SettingsBTN"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:background="@android:color/transparent"
-                    android:foreground="?attr/selectableItemBackgroundBorderless"
-                    android:onClick="LoadSettings"
-                    tools:ignore="ContentDescription" />
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="2" />
 
-                <TextView
-                    android:id="@+id/SettingsBTNTXT"
+                <LinearLayout
+                    android:id="@+id/LibraryBTN_ABSCont"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="-2dp"
-                    android:fontFamily="@font/varela_round"
-                    android:text="@string/shortcut_settings"
-                    android:textColor="#888888"
-                    android:textSize="10sp"
-                    android:textStyle="bold"
-                    tools:ignore="SmallSp" />
-            </LinearLayout>
+                    android:layout_marginTop="-4dp"
+                    android:alpha="1.0"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="0dp"
+                    app:layout_constraintStart_toStartOf="parent">
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:layout_weight="1" />
-        </LinearLayout>
-    </RelativeLayout>
+                    <ImageButton
+                        android:id="@+id/LibraryBTN"
+                        android:layout_width="44dp"
+                        android:layout_height="44dp"
+                        android:background="@android:color/transparent"
+                        android:foreground="?attr/selectableItemBackgroundBorderless"
+                        android:onClick="LoadLibrary"
+                        tools:ignore="ContentDescription" />
+
+                    <TextView
+                        android:id="@+id/LibraryBTNTXT"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:fontFamily="@font/varela_round"
+                        android:text="@string/shortcut_library"
+                        android:textColor="#888888"
+                        android:textSize="10sp"
+                        android:textStyle="bold"
+                        tools:ignore="SmallSp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="2" />
+
+                <LinearLayout
+                    android:id="@+id/SettingsBTN_ABSCont"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-4dp"
+                    android:alpha="1.0"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="0dp"
+                    app:layout_constraintStart_toStartOf="parent">
+
+                    <ImageButton
+                        android:id="@+id/SettingsBTN"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:background="@android:color/transparent"
+                        android:foreground="?attr/selectableItemBackgroundBorderless"
+                        android:onClick="LoadSettings"
+                        tools:ignore="ContentDescription" />
+
+                    <TextView
+                        android:id="@+id/SettingsBTNTXT"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="-2dp"
+                        android:fontFamily="@font/varela_round"
+                        android:text="@string/shortcut_settings"
+                        android:textColor="#888888"
+                        android:textSize="10sp"
+                        android:textStyle="bold"
+                        tools:ignore="SmallSp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1" />
+            </LinearLayout>
+        </RelativeLayout>
     </RelativeLayout>
 
     <View
@@ -486,4 +527,11 @@
                 tools:ignore="HardcodedText" />
         </RelativeLayout>
     </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/SuMUltimateBlocker_ROOT"
+        android:onClick="VoidX"
+        android:visibility="gone"
+        android:background="@android:color/transparent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -64,35 +64,25 @@
                                        android:paddingStart="0dp"
                                        android:paddingEnd="12dp">
 
-                                       <LinearLayout
-                                           android:layout_width="wrap_content"
-                                           android:layout_height="40dp"
-                                           android:gravity="center"
-                                           android:layout_marginEnd="-3dp"
-                                           android:orientation="horizontal">
 
-                                           <TextView
-                                               android:visibility="gone"
-                                               android:layout_width="wrap_content"
-                                               android:layout_height="wrap_content"
-                                               android:layout_marginTop="9dp"
-                                               android:layout_marginEnd="-19dp"
-                                               android:alpha="0.60"
-                                               android:fontFamily="@font/varela_round"
-                                               android:text="Wanna"
-                                               android:textColor="@android:color/white"
-                                               android:textSize="12sp"
-                                               tools:ignore="HardcodedText" />
+                                       <View
+                                           android:onClick="SuMExploreInfo_Share"
+                                           android:layout_width="28dp"
+                                           android:layout_height="30dp"
+                                           android:layout_marginStart="2dp"
+                                           android:alpha="0.74"
+                                           android:background="@drawable/ic_share_fill1_wght400_grad0_opsz48" />
 
-                                           <View
-                                               android:onClick="SuMInfo_AddRemoreFromWanna"
-                                               android:id="@+id/SuMInfo_Wanna_VIEWIMG"
-                                               android:layout_width="39dp"
-                                               android:layout_height="39dp"
-                                               android:layout_marginStart="8dp"
-                                               android:alpha="0.74"
-                                               android:background="@drawable/ic_add_fill1_wght600_grad0_opsz48" />
-                                       </LinearLayout>
+
+                                       <View
+                                           android:onClick="SuMInfo_AddRemoreFromWanna"
+                                           android:id="@+id/SuMInfo_Wanna_VIEWIMG"
+                                           android:layout_width="39dp"
+                                           android:layout_height="39dp"
+                                           android:layout_marginStart="8dp"
+                                           android:alpha="0.74"
+                                           android:background="@drawable/ic_add_fill1_wght600_grad0_opsz48" />
+
 
                                        <View
                                            android:onClick="SuMInfo_AddRemoreFromFav"
@@ -102,6 +92,7 @@
                                            android:layout_marginStart="2dp"
                                            android:alpha="0.74"
                                            android:background="@drawable/ic_bookmark_fill0_wght500_grad0_opsz48" />
+
 
                                    </LinearLayout>
                                </RelativeLayout>
@@ -128,23 +119,23 @@
                                    android:layout_height="76dp" >
 
                                    <LinearLayout
-                                       android:orientation="horizontal"
                                        android:layout_width="match_parent"
                                        android:layout_height="match_parent"
                                        android:gravity="center"
+                                       android:orientation="horizontal"
                                        android:paddingStart="12dp"
                                        android:paddingTop="0dp"
                                        android:paddingEnd="12dp"
                                        android:paddingBottom="18dp">
 
                                        <LinearLayout
+                                           android:id="@+id/LoadCurr_SuMCurr_BTN"
                                            android:layout_width="wrap_content"
                                            android:layout_height="54dp"
                                            android:background="@drawable/bg_w_tr_mangainfo_currbtn"
                                            android:clipToOutline="true"
                                            android:foreground="?attr/selectableItemBackground"
                                            android:gravity="start"
-                                           android:id="@+id/LoadCurr_SuMCurr_BTN"
                                            android:onClick="LoadCurr_SuMCurr"
                                            android:orientation="horizontal"
                                            android:paddingStart="0dp"
@@ -196,14 +187,14 @@
                                        </LinearLayout>
 
                                        <RelativeLayout
-                                           android:layout_marginStart="12dp"
+                                           android:id="@+id/LoadChapters_SuMInfo_BTN"
                                            android:layout_width="58dp"
                                            android:layout_height="54dp"
+                                           android:layout_marginStart="12dp"
                                            android:background="@drawable/bg_w_tr_mangainfo_currbtn"
                                            android:clipToOutline="true"
                                            android:foreground="?attr/selectableItemBackground"
                                            android:gravity="center"
-                                           android:id="@+id/LoadChapters_SuMInfo_BTN"
                                            android:onClick="LoadChapters_SuMInfo"
                                            android:orientation="horizontal"
                                            tools:ignore="UnusedAttribute">

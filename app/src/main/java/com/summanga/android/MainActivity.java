@@ -112,6 +112,9 @@ import org.riversun.okhttp3.OkHttp3CookieHelper;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -332,6 +335,7 @@ public class MainActivity extends AppCompatActivity {
             densityDpi = newConfig.densityDpi;
         }
     }
+    private Boolean SuMLINKSHAREIsLoading = false;
     @SuppressLint({"SetJavaScriptEnabled", "UseCompatLoadingForDrawables", "ClickableViewAccessibility", "SourceLockedOrientationActivity"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -366,6 +370,8 @@ public class MainActivity extends AppCompatActivity {
         animation_card_click = AnimationUtils.loadAnimation(MainActivity.this, R.anim.card_click);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_main);
+        findViewById(R.id.SuMFinalLoadingViewBlock).setVisibility(View.VISIBLE);
+        findViewById(R.id.SuMUltimateBlocker_ROOT).setVisibility(View.VISIBLE);
         /*getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);*/
         DarkSBIcons();
@@ -452,7 +458,10 @@ public class MainActivity extends AppCompatActivity {
         RootHexColor = String.format("#%02X%02X%02X", global_r, global_g, global_b);
         LoadColors();
 
+        findViewById(R.id.SuMFinalLoadingViewBlock).setVisibility(View.VISIBLE);
+        findViewById(R.id.SuMFinalLoadingViewBlock).setBackgroundColor(Color.parseColor(RootHexColor));
         findViewById(R.id.SuMExplore_Gern_ALL_Toggle).setBackground(setTint(ContextCompat.getDrawable(MainActivity.this, R.drawable.bg_gern_tr_bor_w_c_fixer_home),Color.parseColor(RootHexColor)));
+        findViewById(R.id.SuMExplore_Gern_Action_Toggle).setBackground(setTint(ContextCompat.getDrawable(MainActivity.this, R.drawable.bg_gern_tr_bor_w_c_fixer_home),Color.parseColor("#ffffff")));
 
 
 
@@ -647,6 +656,52 @@ public class MainActivity extends AppCompatActivity {
 
         SUMCOINS_COUNT_UPDATE();
 
+        String LINKOPPENSER_DECODDED_URL;
+        if (savedInstanceState == null) {
+            Bundle extras = getIntent().getExtras();
+            if(extras == null) {
+                LINKOPPENSER_DECODDED_URL = null;
+            } else {
+                LINKOPPENSER_DECODDED_URL = extras.getString("LINKOPPENSER_DECODDED_URL");
+            }
+        } else {
+            LINKOPPENSER_DECODDED_URL = (String) savedInstanceState.getSerializable("LINKOPPENSER_DECODDED_URL");
+        }
+        if(LINKOPPENSER_DECODDED_URL != null){
+            String SuMExploreURL_SHAREING = null;
+            String ThemeColor_SHAREING = null;
+            String SuMExploreTitle_SHAREING = null;
+            String SuMExploreAuthor_SHAREING = null;
+            String SuMExploreGerns_SHAREING = null;
+            String MangaAgeRating_SHAREING = null;
+            String MangaCoverLink_SHAREING = null;
+            String[] URLTP = LINKOPPENSER_DECODDED_URL.split("&&");
+            for(int i=0;i<URLTP.length;i++){
+                if(URLTP[i].contains("EL==")) SuMExploreURL_SHAREING = LINKOPPENSER_H(URLTP[i],"EL");
+                if(URLTP[i].contains("TC==")) ThemeColor_SHAREING = LINKOPPENSER_H(URLTP[i],"TC");
+                if(URLTP[i].contains("ET==")) SuMExploreTitle_SHAREING = LINKOPPENSER_H(URLTP[i],"ET");
+                if(URLTP[i].contains("EA==")) SuMExploreAuthor_SHAREING = LINKOPPENSER_H(URLTP[i],"EA");
+                if(URLTP[i].contains("EG==")) SuMExploreGerns_SHAREING = LINKOPPENSER_H(URLTP[i],"EG");
+                if(URLTP[i].contains("AR==")) MangaAgeRating_SHAREING = LINKOPPENSER_H(URLTP[i],"AR");
+                if(URLTP[i].contains("CL==")) MangaCoverLink_SHAREING = LINKOPPENSER_H(URLTP[i],"CL");
+            }
+            Boolean ready = true;
+            String[] SHARING_CU = new String[]{SuMExploreURL_SHAREING,ThemeColor_SHAREING,SuMExploreTitle_SHAREING,SuMExploreAuthor_SHAREING,SuMExploreGerns_SHAREING,MangaAgeRating_SHAREING,MangaCoverLink_SHAREING};
+            for(int i =0;i<SHARING_CU.length;i++) {
+                if (SHARING_CU[i] == null) ready = false;
+            }
+            if(ready){
+                try {
+                    SuMLINKSHAREIsLoading = true;
+                    SuMExploreInfoStart_Native(SuMExploreURL_SHAREING,ThemeColor_SHAREING,SuMExploreTitle_SHAREING,SuMExploreAuthor_SHAREING,SuMExploreGerns_SHAREING,MangaAgeRating_SHAREING,MangaCoverLink_SHAREING);
+                    SuMLINKSHAREIsLoading = false;
+                } catch (IOException | InterruptedException e) {
+                    e.printStackTrace();
+                    notifyUser("SuM-Info: "+e.toString());
+                }
+            } else notifyUser("SuM-Sharing: invalid link!");
+        }
+
         MobileAds.initialize(this, initializationStatus -> {
 
         });
@@ -654,6 +709,32 @@ public class MainActivity extends AppCompatActivity {
         onRequestAd();
 
 
+    }
+    private int SUMISREADY = 0;
+    private void SuMAPPIsReady(){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if(SUMISREADY>2&&findViewById(R.id.SuMFinalLoadingViewBlock).getVisibility()!=View.VISIBLE) return;
+                Animation fade_out = AnimationUtils.loadAnimation(MainActivity.this, android.R.anim.fade_out);
+                findViewById(R.id.SuMFinalLoadingViewBlock).startAnimation(fade_out);
+                new android.os.Handler(Looper.getMainLooper()).postDelayed(
+                        new Runnable() {
+                            public void run() {
+                                findViewById(R.id.SuMFinalLoadingViewBlock).setVisibility(View.GONE);
+                                findViewById(R.id.SuMUltimateBlocker_ROOT).setVisibility(View.GONE);
+                            }
+                        },
+                        fade_out.getDuration());
+            }
+        });
+    }
+    private String LINKOPPENSER_H(String URLTP,String REQ) {
+        if (URLTP == null) return null;
+        if (URLTP.contains(REQ + "==")) {
+            return URLTP.replace(REQ+"==","");
+        }
+        else return null;
     }
     private boolean SuMExplore_Home_ScrollView_Main_ELM_Scroll = true;
     private int ReqH_DH_RCV_TOPH =0;
@@ -3723,17 +3804,158 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    public static String encode(String url)
+    {
+        try {
+            String encodeURL= URLEncoder.encode( url, "UTF-8" );
+            return encodeURL;
+        } catch (UnsupportedEncodingException e) {
+            return "Issue while encoding" +e.getMessage();
+        }
+    }
+    public static String decode(String url)
+    {
+        try {
+            String prevURL="";
+            String decodeURL=url;
+            while(!prevURL.equals(decodeURL))
+            {
+                prevURL=decodeURL;
+                decodeURL= URLDecoder.decode( decodeURL, "UTF-8" );
+            }
+            return decodeURL;
+        } catch (UnsupportedEncodingException e) {
+            return "Issue while decoding" +e.getMessage();
+        }
+    }
+    public void SuMExploreInfo_Share(View view){
+
+        String[] LINK_Parts = new String[]{SuMExploreURL_SHAREING,ThemeColor_SHAREING,SuMExploreTitle_SHAREING,SuMExploreAuthor_SHAREING,SuMExploreGerns_SHAREING,MangaAgeRating_SHAREING,MangaCoverLink_SHAREING};
+        for (String link_part : LINK_Parts) {
+            if (link_part == null) {
+                notifyUser("SuM-Share: DATA IS CORRUPTED!");
+                return;
+            }
+        }
+        String PSLINK = "&&EL=="+SuMExploreURL_SHAREING;
+        PSLINK+="&&TC=="+ThemeColor_SHAREING;
+        PSLINK+="&&ET=="+SuMExploreTitle_SHAREING;
+        PSLINK+="&&EA=="+SuMExploreAuthor_SHAREING;
+        PSLINK+="&&EG=="+SuMExploreGerns_SHAREING;
+        PSLINK+="&&AR=="+MangaAgeRating_SHAREING;
+        PSLINK+="&&CL=="+MangaCoverLink_SHAREING;
+        String SLINK = SuMLinkParsers(PSLINK,true);
+        if(SLINK==null){
+            notifyUser("SuM-Share: Failed to create a link!");
+            return;
+        }
+        try {
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.setType("text/plain");
+            shareIntent.putExtra(Intent.EXTRA_SUBJECT, "SuM-Manga");
+            shareIntent.putExtra(Intent.EXTRA_TEXT, SLINK);
+            startActivity(Intent.createChooser(shareIntent, "choose one"));
+        } catch(Exception e) {
+            notifyUser("SuM-Share: "+e.toString());
+        }
+
+    }
+    public String SuMLinkParsers(String LINK_S,Boolean CODE) {
+        if(LINK_S==null) return null;
+        String P_RS = "";
+        if(CODE) {
+            P_RS = "https://sum-manga.azurewebsites.net/SuM.html?MPS=" + encode(rot13(LINK_S));
+            return P_RS;
+        } else {
+            if (!LINK_S.contains("SuM\\.html\\?MPS=")) return null;
+            P_RS = rot13_decode(decode(LINK_S.split("")[1]));
+            return P_RS;
+        }
+    }
+
+    public static String rot13(String value) {
+
+        char[] values = value.toCharArray();
+        for (int i = 0; i < values.length; i++) {
+            char letter = values[i];
+
+            if (letter >= 'a' && letter <= 'z') {
+                // Rotate lowercase letters.
+
+                if (letter > 'm') {
+                    letter -= 13;
+                } else {
+                    letter += 13;
+                }
+            } else if (letter >= 'A' && letter <= 'Z') {
+                // Rotate uppercase letters.
+
+                if (letter > 'M') {
+                    letter -= 13;
+                } else {
+                    letter += 13;
+                }
+            }
+            values[i] = letter;
+        }
+        // Convert array to a new String.
+        return new String(values);
+    }
+    public static String rot13_decode(String value) {
+
+        char[] values = value.toCharArray();
+        for (int i = 0; i < values.length; i++) {
+            char letter = values[i];
+
+            if (letter >= 'a' && letter <= 'z') {
+                // Rotate lowercase letters.
+
+                if (letter > 'm') {
+                    letter += 13;
+                } else {
+                    letter -= 13;
+                }
+            } else if (letter >= 'A' && letter <= 'Z') {
+                // Rotate uppercase letters.
+
+                if (letter > 'M') {
+                    letter += 13;
+                } else {
+                    letter -= 13;
+                }
+            }
+            values[i] = letter;
+        }
+        // Convert array to a new String.
+        return new String(values);
+    }
+
+
+    private String SuMExploreURL_SHAREING = null;
+    private String ThemeColor_SHAREING = null;
+    private String SuMExploreTitle_SHAREING = null;
+    private String SuMExploreAuthor_SHAREING = null;
+    private String SuMExploreGerns_SHAREING = null;
+    private String MangaAgeRating_SHAREING = null;
+    private String MangaCoverLink_SHAREING = null;
     public void SuMExploreInfoStart_Native(String SuMExploreURL, String ThemeColor, String SuMExploreTitle, String SuMExploreAuthor, String SuMExploreGerns, String MangaAgeRating, String MangaCoverLink) throws IOException, InterruptedException {
+
+        SuMExploreURL_SHAREING = SuMExploreURL;
+        ThemeColor_SHAREING = ThemeColor;
+        SuMExploreTitle_SHAREING = SuMExploreTitle;
+        SuMExploreAuthor_SHAREING = SuMExploreAuthor;
+        SuMExploreGerns_SHAREING = SuMExploreGerns;
+        MangaAgeRating_SHAREING = MangaAgeRating;
+        MangaCoverLink_SHAREING = MangaCoverLink;
 
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Bitmap vbg = getScreenShot(findViewById(R.id.MainLayout));
-
-                //vbg = getResizedBitmap(vbg,vbg.getWidth(),vbg.getHeight());
-                vbg = blurDark(MainActivity.this,vbg,18.0f,0.32f,global_r,global_g,global_b, (int) (255*0.32));
-
-                findViewById(R.id.SuMViewFilpperClickBlocker).setBackground(new BitmapDrawable(getResources(), vbg));
+                if(!SuMLINKSHAREIsLoading) {
+                    Bitmap vbg = getScreenShot(findViewById(R.id.MainLayout));
+                    vbg = blurDark(MainActivity.this, vbg, 8.0f, 0.16f, global_r, global_g, global_b, (int) (255 * 0.32));
+                    findViewById(R.id.SuMViewFilpperClickBlocker).setBackground(new BitmapDrawable(getResources(), vbg));
+                }
                 new android.os.Handler(Looper.getMainLooper()).postDelayed(
                         new Runnable() {
                             public void run() {
@@ -3743,7 +3965,7 @@ public class MainActivity extends AppCompatActivity {
                                 findViewById(R.id.SuMViewFilpperClickBlocker).startAnimation(fade_in);
                             }
                         },
-                        32);
+                        30);
 
                 if (android.os.Build.VERSION.SDK_INT < 31) {
                     findViewById(R.id.LoadCurr_SuMCurr_BTN).setClipToOutline(true);
@@ -4162,6 +4384,13 @@ public class MainActivity extends AppCompatActivity {
         return false;
     }
     public void CloseSuMExploreInfo(View view){
+        SuMExploreURL_SHAREING = null;
+        ThemeColor_SHAREING = null;
+        SuMExploreTitle_SHAREING = null;
+        SuMExploreAuthor_SHAREING = null;
+        SuMExploreGerns_SHAREING = null;
+        MangaAgeRating_SHAREING = null;
+        MangaCoverLink_SHAREING = null;
         runOnUiThread(new Runnable() {
             @SuppressLint("UseCompatLoadingForDrawables")
             @Override
@@ -4391,6 +4620,8 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             notifyUser("SuM-Infinite-Scroll: failed to get mangas list!");
+                            SUMISREADY++;
+                            if(SUMISREADY>=2) SuMAPPIsReady();
                         }
                     });
                     return;
@@ -4471,6 +4702,8 @@ public class MainActivity extends AppCompatActivity {
                         adapter.notifyDataSetChanged();
                         findViewById(R.id.SuMExploreProssC).setVisibility(View.GONE);
                         findViewById(R.id.scout_recycler_view_H).setAlpha(1.0f);
+                        SUMISREADY++;
+                        if(SUMISREADY>=2) SuMAPPIsReady();
                     }
                 });
 
@@ -4493,6 +4726,14 @@ public class MainActivity extends AppCompatActivity {
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);//Improves Perf
             }
         });
+
+    }
+
+    @JavascriptInterface
+    public void SuMLoadCounter() {
+
+        SUMISREADY++;
+       if(SUMISREADY>=2) SuMAPPIsReady();
 
     }
 
