@@ -70,6 +70,7 @@ public class SuMReader extends AppCompatActivity {
     private Bitmap VIEWBG;
     private int REQ_COINS = -1;
     private Animation animation_card_click;
+    private Animation animation_toolbar_click;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -80,6 +81,7 @@ public class SuMReader extends AppCompatActivity {
         Window window = this.getWindow();
         window.setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         animation_card_click = AnimationUtils.loadAnimation(SuMReader.this, R.anim.card_click);
+        animation_toolbar_click = AnimationUtils.loadAnimation(SuMReader.this, R.anim.toolbar_click);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             setTranslucent(true);
             window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -356,18 +358,7 @@ public class SuMReader extends AppCompatActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                /*Animation FadeOut = new AlphaAnimation(1.0f,0.0f);
-                FadeOut.setDuration(280);
-                findViewById(R.id.ReaderLayout_POPUP).startAnimation(FadeOut);
-                new android.os.Handler(Looper.getMainLooper()).postDelayed(
-                        new Runnable() {
-                            public void run() {
-
-                                SuMReader.this.finish();
-                                overridePendingTransition(R.anim.nothing,R.anim.nothing);
-                            }
-                        },
-                        280);*/
+                SuMStaticVs.lastPositionIMG = -1;
                 SuMReader.this.finish();
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);//Improves Perf
             }
@@ -401,7 +392,7 @@ public class SuMReader extends AppCompatActivity {
     private void initView(String RS) {
 
         // Initialize RecyclerView and set Adapter
-        SuMStaticVs.MainC = SuMReader.this;
+        //SuMStaticVs.MainC = SuMReader.this;
         recyclerView = findViewById(R.id.scout_IMG_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(SuMReader.this));
         scoutArrayList = new ArrayList<>();
@@ -489,7 +480,7 @@ public class SuMReader extends AppCompatActivity {
             @SuppressLint("ObsoleteSdkInt")
             @Override
             public void run() {
-                findViewById(R.id.SuMReaderToolBar).startAnimation(animation_card_click);
+                findViewById(R.id.SuMReaderToolBar).startAnimation(animation_toolbar_click);
                 boolean expanded = false;
                 if(findViewById(R.id.SuMCloseReader).getVisibility() == View.VISIBLE) expanded = true;
                 Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
@@ -545,7 +536,7 @@ public class SuMReader extends AppCompatActivity {
         if(!SUM_NEXT) notifyUser("No more chapters are available!");
         else {
             Intent i = new Intent(SuMReader.this, SuMReader.class);
-            Bitmap vbg = MainActivity.getScreenShot(findViewById(R.id.ReaderLayout_POPUP));
+            Bitmap vbg = getScreenShot(findViewById(R.id.ReaderLayout_POPUP));
             i.putExtra("THEME_RBG", THEME_RBG);
             i.putExtra("FILES_LINK", FILES_LINK_NEXT);
             i.putExtra("USERCOINS_COUNT", USERCOINS_COUNT+"");
@@ -573,6 +564,15 @@ public class SuMReader extends AppCompatActivity {
 
         }
     }
+
+    private Bitmap getScreenShot(View view) {
+        View screenView = view.getRootView();
+        screenView.setDrawingCacheEnabled(true);
+        Bitmap bitmap = Bitmap.createBitmap(screenView.getDrawingCache());
+        screenView.setDrawingCacheEnabled(false);
+        return bitmap;
+    }
+
     public Bitmap getResizedBitmap(Bitmap bm, int newWidth, int newHeight) {
         int width = bm.getWidth();
         int height = bm.getHeight();

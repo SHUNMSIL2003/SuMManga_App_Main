@@ -13,6 +13,8 @@
     android:windowSoftInputMode="adjustResize"
     android:configChanges="orientation"
     android:screenOrientation="portrait"
+    android:hardwareAccelerated="true"
+    android:layerType="hardware"
     tools:context=".MainActivity">
     <!-- The "fitsSystemWindows" attribute needs to be set to "true" if you want the "windowSoftInputMode" attribute to take effect! -->
     <ImageView
@@ -173,7 +175,6 @@
             android:indeterminate="true"
             android:indeterminateBehavior="cycle"
             android:indeterminateOnly="true"
-            android:progress="0"
             app:indicatorColor="@android:color/white"
             app:trackColor="@android:color/transparent"
             app:trackCornerRadius="2dp"

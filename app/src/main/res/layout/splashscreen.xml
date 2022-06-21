@@ -78,6 +78,29 @@
                 android:textSize="13sp"
                 tools:ignore="HardcodedText,UnusedAttribute" />
 
+
+            <RelativeLayout
+                android:layout_marginTop="12dp"
+                android:alpha="0.86"
+                android:paddingStart="32dp"
+                android:paddingEnd="32dp"
+                android:layout_width="match_parent"
+                android:layout_height="180dp">
+                <WebView
+                    android:id="@+id/SuMOffline_WebView_DinoGame"
+                    style="@android:style/Widget.Material.WebView"
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp"
+                    android:background="@android:color/transparent"
+                    android:fontFamily="@font/varela_round"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layerType="hardware"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </RelativeLayout>
+
+
         </LinearLayout>
 
 
@@ -107,6 +130,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_splash_tr"
+                android:layerType="hardware"
                 tools:ignore="ContentDescription" />
 
             <RelativeLayout
@@ -117,6 +141,7 @@
 
                 <com.google.android.material.progressindicator.LinearProgressIndicator
                     android:id="@+id/SuMSplashProssBar"
+                    android:layerType="hardware"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:alpha="0.28"

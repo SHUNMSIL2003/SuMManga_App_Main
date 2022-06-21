@@ -5,6 +5,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -43,6 +45,25 @@ public class ScoutAdapterIMG extends RecyclerView.Adapter<ScoutAdapterIMG.ScoutH
     public void onBindViewHolder(@NonNull ScoutHolder holder, int position) {
         ScoutIMG scout = scouts.get(position);
         holder.setDetails(scout,position);
+        setAnimation(holder.itemView, position);
+    }
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    private void setAnimation(View viewToAnimate, int position)
+    {
+        if(position>SuMStaticVs.lastPositionIMG) {
+            Animation animation = AnimationUtils.loadAnimation(context, android.R.anim.fade_in);
+            viewToAnimate.startAnimation(animation);
+            SuMStaticVs.lastPositionIMG = position;
+        }
     }
 
     @Override
@@ -51,7 +72,7 @@ public class ScoutAdapterIMG extends RecyclerView.Adapter<ScoutAdapterIMG.ScoutH
     }
 
     public class ScoutHolder extends RecyclerView.ViewHolder {
-        private ImageView imgCover;
+        private final ImageView imgCover;
 
         public ScoutHolder(@NonNull View itemView) {
             super(itemView);

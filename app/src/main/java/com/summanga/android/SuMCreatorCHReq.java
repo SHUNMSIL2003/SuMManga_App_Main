@@ -35,10 +35,6 @@ public class SuMCreatorCHReq extends AppCompatActivity {
     private Animation animation_card_click;
     private String LOADING_MESSAGE;
     private int THEMECOLOR;
-    /*private ValueCallback<Uri> mUploadMessage;
-    public ValueCallback<Uri[]> uploadMessage;
-    public static final int REQUEST_SELECT_FILE = 100;
-    private final static int FILECHOOSER_RESULTCODE = 1;*/
     private static final int FILECHOOSER_RESULTCODE   = 1;
     private ValueCallback<Uri> mUploadMessage;
     private ValueCallback<Uri[]> mUploadMessages;

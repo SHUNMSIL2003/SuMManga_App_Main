@@ -277,7 +277,7 @@ public class MainActivity extends AppCompatActivity {
             contentWebViewSettings.setSupportZoom(true);
             webViewx.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
             contentWebViewSettings.setDisplayZoomControls(true);
-        }else {
+        } else {
             webViewx.getSettings().setBuiltInZoomControls(false);
             contentWebViewSettings.setSupportZoom(false);
             contentWebViewSettings.setDisplayZoomControls(false);
@@ -1993,7 +1993,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void SuMInfo_AddRemoreFromFav(View view) {
-        findViewById(R.id.SuMInfo_Fav_VIEWIMG).startAnimation(animation_card_click);
+        if(view!=null) view.startAnimation(animation_card_click);
         if(SUMINFO_ID==null){
             notifyUser("SuM-Fav is not loaded!");
             return;
@@ -2270,7 +2270,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void SuMInfo_AddRemoreFromWanna(View view) {
-        findViewById(R.id.SuMInfo_Wanna_VIEWIMG).startAnimation(animation_card_click);
+        //findViewById(R.id.SuMInfo_Wanna_VIEWIMG).startAnimation(animation_card_click);
+        if(view!=null) view.startAnimation(animation_card_click);
         if(SUMINFO_ID==null){
             notifyUser("SuM-Wanna is not loaded!");
             return;
@@ -2344,7 +2345,7 @@ public class MainActivity extends AppCompatActivity {
 
     private View LoadGernXInHome_LastView;
     public void LoadGernXInHome(View view) {
-        view.startAnimation(animation_card_click);
+        if(view!=null) view.startAnimation(animation_card_click);
         if(LoadGernXInHome_LastView==view) return;
         if(LoadGernXInHome_LastView==null) LoadGernXInHome_LastView = findViewById(R.id.SuMExplore_Gern_ALL_Toggle);
         LoadGernXInHome_LastView.setBackground(setTint(ContextCompat.getDrawable(MainActivity.this, R.drawable.bg_gern_tr_bor_w_c_fixer_home),Color.parseColor("#ffffff")));
@@ -3740,7 +3741,7 @@ public class MainActivity extends AppCompatActivity {
                 final int r = Integer.parseInt(Raw_RGB_String_P.split(",")[0]);
                 final int g = Integer.parseInt(Raw_RGB_String_P.split(",")[1]);
                 final int b = Integer.parseInt(Raw_RGB_String_P.split(",")[2]);
-                Bitmap a = blurDark(MainActivity.this,Bitmap.createScaledBitmap(MangaCoverBitmap0, MangaCoverBitmap0.getWidth()/8, MangaCoverBitmap0.getHeight()/8, false),2.0f,0.4f,r,g,b,114);
+                Bitmap a = blurDark(MainActivity.this,MangaCoverBitmap0,1.0f,0.02f,r,g,b,114);
                 ((ImageView)findViewById(R.id.SuMExploreInfo_MangaBGABSBlured_IMGView)).setImageBitmap(a);
             }
         });
@@ -3829,7 +3830,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     public void SuMExploreInfo_Share(View view){
-
+        if(view!=null) view.startAnimation(animation_card_click);
         String[] LINK_Parts = new String[]{SuMExploreURL_SHAREING,ThemeColor_SHAREING,SuMExploreTitle_SHAREING,SuMExploreAuthor_SHAREING,SuMExploreGerns_SHAREING,MangaAgeRating_SHAREING,MangaCoverLink_SHAREING};
         for (String link_part : LINK_Parts) {
             if (link_part == null) {
@@ -3953,7 +3954,8 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 if(!SuMLINKSHAREIsLoading) {
                     Bitmap vbg = getScreenShot(findViewById(R.id.MainLayout));
-                    vbg = blurDark(MainActivity.this, vbg, 8.0f, 0.16f, global_r, global_g, global_b, (int) (255 * 0.32));
+                    //vbg=Bitmap.createScaledBitmap(vbg,vbg.getWidth()/8,vbg.getHeight()/8,false);
+                    vbg = blurDark(MainActivity.this, vbg, 4.0f, 0.01f, global_r, global_g, global_b, (int) (255 * 0.32));
                     findViewById(R.id.SuMViewFilpperClickBlocker).setBackground(new BitmapDrawable(getResources(), vbg));
                 }
                 new android.os.Handler(Looper.getMainLooper()).postDelayed(
@@ -4482,16 +4484,16 @@ public class MainActivity extends AppCompatActivity {
         i.putExtra("THEME_RBG", HEX);
         i.putExtra("FILES_LINK", ReadingURL);
         i.putExtra("USERCOINS_COUNT",USERCOINS_COUNT+"");
-        i.putExtra("VIEWBITMAP",ImageUtil.convert(getResizedBitmap(vbg,vbg.getWidth()/6,vbg.getHeight()/6)));
+        i.putExtra("VIEWBITMAP",ImageUtil.convert(getResizedBitmap(vbg,vbg.getWidth()/12,vbg.getHeight()/12)));
+        SuMStaticVs.lastPositionIMG = -1;
         startActivity(i);
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);//Improves Perf
     }
 
-    public static Bitmap getScreenShot(View view) {
-        View screenView = view.getRootView();
-        screenView.setDrawingCacheEnabled(true);
-        Bitmap bitmap = Bitmap.createBitmap(screenView.getDrawingCache());
-        screenView.setDrawingCacheEnabled(false);
+    private Bitmap getScreenShot(View view) {
+        Bitmap bitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        view.draw(canvas);
         return bitmap;
     }
 
@@ -4527,13 +4529,11 @@ public class MainActivity extends AppCompatActivity {
         SuMStaticVs.RV_ItemsInRowCount_Helper = false;
         SuMStaticVs.RV_ItemsInRowCount_INDEX = 0;
         SuMStaticVs.RV_ItemsInRowCount_LASTREALINDEX = -1;
-        //ReqH_DH_RCV = findViewById(R.id.SuMExplore_Home_ScrollView_Main_HeightHelper).getHeight();
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         ReqH_DH_RCV = displayMetrics.heightPixels;
         SuMStaticVs.lastPosition = -1;
         findViewById(R.id.SuMExploreProssC).setVisibility(View.VISIBLE);
-        //SuMStaticVs.MainC = MainActivity.this;
         recyclerView = findViewById(R.id.scout_recycler_view);
         ViewGroup.LayoutParams params=recyclerView.getLayoutParams();
         params.height= ReqH_DH_RCV;
@@ -4544,17 +4544,11 @@ public class MainActivity extends AppCompatActivity {
         if(spanCount<1) spanCount = 1;
         if(spanCount>18) spanCount = 18;
         SuMStaticVs.RV_ItemsInRowCount = spanCount;
-        recyclerView.setLayoutManager(new GridLayoutManager(this, spanCount));
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, spanCount);
+        recyclerView.setLayoutManager(gridLayoutManager);
         scoutArrayList = new ArrayList<>();
         adapter = new ScoutAdapter(this,scoutArrayList,this);
         recyclerView.setAdapter(adapter);
-        //final float scale = MainActivity.this.getResources().getDisplayMetrics().density;
-        //int pixels = (int) (640 * scale + 0.5f);
-
-        /*LinearLayout relativeLayout = (LinearLayout) findViewById(R.id.scout_recycler_view_Width);
-        if(relativeLayout.getWidth()>(int) (500 * scale + 0.5f)){
-            relativeLayout.getLayoutParams().width = (int) (500 * scale + 0.5f);
-        }*/
 
 
         createList(Gern);

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <set xmlns:android="http://schemas.android.com/apk/res/android">
     <scale
-        android:startOffset="0"
         android:duration="160"
         android:fromXScale="1.0"
         android:fromYScale="1.0"
@@ -12,10 +11,8 @@
     <alpha
         android:duration="160"
         android:fromAlpha="1.0"
-        android:toAlpha="0.8"
-        android:startOffset="0"/>
+        android:toAlpha="0.8"/>
     <scale
-        android:startOffset="160"
         android:duration="160"
         android:fromXScale="0.98"
         android:fromYScale="0.98"
@@ -26,6 +23,5 @@
     <alpha
         android:duration="160"
         android:fromAlpha="0.8"
-        android:toAlpha="1.0"
-        android:startOffset="160"/>
+        android:toAlpha="1.0"/>
 </set>

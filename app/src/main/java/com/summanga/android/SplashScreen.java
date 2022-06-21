@@ -122,19 +122,6 @@ public class SplashScreen extends AppCompatActivity {
 
     }
 
-    /*public void onRequestPermissionsResult(
-            int requestCode,
-            @NonNull String[] permissions,
-            @NonNull int[] grantResults
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        Boolean isGarn = false;
-        for(int i = 0; i <grantResults.length;i++){
-            if(grantResults[i]>0) isGarn = true;
-            else isGarn = false;
-        }
-
-    }*/
     protected boolean PermIsGra(String PID){
         return ActivityCompat.checkSelfPermission(SplashScreen.this, PID) == PackageManager.PERMISSION_GRANTED;
     }
@@ -196,6 +183,7 @@ public class SplashScreen extends AppCompatActivity {
             ((LinearProgressIndicator)findViewById(R.id.SuMSplashProssBar)).setProgress(100);
             findViewById(R.id.SuMSplashIMG).setVisibility(View.GONE);
             findViewById(R.id.Offline_Options).setVisibility(View.VISIBLE);
+            LoadDinoGame();
         } else {
             if (UID > 0) {
                 //cookies = CookieManager.getInstance().getCookie("https://sum-manga.azurewebsites.net/");
@@ -635,6 +623,16 @@ public class SplashScreen extends AppCompatActivity {
         webViewx.setVisibility(View.VISIBLE);
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
+    private void LoadDinoGame(){
+
+        String url = "file:///android_asset/index.html";
+        WebView DGWV = findViewById(R.id.SuMOffline_WebView_DinoGame);
+        DGWV.getSettings().setJavaScriptEnabled(true);
+        DGWV.setBackgroundColor(Color.TRANSPARENT);
+        DGWV.loadUrl(url);
+
+    }
 
 
 }

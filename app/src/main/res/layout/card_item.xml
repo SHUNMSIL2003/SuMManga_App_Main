@@ -1,246 +1,241 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--XML implementation of Card Layout-->
-<androidx.cardview.widget.CardView
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="304dp"
     android:layout_gravity="center"
-    android:layout_marginBottom="0dp"
-    android:layout_marginTop="0dp"
-    android:layout_marginStart="12dp"
-    android:layout_marginEnd="0dp"
+    android:paddingStart="6dp"
+    android:paddingEnd="6dp"
     android:id="@+id/myCardViewElm"
-    android:background="@android:color/transparent"
-    app:cardElevation="0dp">
+    android:background="@android:color/transparent">
 
-    <LinearLayout
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:orientation="vertical"
+    <View
+        app:layout_constraintBottom_toTopOf="@id/SuMItem_BorderCliper_VF_HS"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/idCardPaddingTop"
+        android:visibility="visible"
+        android:layout_width="1dp"
+        android:layout_height="12dp"/>
+
+    <RelativeLayout
+        app:layout_constraintBottom_toTopOf="@id/idCardPaddingBottom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/idCardPaddingTop"
+        android:id="@+id/SuMItem_BorderCliper_VF_HS"
+        android:foreground="?attr/selectableItemBackground"
+        android:clipToOutline="true"
+        android:background="@drawable/bg_explorecard"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <View
-            android:id="@+id/idCardPaddingTop"
-            android:visibility="visible"
-            android:layout_width="match_parent"
-            android:layout_height="12dp"/>
-
+        android:layout_height="292dp"
+        tools:ignore="UnusedAttribute">
         <RelativeLayout
-            android:id="@+id/SuMItem_BorderCliper_VF_HS"
-            android:foreground="?attr/selectableItemBackground"
-            android:clipToOutline="true"
-            android:background="@drawable/bg_explorecard"
+            android:id="@+id/idItemBG"
+            android:gravity="bottom"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:ignore="UnusedAttribute">
-            <RelativeLayout
-                android:id="@+id/idItemBG"
-                android:gravity="bottom"
+            android:layout_height="292dp"
+            tools:ignore="UselessParent">
+
+            <ImageView
+                android:id="@+id/idMangaCover"
                 android:layout_width="match_parent"
                 android:layout_height="292dp"
-                tools:ignore="UselessParent">
+                android:layout_gravity="center"
+                android:scaleType="centerCrop"
+                android:src="@drawable/bg_tr_br0dp_c22dp_"
+                android:contentDescription="Cover"
+                tools:ignore="HardcodedText" />
 
-                <ImageView
-                    android:id="@+id/idMangaCover"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/bg_tr_br0dp_c22dp_"
-                    tools:ignore="ContentDescription" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/idMangaTitle_Co"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_alignParentBottom="true"
+                android:background="@android:color/holo_red_light"
+                android:gravity="top"
+                android:orientation="vertical">
 
-                <!-- <View
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:alpha="0.16"
-                    android:background="@android:color/black" /> -->
 
-                <LinearLayout
-                    android:id="@+id/idMangaTitle_Co"
-                    android:layout_width="match_parent"
-                    android:layout_height="120dp"
-                    android:layout_alignParentBottom="true"
-                    android:background="@android:color/holo_red_light"
-                    android:gravity="top"
-                    android:orientation="vertical"
-                    android:minHeight="100dp">
 
-                    <LinearLayout
-                        android:layout_marginTop="8dp"
+                    <HorizontalScrollView
+                        app:layout_constraintBottom_toTopOf="@id/idMangaTitle"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:id="@+id/SuMItem_ItemGerns_Contaner_LIDH"
+                        android:orientation="horizontal"
+                        android:paddingTop="8dp"
                         android:layout_width="match_parent"
-                        android:layout_height="24dp"
-                        android:orientation="horizontal">
+                        android:layout_height="32dp"
+                        android:scrollIndicators="none"
+                        android:scrollbarAlwaysDrawHorizontalTrack="false"
+                        android:scrollbarAlwaysDrawVerticalTrack="false"
+                        android:scrollbarSize="0dp">
 
-                        <HorizontalScrollView
-                            android:layout_width="match_parent"
-                            android:layout_height="24dp"
-                            android:fadeScrollbars="false"
-                            android:scrollIndicators="none"
-                            android:scrollbarAlwaysDrawHorizontalTrack="false"
-                            android:scrollbarAlwaysDrawVerticalTrack="false"
-                            android:scrollbarSize="0dp">
-
-                            <LinearLayout
-                                android:gravity="center"
-                                android:layout_width="wrap_content"
-                                android:layout_height="24dp"
-                                android:orientation="horizontal">
-
-                                <View
-                                    android:layout_width="12dp"
-                                    android:layout_height="22dp"
-                                    android:background="@android:color/transparent" />
-
-                                <TextView
-                                    android:id="@+id/idSuMExploreIndo_Gern_Action"
-                                    android:layout_width="60dp"
-                                    android:layout_height="22dp"
-                                    android:layout_marginEnd="8dp"
-                                    android:alpha="0.86"
-                                    android:background="@drawable/bg_gern_tr_bor_w_c_fixer"
-                                    android:fontFamily="@font/varela_round"
-                                    android:gravity="center"
-                                    android:text="Ation"
-                                    android:textColor="@android:color/white"
-                                    android:textSize="13.5sp"
-                                    android:visibility="visible"/>
-
-                                <TextView
-                                    android:id="@+id/idSuMExploreIndo_Gern_Drama"
-                                    android:layout_width="70dp"
-                                    android:layout_height="22dp"
-                                    android:layout_marginEnd="8dp"
-                                    android:alpha="0.86"
-                                    android:background="@drawable/bg_gern_tr_bor_w_c_fixer"
-                                    android:fontFamily="@font/varela_round"
-                                    android:gravity="center"
-                                    android:text="Drama"
-                                    android:textColor="@android:color/white"
-                                    android:textSize="13.5sp"
-                                    android:visibility="visible"/>
-
-                                <TextView
-                                    android:id="@+id/idSuMExploreIndo_Gern_Fantasy"
-                                    android:layout_width="76dp"
-                                    android:layout_height="22dp"
-                                    android:layout_marginEnd="8dp"
-                                    android:alpha="0.86"
-                                    android:background="@drawable/bg_gern_tr_bor_w_c_fixer"
-                                    android:fontFamily="@font/varela_round"
-                                    android:gravity="center"
-                                    android:text="Fantasy"
-                                    android:textColor="@android:color/white"
-                                    android:textSize="13.5sp"
-                                    android:visibility="visible"/>
-
-                                <TextView
-                                    android:id="@+id/idSuMExploreIndo_Gern_Comedy"
-                                    android:layout_width="78dp"
-                                    android:layout_height="22dp"
-                                    android:layout_marginEnd="8dp"
-                                    android:alpha="0.86"
-                                    android:background="@drawable/bg_gern_tr_bor_w_c_fixer"
-                                    android:fontFamily="@font/varela_round"
-                                    android:gravity="center"
-                                    android:text="Comedy"
-                                    android:textColor="@android:color/white"
-                                    android:textSize="13.5sp"
-                                    android:visibility="visible"/>
-
-                                <TextView
-                                    android:id="@+id/idSuMExploreIndo_Gern_SliceofLife"
-                                    android:layout_width="100dp"
-                                    android:layout_height="22dp"
-                                    android:layout_marginEnd="8dp"
-                                    android:alpha="0.86"
-                                    android:background="@drawable/bg_gern_tr_bor_w_c_fixer"
-                                    android:fontFamily="@font/varela_round"
-                                    android:gravity="center"
-                                    android:text="Slice of Life"
-                                    android:textColor="@android:color/white"
-                                    android:textSize="13.5sp"
-                                    android:visibility="visible"/>
-
-                                <TextView
-                                    android:id="@+id/idSuMExploreIndo_Gern_SciFi"
-                                    android:layout_width="63dp"
-                                    android:layout_height="22dp"
-                                    android:layout_marginEnd="8dp"
-                                    android:alpha="0.86"
-                                    android:background="@drawable/bg_gern_tr_bor_w_c_fixer"
-                                    android:fontFamily="@font/varela_round"
-                                    android:gravity="center"
-                                    android:text="Sci-Fi"
-                                    android:textColor="@android:color/white"
-                                    android:textSize="13.5sp"
-                                    android:visibility="visible"/>
-
-                                <TextView
-                                    android:id="@+id/idSuMExploreIndo_Gern_Supernatural"
-                                    android:layout_width="110dp"
-                                    android:layout_height="22dp"
-                                    android:layout_marginEnd="8dp"
-                                    android:alpha="0.86"
-                                    android:background="@drawable/bg_gern_tr_bor_w_c_fixer"
-                                    android:fontFamily="@font/varela_round"
-                                    android:gravity="center"
-                                    android:text="Supernatural"
-                                    android:textColor="@android:color/white"
-                                    android:textSize="13.5sp"
-                                    android:visibility="visible"/>
-
-                                <TextView
-                                    android:id="@+id/idSuMExploreIndo_Gern_Mystery"
-                                    android:layout_width="78dp"
-                                    android:layout_height="22dp"
-                                    android:layout_marginEnd="8dp"
-                                    android:alpha="0.86"
-                                    android:background="@drawable/bg_gern_tr_bor_w_c_fixer"
-                                    android:fontFamily="@font/varela_round"
-                                    android:gravity="center"
-                                    android:text="Mystery"
-                                    android:textColor="@android:color/white"
-                                    android:textSize="13.5sp"
-                                    android:visibility="visible"/>
-                            </LinearLayout>
-                        </HorizontalScrollView>
-                    </LinearLayout>
-
-                    <RelativeLayout
-                        android:gravity="top"
-                        android:layout_width="match_parent"
-                        android:layout_height="fill_parent">
-
-                        <TextView
-                            android:id="@+id/idMangaTitle"
-                            android:layout_width="match_parent"
-                            android:layout_height="68dp"
-                            android:ellipsize="end"
-                            android:maxLines="3"
+                        <LinearLayout
                             android:gravity="center"
-                            android:fontFamily="@font/varela_round"
-                            android:paddingStart="6dp"
-                            android:paddingTop="4dp"
-                            android:paddingEnd="6dp"
-                            android:paddingBottom="8dp"
-                            android:text="MangaName"
-                            android:textAlignment="center"
-                            android:textColor="@android:color/white"
-                            android:textSize="17.6sp" />
-                    </RelativeLayout>
-                </LinearLayout>
-            </RelativeLayout>
+                            android:layout_width="wrap_content"
+                            android:layout_height="24dp"
+                            android:alpha="0.86"
+                            android:orientation="horizontal">
+
+                            <View
+                                android:layout_width="12dp"
+                                android:layout_height="22dp"
+                                android:background="@android:color/transparent" />
+
+                            <TextView
+                                android:id="@+id/idSuMExploreIndo_Gern_Action"
+                                android:layout_width="60dp"
+                                android:layout_height="22dp"
+                                android:layout_marginEnd="8dp"
+                                android:background="@drawable/bg_gern_tr_bor_w_c_fixer"
+                                android:fontFamily="@font/varela_round"
+                                android:gravity="center"
+                                android:text="Ation"
+                                android:textColor="@android:color/white"
+                                android:textSize="13.5sp"
+                                android:visibility="visible"
+                                tools:ignore="HardcodedText" />
+
+                            <TextView
+                                android:id="@+id/idSuMExploreIndo_Gern_Drama"
+                                android:layout_width="70dp"
+                                android:layout_height="22dp"
+                                android:layout_marginEnd="8dp"
+                                android:background="@drawable/bg_gern_tr_bor_w_c_fixer"
+                                android:fontFamily="@font/varela_round"
+                                android:gravity="center"
+                                android:text="Drama"
+                                android:textColor="@android:color/white"
+                                android:textSize="13.5sp"
+                                android:visibility="visible"
+                                tools:ignore="HardcodedText" />
+
+                            <TextView
+                                android:id="@+id/idSuMExploreIndo_Gern_Fantasy"
+                                android:layout_width="76dp"
+                                android:layout_height="22dp"
+                                android:layout_marginEnd="8dp"
+                                android:background="@drawable/bg_gern_tr_bor_w_c_fixer"
+                                android:fontFamily="@font/varela_round"
+                                android:gravity="center"
+                                android:text="Fantasy"
+                                android:textColor="@android:color/white"
+                                android:textSize="13.5sp"
+                                android:visibility="visible"
+                                tools:ignore="HardcodedText" />
+
+                            <TextView
+                                android:id="@+id/idSuMExploreIndo_Gern_Comedy"
+                                android:layout_width="78dp"
+                                android:layout_height="22dp"
+                                android:layout_marginEnd="8dp"
+                                android:background="@drawable/bg_gern_tr_bor_w_c_fixer"
+                                android:fontFamily="@font/varela_round"
+                                android:gravity="center"
+                                android:text="Comedy"
+                                android:textColor="@android:color/white"
+                                android:textSize="13.5sp"
+                                android:visibility="visible"
+                                tools:ignore="HardcodedText" />
+
+                            <TextView
+                                android:id="@+id/idSuMExploreIndo_Gern_SliceofLife"
+                                android:layout_width="100dp"
+                                android:layout_height="22dp"
+                                android:layout_marginEnd="8dp"
+                                android:background="@drawable/bg_gern_tr_bor_w_c_fixer"
+                                android:fontFamily="@font/varela_round"
+                                android:gravity="center"
+                                android:text="Slice of Life"
+                                android:textColor="@android:color/white"
+                                android:textSize="13.5sp"
+                                android:visibility="visible"
+                                tools:ignore="HardcodedText" />
+
+                            <TextView
+                                android:id="@+id/idSuMExploreIndo_Gern_SciFi"
+                                android:layout_width="63dp"
+                                android:layout_height="22dp"
+                                android:layout_marginEnd="8dp"
+                                android:background="@drawable/bg_gern_tr_bor_w_c_fixer"
+                                android:fontFamily="@font/varela_round"
+                                android:gravity="center"
+                                android:text="Sci-Fi"
+                                android:textColor="@android:color/white"
+                                android:textSize="13.5sp"
+                                android:visibility="visible"
+                                tools:ignore="HardcodedText" />
+
+                            <TextView
+                                android:id="@+id/idSuMExploreIndo_Gern_Supernatural"
+                                android:layout_width="110dp"
+                                android:layout_height="22dp"
+                                android:layout_marginEnd="8dp"
+                                android:background="@drawable/bg_gern_tr_bor_w_c_fixer"
+                                android:fontFamily="@font/varela_round"
+                                android:gravity="center"
+                                android:text="Supernatural"
+                                android:textColor="@android:color/white"
+                                android:textSize="13.5sp"
+                                android:visibility="visible"
+                                tools:ignore="HardcodedText" />
+
+                            <TextView
+                                android:id="@+id/idSuMExploreIndo_Gern_Mystery"
+                                android:layout_width="78dp"
+                                android:layout_height="22dp"
+                                android:layout_marginEnd="8dp"
+                                android:background="@drawable/bg_gern_tr_bor_w_c_fixer"
+                                android:fontFamily="@font/varela_round"
+                                android:gravity="center"
+                                android:text="Mystery"
+                                android:textColor="@android:color/white"
+                                android:textSize="13.5sp"
+                                android:visibility="visible"
+                                tools:ignore="HardcodedText" />
+                        </LinearLayout>
+                    </HorizontalScrollView>
+                <TextView
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/SuMItem_ItemGerns_Contaner_LIDH"
+                    android:id="@+id/idMangaTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="88dp"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/varela_round"
+                    android:gravity="center"
+                    android:maxLines="3"
+                    android:paddingStart="6dp"
+                    android:paddingTop="4dp"
+                    android:paddingEnd="6dp"
+                    android:paddingBottom="8dp"
+                    android:text="M"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/white"
+                    android:textSize="17.6sp"
+                    tools:ignore="HardcodedText" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </RelativeLayout>
+    </RelativeLayout>
 
-        <View
-            android:id="@+id/idCardPaddingBottom"
-            android:visibility="visible"
-            android:layout_width="match_parent"
-            android:layout_height="12dp"/>
+    <View
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/SuMItem_BorderCliper_VF_HS"
+        android:id="@+id/idCardPaddingBottom"
+        android:visibility="visible"
+        android:layout_width="1dp"
+        android:layout_height="12dp"/>
 
-    </LinearLayout>
-
-</androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>
